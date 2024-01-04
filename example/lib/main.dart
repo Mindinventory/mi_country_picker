@@ -1,4 +1,4 @@
-import 'package:country_picker/country_picker.dart';
+import 'package:country_picker/country_picker_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -97,25 +97,14 @@ class MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Country Picker'),
         ),
-        body: Center(
+        body: const Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               SizedBox(
                 width: 400,
                 height: 60,
-                child: CountryCodePicker(
-                  onChanged: (element) => debugPrint(element.toLongString()),
-                  onInit: (code) => debugPrint(
-                      "on init ${code!.name} ${code.dialCode} ${code.name}"),
-                  initialSelection: 'TF',
-                  showCountryOnly: true,
-                  showOnlyCountryWhenClosed: true,
-                  favorite: const ['+39', 'FR'],
-                  flagDecoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(7),
-                  ),
-                ),
+                child: CountryCodeDialogPicker(),
               ),
             ],
           ),

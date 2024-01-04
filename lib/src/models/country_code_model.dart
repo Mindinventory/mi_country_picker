@@ -3,44 +3,42 @@ import 'package:flutter/cupertino.dart';
 
 import '../localizations.dart';
 
-
 class CountryCode {
-  String? name;
-  String? flagUri;
-  String? code;
-  String? dialCode;
+  String? countryName;
+  String? countryFlag;
+  String? countryCode;
+  String? countryDialCode;
 
   CountryCode({
-    this.name,
-    this.flagUri,
-    this.code,
-    this.dialCode,
+    this.countryName,
+    this.countryFlag,
+    this.countryCode,
+    this.countryDialCode,
   });
 
   factory CountryCode.fromJson(Map<String, dynamic> json) {
     return CountryCode(
-      name: json['name'],
-      code: json['code'],
-      dialCode: json['dial_code'],
-      flagUri: 'assets/flags/${json['code'].toLowerCase()}.png',
+      countryName: json['name'],
+      countryCode: json['code'],
+      countryDialCode: json['dial_code'],
+      countryFlag: 'assets/flags/${json['code'].toLowerCase()}.png',
     );
   }
 
   CountryCode localize(BuildContext context) {
-    return this
-      ..name = CountryPickerLocalizations.of(context)?.translate(code) ?? name;
+    return this..countryName = CountryPickerLocalizations.of(context)?.translate(countryCode) ?? countryName;
   }
 
   @override
-  String toString() => "$dialCode";
+  String toString() => "$countryDialCode";
 
-  String toLongString() => "$dialCode ${toCountryStringOnly()}";
+  String toLongString() => "$countryDialCode ${toCountryStringOnly()}";
 
   String toCountryStringOnly() {
-    return '$_cleanName';
+    return '$_name';
   }
 
-  String? get _cleanName {
-    return name?.replaceAll(RegExp(r'[[\]]'), '').split(',').first;
+  String? get _name {
+    return countryName?.replaceAll(RegExp(r'[[\]]'), '').split(',').first;
   }
 }
