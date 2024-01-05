@@ -11,7 +11,7 @@ export 'src/models/country_code_model.dart';
 export 'src/codes.dart';
 export 'src/localizations.dart';
 
-class CountryCodeDialogPicker extends StatefulWidget {
+class CountryPickerDialog extends StatefulWidget {
   final ValueChanged<CountryCode>? onChanged;
   final String? initialValue;
   final TextStyle? textStyle;
@@ -22,7 +22,7 @@ class CountryCodeDialogPicker extends StatefulWidget {
 
   final List<Map<String, String>> countryList;
 
-  const CountryCodeDialogPicker({
+  const CountryPickerDialog({
     this.onChanged,
     this.initialValue,
     this.textStyle,
@@ -43,7 +43,7 @@ class CountryCodeDialogPicker extends StatefulWidget {
   }
 }
 
-class CountryCodePickerState extends State<CountryCodeDialogPicker> {
+class CountryCodePickerState extends State<CountryPickerDialog> {
   late List<CountryCode> searchResult;
   CountryCode? selectedItem;
   List<CountryCode> elements = [];
