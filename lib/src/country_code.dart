@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/cupertino.dart';
 
-import '../country_picker.dart';
+import '../country_picker_dialog.dart';
 import 'country_codes.dart';
 import 'country_picker_localizations.dart';
 

@@ -1,4 +1,4 @@
-import 'package:country_picker/country_picker.dart';
+import 'package:country_picker/country_picker_dialog.dart';
 import 'package:country_picker/src/country_picker_theme.dart';
 import 'package:flutter/material.dart';
 
