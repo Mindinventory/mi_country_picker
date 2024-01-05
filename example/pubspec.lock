@@ -42,7 +42,7 @@ packages:
     source: hosted
     version: "1.18.0"
   country_picker:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       path: ".."
       relative: true
@@ -78,7 +78,7 @@ packages:
     source: hosted
     version: "2.0.3"
   flutter_localizations:
-    dependency: "direct dev"
+    dependency: "direct main"
     description: flutter
     source: sdk
     version: "0.0.0"

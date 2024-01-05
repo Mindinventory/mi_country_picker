@@ -1,15 +1,10 @@
-library country_picker;
-
 export 'src/country_picker_localizations.dart';
 import 'src/country_picker_theme.dart';
 import 'src/country_code.dart';
 import 'src/country_codes.dart';
 import 'package:flutter/material.dart';
 import 'src/selection_dialog.dart';
-export 'src/country_code.dart';
-export 'src/country_codes.dart';
-export 'src/selection_dialog.dart';
-export 'src/country_picker_theme.dart';
+
 
 class CountryPickerDialog extends StatefulWidget {
   final ValueChanged<CountryCode>? onChanged;

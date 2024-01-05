@@ -1,15 +1,7 @@
-library country_picker;
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'src/localizations.dart';
 import 'src/models/country_code_model.dart';
 import 'src/codes.dart';
-
-export 'src/models/country_code_model.dart';
-export 'src/codes.dart';
-export 'src/localizations.dart';
 
 class CountryPickerBottomSheet extends StatefulWidget {
   final ValueChanged<CountryCode>? onChanged;
