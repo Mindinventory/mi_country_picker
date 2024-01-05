@@ -3,7 +3,6 @@ import 'package:country_picker/country_picker_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-
 void main() => runApp(const MyApp());
 
 class MyApp extends StatefulWidget {
@@ -89,8 +88,8 @@ class MyAppState extends State<MyApp> {
         Locale("vi"),
         Locale("zh")
       ],
-      localizationsDelegates:  const [
-        CountryPickerLocalizations.delegate,
+      localizationsDelegates: const [
+        // CountryPickerLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
@@ -106,9 +105,7 @@ class MyAppState extends State<MyApp> {
               SizedBox(
                 width: 400,
                 height: 60,
-                child: CountryPickerDialog(
-
-                ),
+                child: CountryPickerBottomSheet(),
               ),
             ],
           ),
