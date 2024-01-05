@@ -35,11 +35,10 @@ class CountryCodeDialogPicker extends StatefulWidget {
   }) : super(key: key);
 
   @override
+  // ignore: no_logic_in_create_state
   State<StatefulWidget> createState() {
     List<Map<String, String>> jsonList = countryList;
-
     List<CountryCode> elements = jsonList.map((json) => CountryCode.fromJson(json)).toList();
-
     return CountryCodePickerState(elements);
   }
 }
@@ -84,12 +83,13 @@ class CountryCodePickerState extends State<CountryCodeDialogPicker> {
             flex: 1,
             fit: FlexFit.loose,
             child: Padding(
-                padding: EdgeInsets.only(right: 16.0),
-                child: Icon(
-                  Icons.arrow_drop_down,
-                  color: Colors.grey,
-                  size: 36.0,
-                )),
+              padding: EdgeInsets.only(right: 16.0),
+              child: Icon(
+                Icons.arrow_drop_down,
+                color: Colors.grey,
+                size: 36.0,
+              ),
+            ),
           ),
         ],
       ),
@@ -126,67 +126,70 @@ class CountryCodePickerState extends State<CountryCodeDialogPicker> {
       context: context,
       builder: (context) => Center(
         child: Dialog(
-            child: Container(
-          clipBehavior: Clip.hardEdge,
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height * 0.85,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: const BorderRadius.all(Radius.circular(8.0)),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(1),
-                spreadRadius: 5,
-                blurRadius: 7,
-                offset: const Offset(0, 3), // changes position of shadow
-              ),
-            ],
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              IconButton(
-                padding: const EdgeInsets.all(0),
-                iconSize: 20,
-                icon: const Icon(Icons.close),
-                onPressed: () => Navigator.pop(context),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: TextField(
-                  style: widget.searchTextStyle,
-                  decoration: const InputDecoration(prefixIcon: Icon(Icons.search)),
-                  onChanged: searchNames,
+          child: Container(
+            clipBehavior: Clip.hardEdge,
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height * 0.85,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(1),
+                  spreadRadius: 5,
+                  blurRadius: 7,
+                  offset: const Offset(0, 3), // changes position of shadow
                 ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ListView(
-                    children: [
-                      const DecoratedBox(decoration: BoxDecoration()),
-                      if (searchResult.isEmpty)
-                        Center(
-                          child: Text(
-                              CountryPickerLocalizations.of(context)?.translate('no_country') ?? 'No country found'),
-                        )
-                      else
-                        ...searchResult.map((item) => InkWell(
-                            onTap: () {
-                              navigateBackWithItem(item);
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-                              child: _buildOption(item),
-                            ))),
-                    ],
+              ],
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                IconButton(
+                  padding: const EdgeInsets.all(0),
+                  iconSize: 20,
+                  icon: const Icon(Icons.close),
+                  onPressed: () => Navigator.pop(context),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: TextField(
+                    style: widget.searchTextStyle,
+                    decoration: const InputDecoration(prefixIcon: Icon(Icons.search)),
+                    onChanged: searchNames,
                   ),
                 ),
-              ),
-            ],
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ListView(
+                      children: [
+                        const DecoratedBox(decoration: BoxDecoration()),
+                        if (searchResult.isEmpty)
+                          Center(
+                            child: Text(CountryPickerLocalizations.of(context)?.translate('no_country') ?? 'No country found'),
+                          )
+                        else
+                          ...searchResult.map(
+                            (item) => InkWell(
+                              onTap: () {
+                                navigateBackWithItem(item);
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                                child: _buildOption(item),
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-        )),
+        ),
       ),
     );
 
@@ -209,10 +212,7 @@ class CountryCodePickerState extends State<CountryCodeDialogPicker> {
     text = text.toUpperCase();
     setState(() {
       searchResult = elements
-          .where((e) =>
-              e.countryCode!.contains(text) ||
-              e.countryDialCode!.contains(text) ||
-              e.countryName!.toUpperCase().contains(text))
+          .where((e) => e.countryCode!.contains(text) || e.countryDialCode!.contains(text) || e.countryName!.toUpperCase().contains(text))
           .toList();
     });
   }
