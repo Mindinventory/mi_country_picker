@@ -10,7 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  collection: 
+  collection:
 
 dev_dependencies:
   flutter_test:
