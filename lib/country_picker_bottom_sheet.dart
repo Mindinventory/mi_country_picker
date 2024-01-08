@@ -1,7 +1,7 @@
+import 'package:country_picker/src/codes.dart';
+import 'package:country_picker/src/country_code.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'src/models/country_code_model.dart';
-import 'src/codes.dart';
 
 class CountryPickerBottomSheet extends StatefulWidget {
   final ValueChanged<CountryCode>? onChanged;
@@ -50,9 +50,9 @@ class CountryPickerBottomSheetState extends State<CountryPickerBottomSheet> {
     if (widget.initialValue != null) {
       selectedItem = elements.firstWhere(
           (item) =>
-              (item.countryCode!.toUpperCase() == widget.initialValue!.toUpperCase()) ||
-              (item.countryDialCode == widget.initialValue) ||
-              (item.countryName!.toUpperCase() == widget.initialValue!.toUpperCase()),
+              (item.code!.toUpperCase() == widget.initialValue!.toUpperCase()) ||
+              (item.dialCode == widget.initialValue) ||
+              (item.name!.toUpperCase() == widget.initialValue!.toUpperCase()),
           orElse: () => elements[0]);
 
       for (int i = 0; i < elements.length; i++) {
@@ -87,7 +87,7 @@ class CountryPickerBottomSheetState extends State<CountryPickerBottomSheet> {
               clipBehavior: Clip.none,
               margin: const EdgeInsets.only(right: 16.0),
               child: Image.asset(
-                selectedItem!.countryFlag!,
+                selectedItem!.flagUri!,
                 package: 'country_picker',
                 width: 36.0,
               ),
@@ -152,7 +152,7 @@ class CountryPickerBottomSheetState extends State<CountryPickerBottomSheet> {
                               margin: const EdgeInsets.only(right: 16.0),
                               child: Center(
                                 child: Image.asset(
-                                  elements[index].countryFlag ?? "",
+                                  elements[index].flagUri ?? "",
                                   package: 'country_picker',
                                   width: 36.0,
                                   fit: BoxFit.cover,
@@ -163,7 +163,7 @@ class CountryPickerBottomSheetState extends State<CountryPickerBottomSheet> {
                               fit: FlexFit.tight,
                               flex: 2,
                               child: Text(
-                                '${elements[index].countryDialCode}  ',
+                                '${elements[index].dialCode}  ',
                                 overflow: TextOverflow.ellipsis,
                                 style: widget.textStyle,
                               ),
@@ -172,7 +172,7 @@ class CountryPickerBottomSheetState extends State<CountryPickerBottomSheet> {
                               fit: FlexFit.tight,
                               flex: 6,
                               child: Text(
-                                elements[index].countryName ?? '',
+                                elements[index].name ?? '',
                                 overflow: TextOverflow.ellipsis,
                                 style: widget.textStyle,
                               ),

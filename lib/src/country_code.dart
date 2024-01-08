@@ -28,10 +28,10 @@ class CountryCode {
     this.dialCode,
   });
 
-  @Deprecated('Use `fromCountryCode` instead.')
-  factory CountryCode.fromCode(String isoCode) {
-    return CountryCode.fromCountryCode(isoCode);
-  }
+  // @Deprecated('Use `fromCountryCode` instead.')
+  // factory CountryCode.fromCode(String isoCode) {
+  //   return CountryCode.fromCountryCode(isoCode);
+  // }
 
   factory CountryCode.fromCountryCode(String countryCode) {
     final Map<String, String>? jsonCode = codes.firstWhereOrNull(
@@ -56,7 +56,7 @@ class CountryCode {
       name: json['name'],
       code: json['code'],
       dialCode: json['dial_code'],
-      flagUri: 'flags/${json['code'].toLowerCase()}.png',
+      flagUri: 'assets/flags/${json['code'].toLowerCase()}.png',
     );
   }
 
