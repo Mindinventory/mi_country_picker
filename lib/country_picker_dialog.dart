@@ -5,7 +5,6 @@ import 'src/country_codes.dart';
 import 'package:flutter/material.dart';
 import 'src/selection_dialog.dart';
 
-
 class CountryPickerDialog extends StatefulWidget {
   final ValueChanged<CountryCode>? onChanged;
   final ValueChanged<CountryCode?>? onInit;
@@ -16,6 +15,7 @@ class CountryPickerDialog extends StatefulWidget {
   final bool showCountryOnly;
   final InputDecoration searchDecoration;
   final CountryPickerThemeData? countryPickerTheme;
+
   // final TextStyle? searchStyle;
   final TextStyle? dialogTextStyle;
   final WidgetBuilder? emptySearchBuilder;

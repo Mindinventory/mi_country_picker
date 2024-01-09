@@ -15,14 +15,12 @@ class CountryPickerLocalizations {
     );
   }
 
-  static const LocalizationsDelegate<CountryPickerLocalizations> delegate =
-  _CountryPickerLocalizationsDelegate();
+  static const LocalizationsDelegate<CountryPickerLocalizations> delegate = _CountryPickerLocalizationsDelegate();
 
   late Map<String, String> _localizedStrings;
 
   Future<bool> load() async {
-    String jsonString = await rootBundle.loadString(
-        'packages/country_picker/src/i18n/${locale.languageCode}.json');
+    String jsonString = await rootBundle.loadString('packages/country_picker/src/i18n/${locale.languageCode}.json');
     Map<String, dynamic> jsonMap = json.decode(jsonString);
 
     _localizedStrings = jsonMap.map((key, value) {
@@ -37,8 +35,7 @@ class CountryPickerLocalizations {
   }
 }
 
-class _CountryPickerLocalizationsDelegate
-    extends LocalizationsDelegate<CountryPickerLocalizations> {
+class _CountryPickerLocalizationsDelegate extends LocalizationsDelegate<CountryPickerLocalizations> {
   const _CountryPickerLocalizationsDelegate();
 
   @override

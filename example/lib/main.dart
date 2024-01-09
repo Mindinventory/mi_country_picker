@@ -1,5 +1,4 @@
-import 'package:country_picker/country_picker_bottom_sheet.dart';
-import 'package:country_picker/country_picker_dialog.dart';
+import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -16,6 +15,7 @@ class MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       supportedLocales: const [
         Locale("af"),
         Locale("am"),
@@ -88,8 +88,8 @@ class MyAppState extends State<MyApp> {
         Locale("vi"),
         Locale("zh")
       ],
-      localizationsDelegates: const [
-        // CountryPickerLocalizations.delegate,
+      localizationsDelegates: [
+        CountryPickerLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
@@ -105,7 +105,10 @@ class MyAppState extends State<MyApp> {
               SizedBox(
                 width: 400,
                 height: 60,
-                child: CountryPickerBottomSheet(),
+                child: CountryPickerBottomSheet(
+                  initialValue: '+91',
+
+                ),
               ),
             ],
           ),
