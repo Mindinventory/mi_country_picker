@@ -5,43 +5,115 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class CountryPickerBottomSheet extends StatefulWidget {
+  /// this parameter is use to set initial selected value in country picker.
   final String? initialValue;
+
+  /// this parameter is use to set text-style of country code and country name.
   final TextStyle? textStyle;
+
+  /// text overflow in use to mange text overflow for country name.
   final TextOverflow textOverflow;
+
+  /// Here we have to provide the country list for showing the data.
   final List<Map<String, String>> countryList;
+
+  /// this properties is use for hide-show country flag in our screen.
   final bool showCountryMainFlag;
+
+  /// this properties is use for hide-show country flag in our bottom sheet list.
   final bool showCountryFlag;
+
+  /// this properties is use for hide-show country code in our screen.
   final bool showCountryMainCode;
+
+  /// this properties is use for hide-show country code in our bottom sheet list.
   final bool showCountryCode;
+
+  /// this properties is use for hide-show country name in our screen.
   final bool showCountryMainName;
+
+  /// this properties is use for hide-show country name in our bottom sheet list.
   final bool showCountryName;
 
   /// [BoxDecoration] for the flag image
   final Decoration? flagDecoration;
-  final bool alignLeft;
+
+  /// this properties is used for country picker is enable or not.
   final bool enabled;
-  final EdgeInsetsGeometry padding;
 
   /// Width of the flag images
   final double flagWidth;
 
+  /// this properties is used to provide height of country picker.
   final double heightOfPicker;
 
+  /// Bottom sheet properties
+
+  /// Whether to avoid system intrusions on the top, left, and right.
+  /// If true, a [SafeArea] is inserted to keep the bottom sheet away from
+  /// system intrusions at the top, left, and right sides of the screen.
+  ///
+  /// If false, the bottom sheet isn't exposed to the top padding of the
+  /// MediaQuery.
+  ///
+  /// In either case, the bottom sheet extends all the way to the bottom of
+  /// the screen, including any system intrusions.
+  ///
+  /// The default is false.
+  final bool useSafeArea;
+
+  /// The drag handle appears at the top of the bottom sheet. The default color is
+  /// [ColorScheme.onSurfaceVariant] with an opacity of 0.4 and can be customized
+  /// using dragHandleColor. The default size is `Size(32,4)` and can be customized
+  /// with dragHandleSize.
+  ///
+  /// If null, then the value of  [BottomSheetThemeData.showDragHandle] is used. If
+  /// that is also null, defaults to false.
+  final bool showDragHandle;
+
   /// Cupertino picker properties
+
+  /// Relative ratio between this picker's height and the simulated cylinder's diameter.
+  ///
+  /// Smaller values creates more pronounced curvatures in the scrollable wheel.
+  ///
+  /// For more details, see [ListWheelScrollView.diameterRatio].
+  ///
+  /// Defaults to 1.1 to visually mimic iOS.
   final double diameterRatio;
 
+  /// The uniform height of all children.
+  ///
+  /// All children will be given the [BoxConstraints] to match this exact
+  /// height. Must be a positive value.
   final double itemExtent;
 
+  /// A widget overlaid on the picker to highlight the currently selected entry.
+  ///
+  /// The [selectionOverlay] widget drawn above the [CupertinoPicker]'s picker
+  /// wheel.
+  /// It is vertically centered in the picker and is constrained to have the
+  /// same height as the center row.
+  ///
+  /// If unspecified, it defaults to a [CupertinoPickerDefaultSelectionOverlay]
+  /// which is a gray rounded rectangle overlay in iOS 14 style.
+  /// This property can be set to null to remove the overlay.
   final Widget? selectionOverlayWidget;
 
+  /// Background color behind the children.
+  ///
+  /// Defaults to null, which disables background painting entirely.
+  /// (i.e. the picker is going to have a completely transparent background), to match
+  /// the native UIPicker and UIDatePicker.
+  ///
+  /// Any alpha value less 255 (fully opaque) will cause the removal of the
+  /// wheel list edge fade gradient from rendering of the widget.
   final Color? backgroundColor;
 
   final double offAxisFraction;
   final double squeeze;
   final double magnification;
   final bool useMagnifier;
-  final bool useSafeArea;
-  final bool showDragHandle;
 
   const CountryPickerBottomSheet({
     this.initialValue,
@@ -55,9 +127,7 @@ class CountryPickerBottomSheet extends StatefulWidget {
     this.showCountryMainName = true,
     this.showCountryName = true,
     this.flagDecoration,
-    this.alignLeft = false,
     this.enabled = true,
-    this.padding = const EdgeInsets.all(8.0),
     this.flagWidth = 32.0,
     this.heightOfPicker = 250,
     this.diameterRatio = 1.1,
@@ -83,7 +153,6 @@ class CountryPickerBottomSheet extends StatefulWidget {
 }
 
 class CountryPickerBottomSheetState extends State<CountryPickerBottomSheet> {
-// late List<CountryCode> searchResult;
   CountryCode? selectedItem;
   List<CountryCode> elements = [];
   int initialItem = 0;
@@ -93,8 +162,6 @@ class CountryPickerBottomSheetState extends State<CountryPickerBottomSheet> {
   @override
   void initState() {
     super.initState();
-
-// searchResult = elements;
     if (widget.initialValue != null) {
       selectedItem = elements.firstWhere(
           (item) =>
@@ -124,47 +191,34 @@ class CountryPickerBottomSheetState extends State<CountryPickerBottomSheet> {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: widget.enabled ? showCountryPickerBottomSheet : null,
-      child: Padding(
-        padding: widget.padding,
-        child: Flex(
-          direction: Axis.horizontal,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            if (widget.showCountryMainFlag)
-              Flexible(
-                flex: widget.alignLeft ? 0 : 1,
-                fit: widget.alignLeft ? FlexFit.tight : FlexFit.loose,
-                child: Container(
-                  clipBehavior: widget.flagDecoration == null ? Clip.none : Clip.hardEdge,
-                  decoration: widget.flagDecoration,
-                  margin: widget.alignLeft ? const EdgeInsets.only(right: 16.0, left: 8.0) : const EdgeInsets.only(right: 16.0),
-                  child: Image.asset(
-                    selectedItem!.flagUri!,
-                    package: 'country_picker',
-                    width: widget.flagWidth,
-                  ),
-                ),
+      child: Flex(
+        direction: Axis.horizontal,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          if (widget.showCountryMainFlag)
+            Container(
+              clipBehavior: widget.flagDecoration == null ? Clip.none : Clip.hardEdge,
+              decoration: widget.flagDecoration,
+              margin: const EdgeInsets.only(right: 16.0),
+              child: Image.asset(
+                selectedItem!.flagUri!,
+                package: 'country_picker',
+                width: widget.flagWidth,
               ),
-            if (widget.showCountryMainCode)
-              Flexible(
-                fit: widget.alignLeft ? FlexFit.tight : FlexFit.loose,
-                child: Text(
-                  '${selectedItem!.dialCode ?? ''} ',
-                  style: widget.textStyle ?? Theme.of(context).textTheme.labelLarge,
-                  overflow: widget.textOverflow,
-                ),
-              ),
-            if (widget.showCountryMainName)
-              Flexible(
-                fit: widget.alignLeft ? FlexFit.tight : FlexFit.loose,
-                child: Text(
-                  selectedItem!.name!,
-                  style: widget.textStyle ?? Theme.of(context).textTheme.labelLarge,
-                  overflow: widget.textOverflow,
-                ),
-              ),
-          ],
-        ),
+            ),
+          if (widget.showCountryMainCode)
+            Text(
+              '${selectedItem!.dialCode ?? ''} ',
+              style: widget.textStyle ?? Theme.of(context).textTheme.labelLarge,
+              overflow: widget.textOverflow,
+            ),
+          if (widget.showCountryMainName)
+            Text(
+              selectedItem!.name!,
+              style: widget.textStyle ?? Theme.of(context).textTheme.labelLarge,
+              overflow: widget.textOverflow,
+            ),
+        ],
       ),
     );
   }
@@ -216,7 +270,7 @@ class CountryPickerBottomSheetState extends State<CountryPickerBottomSheet> {
                             Container(
                               clipBehavior: widget.flagDecoration == null ? Clip.none : Clip.hardEdge,
                               decoration: widget.flagDecoration,
-                              margin: widget.alignLeft ? const EdgeInsets.only(right: 16.0, left: 8.0) : const EdgeInsets.only(right: 16.0),
+                              margin: const EdgeInsets.only(right: 16.0),
                               child: Image.asset(
                                 elements[index].flagUri ?? "",
                                 package: 'country_picker',
@@ -257,128 +311,4 @@ class CountryPickerBottomSheetState extends State<CountryPickerBottomSheet> {
       },
     );
   }
-
-// void showCountryPickerBottomSheet() async {
-//   final item = await showDialog(
-//     context: context,
-//     builder: (context) => Center(
-//       child: Dialog(
-//         child: Container(
-//           clipBehavior: Clip.hardEdge,
-//           width: MediaQuery.of(context).size.width,
-//           height: MediaQuery.of(context).size.height * 0.85,
-//           decoration: BoxDecoration(
-//             color: Colors.white,
-//             borderRadius: const BorderRadius.all(Radius.circular(8.0)),
-//             boxShadow: [
-//               BoxShadow(
-//                 color: Colors.grey.withOpacity(1),
-//                 spreadRadius: 5,
-//                 blurRadius: 7,
-//                 offset: const Offset(0, 3), // changes position of shadow
-//               ),
-//             ],
-//           ),
-//           child: Column(
-//             mainAxisSize: MainAxisSize.min,
-//             crossAxisAlignment: CrossAxisAlignment.end,
-//             children: [
-//               IconButton(
-//                 padding: const EdgeInsets.all(0),
-//                 iconSize: 20,
-//                 icon: const Icon(Icons.close),
-//                 onPressed: () => Navigator.pop(context),
-//               ),
-//               Padding(
-//                 padding: const EdgeInsets.symmetric(horizontal: 24),
-//                 child: TextField(
-//                   style: widget.searchTextStyle,
-//                   decoration: const InputDecoration(prefixIcon: Icon(Icons.search)),
-//                   onChanged: searchNames,
-//                 ),
-//               ),
-//               Expanded(
-//                 child: Padding(
-//                   padding: const EdgeInsets.all(8.0),
-//                   child: ListView(
-//                     children: [
-//                       const DecoratedBox(decoration: BoxDecoration()),
-//                       if (searchResult.isEmpty)
-//                         Center(
-//                           child: Text(CountryPickerLocalizations.of(context)?.translate('no_country') ?? 'No country found'),
-//                         )
-//                       else
-//                         ...searchResult.map(
-//                           (item) => InkWell(
-//                             onTap: () {
-//                               navigateBackWithItem(item);
-//                             },
-//                             child: Padding(
-//                               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-//                               child: _buildOption(item),
-//                             ),
-//                           ),
-//                         ),
-//                     ],
-//                   ),
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     ),
-//   );
-//
-//   if (item != null) {
-//     setState(() {
-//       selectedItem = item;
-//     });
-//
-//     _publishSelection(item);
-//   }
-// }
-
-// void searchNames(String text) {
-//   text = text.toUpperCase();
-//   setState(() {
-//     searchResult = elements
-//         .where((e) => e.countryCode!.contains(text) || e.countryDialCode!.contains(text) || e.countryName!.toUpperCase().contains(text))
-//         .toList();
-//   });
-// }
-
-// void navigateBackWithItem(CountryCode item) {
-//   Navigator.pop(context, item);
-// }
-
-// Widget _buildOption(CountryCode e) {
-//   return SizedBox(
-//     width: 400,
-//     child: Flex(
-//       direction: Axis.horizontal,
-//       children: <Widget>[
-//         Flexible(
-//           child: Container(
-//             margin: const EdgeInsets.only(right: 16.0),
-//             clipBehavior: Clip.none,
-//             child: Image.asset(
-//               e.countryFlag!,
-//               package: 'country_picker',
-//               width: 36.0,
-//             ),
-//           ),
-//         ),
-//         Expanded(
-//           flex: 4,
-//           child: Text(
-//             e.toLongString(),
-//             overflow: TextOverflow.fade,
-//             style: widget.textStyle,
-//           ),
-//         ),
-//       ],
-//     ),
-//   );
-// }
 }
