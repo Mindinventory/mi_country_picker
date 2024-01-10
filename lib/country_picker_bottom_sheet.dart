@@ -5,17 +5,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class CountryPickerBottomSheet extends StatefulWidget {
+  /// Here we have to provide the country list for showing the data.
+  final List<Map<String, String>> countryList;
+
   /// this parameter is use to set initial selected value in country picker.
   final String? initialValue;
 
   /// this parameter is use to set text-style of country code and country name.
   final TextStyle? textStyle;
 
+  /// this parameter is use to remove particular country from our list.
+  final List<String>? excludeCountry;
+
   /// text overflow in use to mange text overflow for country name.
   final TextOverflow textOverflow;
-
-  /// Here we have to provide the country list for showing the data.
-  final List<Map<String, String>> countryList;
 
   /// this properties is use for hide-show country flag in our screen.
   final bool showCountryMainFlag;
@@ -37,9 +40,6 @@ class CountryPickerBottomSheet extends StatefulWidget {
 
   /// [BoxDecoration] for the flag image
   final Decoration? flagDecoration;
-
-  /// this properties is used for country picker is enable or not.
-  final bool enabled;
 
   /// Width of the flag images
   final double flagWidth;
@@ -116,10 +116,11 @@ class CountryPickerBottomSheet extends StatefulWidget {
   final bool useMagnifier;
 
   const CountryPickerBottomSheet({
+    this.countryList = codes,
     this.initialValue,
     this.textStyle,
+    this.excludeCountry,
     this.textOverflow = TextOverflow.ellipsis,
-    this.countryList = codes,
     this.showCountryMainFlag = true,
     this.showCountryFlag = true,
     this.showCountryMainCode = true,
@@ -127,9 +128,10 @@ class CountryPickerBottomSheet extends StatefulWidget {
     this.showCountryMainName = true,
     this.showCountryName = true,
     this.flagDecoration,
-    this.enabled = true,
     this.flagWidth = 32.0,
     this.heightOfPicker = 250,
+    this.useSafeArea = true,
+    this.showDragHandle = false,
     this.diameterRatio = 1.1,
     this.itemExtent = 32,
     this.selectionOverlayWidget,
@@ -138,8 +140,6 @@ class CountryPickerBottomSheet extends StatefulWidget {
     this.squeeze = 1.45,
     this.magnification = 1.0,
     this.useMagnifier = true,
-    this.useSafeArea = true,
-    this.showDragHandle = false,
     Key? key,
   }) : super(key: key);
 
@@ -162,6 +162,7 @@ class CountryPickerBottomSheetState extends State<CountryPickerBottomSheet> {
   @override
   void initState() {
     super.initState();
+
     if (widget.initialValue != null) {
       selectedItem = elements.firstWhere(
           (item) =>
@@ -185,12 +186,23 @@ class CountryPickerBottomSheetState extends State<CountryPickerBottomSheet> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     elements = elements.map((element) => element.localize(context)).toList();
+
+    for (int i = 0; i < (widget.excludeCountry?.length ?? 0); i++) {
+      for (int j = 0; j < elements.length; j++) {
+        if ((widget.excludeCountry?[i].toLowerCase() == elements[j].name?.toLowerCase()) ||
+            (widget.excludeCountry?[i] == elements[j].dialCode) ||
+            (widget.excludeCountry?[i].toUpperCase() == elements[j].code)) {
+          elements.removeAt(j);
+          break;
+        }
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: widget.enabled ? showCountryPickerBottomSheet : null,
+      onPressed: showCountryPickerBottomSheet,
       child: Flex(
         direction: Axis.horizontal,
         mainAxisSize: MainAxisSize.min,
@@ -224,7 +236,18 @@ class CountryPickerBottomSheetState extends State<CountryPickerBottomSheet> {
   }
 
   void showCountryPickerBottomSheet() async {
+    if ((widget.initialValue != null) || (selectedItem != null)) {
+      for (int i = 0; i < elements.length; i++) {
+        if (selectedItem == elements[i]) {
+          initialItem = i;
+        }
+      }
+    } else {
+      initialItem = 0;
+    }
+
     await showModalBottomSheet(
+
       showDragHandle: widget.showDragHandle,
       useSafeArea: widget.useSafeArea,
       context: context,
