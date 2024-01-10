@@ -1,8 +1,11 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:country_picker/src/country_code.dart';
+import 'package:country_picker/src/dimension.dart';
 import 'package:flutter/material.dart';
 
 class CountrySelectionDialog extends StatefulWidget {
+  final Dimension dimension;
+
   final List<CountryCode> elements;
   final Size? size;
   final bool? showCircularFlag;
@@ -21,6 +24,7 @@ class CountrySelectionDialog extends StatefulWidget {
   final CountryPickerThemeData? countryPickerThemeData;
 
   const CountrySelectionDialog(
+    this.dimension,
     this.elements,
     this.favoritesCountries, {
     super.key,
@@ -75,7 +79,7 @@ class _CountrySelectionDialogState extends State<CountrySelectionDialog> {
       padding: const EdgeInsets.all(0.0),
       child: Container(
         width: widget.size?.width ?? MediaQuery.of(context).size.width,
-        height: widget.size?.height ?? MediaQuery.of(context).size.height * 0.82,
+        height: widget.size?.height ?? MediaQuery.of(context).size.height * widget.dimension.getHeight(0.82),
         decoration: BoxDecoration(
           color: _backGroundColor,
           borderRadius: widget.countryPickerThemeData?.borderRadius ?? const BorderRadius.all(Radius.circular(12.0)),
@@ -92,7 +96,7 @@ class _CountrySelectionDialogState extends State<CountrySelectionDialog> {
                   icon: widget.closedDialogIcon ?? const Icon(Icons.close)),
             if (widget.showSearchBar!)
               Padding(
-                padding: widget.searchPadding ?? const EdgeInsets.symmetric(horizontal: 24),
+                padding: widget.searchPadding ?? EdgeInsets.symmetric(horizontal: widget.dimension.getHeight(24)),
                 child: TextField(
                   onChanged: (value) {
                     _filterElements(value);
