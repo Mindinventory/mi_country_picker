@@ -17,6 +17,7 @@ class MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData.dark(),
       supportedLocales: const [
         Locale("af"),
         Locale("am"),
@@ -99,11 +100,24 @@ class MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Country Picker'),
         ),
-        body: const Center(
+        body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              CountryPickerBottomSheet(initialValue: '+91'),
+              CountryPikersDialog(
+                showCircularFlag: true,
+                favorite: const ['+91', '+376'], // set your favorite country
+                countryPickerThemeData:
+                    const CountryPickerThemeData(), // with this property ,set background clr of dialog, textStyle of of country name, decorate the search field, set flag size....
+                comparator: (a, b) {
+                  /// show country list with Alphabetic order.
+                  return a.name!.compareTo(b.name.toString());
+                },
+                emptySearchBuilder: (context) {
+                  /// if country not found when searching in search box , then show your widget...
+                  return const Center(child: Text('not found'));
+                },
+              ),
             ],
           ),
         ),
