@@ -1,7 +1,4 @@
 import 'package:country_picker/country_picker.dart';
-import 'package:country_picker/country_picker.dart';
-import 'package:country_picker/country_picker_bottom_sheet.dart';
-import 'package:country_picker/country_picker_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 

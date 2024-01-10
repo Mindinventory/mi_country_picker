@@ -1,9 +1,6 @@
-import 'package:collection/collection.dart' show IterableExtension;
+import 'package:collection/collection.dart';
+import 'package:country_picker/country_picker.dart';
 import 'package:flutter/cupertino.dart';
-
-import '../country_picker_dialog.dart';
-import 'country_codes.dart';
-import 'country_picker_localizations.dart';
 
 mixin ToAlias {}
 
