@@ -28,10 +28,10 @@ class CountryCode {
     this.dialCode,
   });
 
-  @Deprecated('Use `fromCountryCode` instead.')
-  factory CountryCode.fromCode(String isoCode) {
-    return CountryCode.fromCountryCode(isoCode);
-  }
+  // @Deprecated('Use `fromCountryCode` instead.')
+  // factory CountryCode.fromCode(String isoCode) {
+  //   return CountryCode.fromCountryCode(isoCode);
+  // }
 
   factory CountryCode.fromCountryCode(String countryCode) {
     final Map<String, String>? jsonCode = codes.firstWhereOrNull(

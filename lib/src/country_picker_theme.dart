@@ -16,40 +16,35 @@ class CountryPickerThemeData {
   final TextStyle? searchTextStyle;
 
   ///The flag size.
-  ///
+
   /// If null, set to 25
   final double? flagSize;
 
   ///The decoration used for the search field
-  ///
-  /// It defaults to a basic outline-bordered input decoration
-  final InputDecoration? inputDecoration;
+  final InputDecoration? searchFieldInputDecoration;
 
-  ///The border radius of the bottom sheet
-  ///
-  /// It defaults to 40 for the top-left and top-right values.
+  ///The border radius of country picker
   final BorderRadius? borderRadius;
-
-  ///Country list modal height
-  ///
-  /// By default it's fullscreen
-  final double? bottomSheetHeight;
-
-  /// the padding of the bottom sheet
-  final EdgeInsets? padding;
-
-  /// the margin of the bottom sheet
-  final EdgeInsets? margin;
+  // ///Country list modal height
+  // ///
+  // /// By default it's fullscreen
+  // final double? bottomSheetHeight;
+  //
+  // /// set the padding of the bottom
+  // final EdgeInsets? padding;
+  //
+  // /// the margin of the bottom sheet
+  // final EdgeInsets? margin;
 
   const CountryPickerThemeData({
     this.backgroundColor,
     this.textStyle,
     this.searchTextStyle,
     this.flagSize,
-    this.inputDecoration,
+    this.searchFieldInputDecoration,
     this.borderRadius,
-    this.bottomSheetHeight,
-    this.padding,
-    this.margin,
+    // this.bottomSheetHeight,
+    // this.padding,
+    // this.margin,
   });
 }
