@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 
 class CountrySelectionDialog extends StatefulWidget {
   final List<CountryCode> elements;
+  final double? flagWidth;
+  final double? flagHeight;
   final Size? size;
   final bool? showCircularFlag;
   final EdgeInsetsGeometry? searchPadding;
@@ -38,6 +40,8 @@ class CountrySelectionDialog extends StatefulWidget {
     this.emptySearchBuilder,
     this.size,
     this.showCircularFlag,
+    this.flagWidth,
+    this.flagHeight,
   });
 
   @override
@@ -69,7 +73,6 @@ class _CountrySelectionDialogState extends State<CountrySelectionDialog> {
     }
 
     /// by default set the dimension of dialog according to platform.
-
     if (MediaQuery.of(context).size.width > 400 && MediaQuery.of(context).size.width < 800) {
       setWidthOfDialog = MediaQuery.of(context).size.width * 0.5;
     } else if (MediaQuery.of(context).size.width > 800) {
@@ -180,23 +183,13 @@ class _CountrySelectionDialogState extends State<CountrySelectionDialog> {
                 margin: const EdgeInsets.only(right: 16),
                 decoration: widget.flagDecoration,
                 clipBehavior: widget.flagDecoration == null ? Clip.none : Clip.hardEdge,
-                child: (widget.showCircularFlag!)
-                    ? ClipOval(
-                        child: SizedBox.fromSize(
-                          child: Image.asset(
-                            e.flagUri!,
-                            package: 'country_picker',
-                            width: widget.countryPickerThemeData?.flagSize ?? 25,
-                            fit: BoxFit.fill,
-                            height: widget.countryPickerThemeData?.flagSize ?? 25,
-                          ),
-                        ),
-                      )
-                    : Image.asset(
-                        e.flagUri!,
-                        package: 'country_picker',
-                        width: widget.countryPickerThemeData?.flagSize ?? 25,
-                      ),
+                child: Image.asset(
+                  e.flagUri!,
+                  package: 'country_picker',
+                  width: widget.flagWidth ?? 32,
+                  height: widget.flagHeight ?? 20,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           Expanded(

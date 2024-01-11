@@ -17,7 +17,7 @@ class CountryPickerBottomSheet extends StatefulWidget {
   /// this parameter is use to remove particular country from our list.
   final List<String>? excludeCountry;
 
-  /// text overflow in use to mange text overflow for country name.
+  /// text overflow in use to manage text overflow for country name.
   final TextOverflow textOverflow;
 
   /// this properties is use for hide-show country flag in our screen.
