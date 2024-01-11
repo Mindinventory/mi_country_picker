@@ -22,7 +22,7 @@ class CountryPikersDialog extends StatefulWidget {
   /// text overflow in use to manage text overflow for country name.
   final TextOverflow textOverflow;
 
-  final Function(CountryCode? countryCode)? builder;
+  final void Function(CountryCode? countryCode)? getCountryData;
   final double? flagWidth;
   final double? flagHeight;
   final Color? barrierColor;
@@ -79,9 +79,12 @@ class CountryPikersDialog extends StatefulWidget {
       this.showCircularFlag = false,
       this.excludeCountry,
       this.barrierColor,
-      this.builder,
+      this.getCountryData,
       this.flagWidth,
-      this.flagHeight});
+      this.flagHeight})
+      : assert((showCountryMainFlag || showCountryMainCode || showCountryMainName), 'At-least one data we need to show in a widget.'),
+        assert(((excludeCountry == null) || (countryFilter == null)),
+            'We will provide either exclude country or country filter, So we are not providing both at a same time.');
 
   @override
   // ignore: no_logic_in_create_state
@@ -123,6 +126,9 @@ class _CountryPikersDialogState extends State<CountryPikersDialog> {
             element.code == widget.selectInitialCountry?.toUpperCase(),
         orElse: () => countriesElements[0],
       );
+    } else {
+      selectedItem = countriesElements[0];
+      widget.getCountryData!(selectedItem);
     }
     if (widget.excludeCountry != null && widget.excludeCountry!.isNotEmpty) {
       for (int i = 0; i < (widget.excludeCountry?.length ?? 0); i++) {
@@ -136,7 +142,6 @@ class _CountryPikersDialogState extends State<CountryPikersDialog> {
         }
       }
     }
-    debugPrint('widget.favorite::${widget.favorite}');
     if (widget.favorite != null) {
       favoritesCountries = countriesElements.where((element) => widget.favorite?.contains(element.dialCode) ?? false).toList();
     }
@@ -166,43 +171,36 @@ class _CountryPikersDialogState extends State<CountryPikersDialog> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.builder != null) {
-      return InkWell(
-        onTap: showCountryPickerDialog,
-        child: widget.builder!(selectedItem),
-      );
-    } else {
-      return SizedBox.shrink();
-    }
-    // else {
-    //   return TextButton(
-    //     onPressed: () {
-    //       showCountryPickerDialog();
-    //     },
-    //     child: Flex(
-    //       direction: Axis.horizontal,
-    //       mainAxisSize: MainAxisSize.min,
-    //       children: <Widget>[
-    //         if (widget.showCountryMainFlag)
-    //           Container(
-    //             clipBehavior: widget.flagDecoration == null ? Clip.none : Clip.hardEdge,
-    //             decoration: widget.flagDecoration,
-    //             margin: const EdgeInsets.only(right: 12),
-    //             child: Image.asset(
-    //               selectedItem!.flagUri!,
-    //               package: 'country_picker',
-    //               width: widget.flagWidth ?? 32,
-    //             ),
-    //           ),
-    //         Text(
-    //           '${widget.showCountryMainCode ? selectedItem!.dialCode ?? '' : ''} ${widget.showCountryMainName ? selectedItem!.name! : ''}',
-    //           style: widget.countryPickerThemeData?.textStyle ?? const TextStyle(fontSize: 16),
-    //           overflow: widget.textOverflow,
-    //         ),
-    //       ],
-    //     ),
-    //   );
-    // }
+    return InkWell(
+      onTap: showCountryPickerDialog,
+      child: TextButton(
+        onPressed: () {
+          showCountryPickerDialog();
+        },
+        child: Flex(
+          direction: Axis.horizontal,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            if (widget.showCountryMainFlag)
+              Container(
+                clipBehavior: widget.flagDecoration == null ? Clip.none : Clip.hardEdge,
+                decoration: widget.flagDecoration,
+                margin: const EdgeInsets.only(right: 12),
+                child: Image.asset(
+                  selectedItem!.flagUri!,
+                  package: 'country_picker',
+                  width: widget.flagWidth ?? 32,
+                ),
+              ),
+            Text(
+              '${widget.showCountryMainCode ? selectedItem!.dialCode ?? '' : ''} ${widget.showCountryMainName ? selectedItem!.name! : ''}',
+              style: widget.countryPickerThemeData?.textStyle ?? const TextStyle(fontSize: 16),
+              overflow: widget.textOverflow,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   void showCountryPickerDialog() async {
@@ -241,6 +239,7 @@ class _CountryPikersDialogState extends State<CountryPikersDialog> {
     if (selectedValue != null) {
       setState(() {
         selectedItem = selectedValue;
+        widget.getCountryData!(selectedItem);
         debugPrint('selectedItem::$selectedItem');
       });
     }
