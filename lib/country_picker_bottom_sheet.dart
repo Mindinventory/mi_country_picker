@@ -122,6 +122,7 @@ class CountryPickerBottomSheet extends StatefulWidget {
   final CountryPickerThemeData? countryPickerThemeData;
 
   const CountryPickerBottomSheet({
+    super.key,
     this.countryList = codes,
     this.initialValue,
     this.textStyle,
@@ -149,11 +150,11 @@ class CountryPickerBottomSheet extends StatefulWidget {
     this.magnification = 1.0,
     this.useMagnifier = true,
     this.countryPickerThemeData,
-    Key? key,
-  }) : super(key: key);
+  })  : assert((showCountryMainFlag || showCountryMainCode || showCountryMainName), 'At-least one data we need to show in a widget.'),
+        assert((showCountryFlag || showCountryCode || showCountryName), 'At-least one data we need to show in a our country list.');
 
   @override
-// ignore: no_logic_in_create_state
+  // ignore: no_logic_in_create_state
   State<CountryPickerBottomSheet> createState() {
     List<Map<String, String>> jsonList = countryList;
     List<CountryCode> elements = jsonList.map((json) => CountryCode.fromJson(json)).toList();
@@ -167,6 +168,8 @@ class CountryPickerBottomSheetState extends State<CountryPickerBottomSheet> {
   int initialItem = 0;
 
   CountryPickerBottomSheetState(this.elements);
+
+  TextStyle get _defaultTextStyle => const TextStyle(fontSize: 16);
 
   @override
   void initState() {
@@ -224,26 +227,18 @@ class CountryPickerBottomSheetState extends State<CountryPickerBottomSheet> {
             Container(
               clipBehavior: widget.flagDecoration == null ? Clip.none : Clip.hardEdge,
               decoration: widget.flagDecoration,
-              margin: const EdgeInsets.only(right: 16),
+              margin: const EdgeInsets.only(right: 12),
               child: Image.asset(
                 selectedItem!.flagUri!,
                 package: 'country_picker',
                 width: widget.flagWidth ?? 32,
               ),
             ),
-          // if (widget.showCountryMainCode)
-          //   Text(
-          //     ,
-          //     style: widget.countryPickerThemeData?.textStyle ?? Theme.of(context).textTheme.labelLarge,
-          //     overflow: widget.textOverflow,
-          //   ),
-
-          if (widget.showCountryMainName)
-            Text(
-              '${selectedItem!.dialCode ?? ''} ${selectedItem!.name!}',
-              style: widget.countryPickerThemeData?.textStyle ?? Theme.of(context).textTheme.labelLarge,
-              overflow: widget.textOverflow,
-            ),
+          Text(
+            '${widget.showCountryMainCode ? selectedItem!.dialCode ?? '' : ''} ${widget.showCountryMainName ? selectedItem!.name! : ''}',
+            style: widget.countryPickerThemeData?.textStyle ?? _defaultTextStyle,
+            overflow: widget.textOverflow,
+          ),
         ],
       ),
     );
@@ -285,8 +280,6 @@ class CountryPickerBottomSheetState extends State<CountryPickerBottomSheet> {
                         color: Colors.grey.withOpacity(0.2),
                       ),
                     ),
-
-                // diameterRatio: widget.diameterRatio,
                 magnification: widget.magnification,
                 useMagnifier: widget.useMagnifier,
                 squeeze: widget.squeeze,
@@ -313,7 +306,7 @@ class CountryPickerBottomSheetState extends State<CountryPickerBottomSheet> {
                             Container(
                               clipBehavior: widget.flagDecoration == null ? Clip.none : Clip.hardEdge,
                               decoration: widget.flagDecoration,
-                              margin: const EdgeInsets.only(right: 8),
+                              margin: const EdgeInsets.only(right: 12),
                               child: Image.asset(
                                 elements[index].flagUri ?? "",
                                 package: 'country_picker',
@@ -321,26 +314,14 @@ class CountryPickerBottomSheetState extends State<CountryPickerBottomSheet> {
                                 fit: BoxFit.cover,
                               ),
                             ),
-                          if (widget.showCountryCode)
-                            Flexible(
-                              fit: FlexFit.tight,
-                              flex: 2,
-                              child: Text(
-                                '${elements[index].dialCode}  ',
-                                overflow: TextOverflow.ellipsis,
-                                style: widget.countryPickerThemeData?.textStyle ?? Theme.of(context).textTheme.labelLarge,
-                              ),
+                          Flexible(
+                            fit: FlexFit.tight,
+                            child: Text(
+                              '${widget.showCountryCode ? elements[index].dialCode ?? '' : ''}  ${widget.showCountryName ? elements[index].name : ''}',
+                              overflow: TextOverflow.ellipsis,
+                              style: widget.countryPickerThemeData?.textStyle ?? _defaultTextStyle,
                             ),
-                          if (widget.showCountryName)
-                            Flexible(
-                              fit: FlexFit.tight,
-                              flex: 6,
-                              child: Text(
-                                elements[index].name ?? '',
-                                overflow: TextOverflow.ellipsis,
-                                style: widget.countryPickerThemeData?.textStyle ?? Theme.of(context).textTheme.labelLarge,
-                              ),
-                            ),
+                          ),
                         ],
                       ),
                     );

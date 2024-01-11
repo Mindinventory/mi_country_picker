@@ -16,7 +16,6 @@ class MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark(),
       supportedLocales: const [
         Locale("af"),
         Locale("am"),
@@ -101,13 +100,13 @@ class MyAppState extends State<MyApp> {
         ),
         body: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               CountryPikersDialog(
                 showCircularFlag: true,
-                favorite: const ['+91', '+376'], // set your favorite country
-                countryPickerThemeData:
-                    const CountryPickerThemeData(), // with this property ,set background clr of dialog, textStyle of of country name, decorate the search field, set flag size....
+                favorite: const ['+91', '+376'],
+                // set your favorite country
+                countryPickerThemeData: const CountryPickerThemeData(),
+                // with this property ,set background clr of dialog, textStyle of of country name, decorate the search field, set flag size....
                 comparator: (a, b) {
                   /// show country list with Alphabetic order.
                   return a.name!.compareTo(b.name.toString());
@@ -118,7 +117,7 @@ class MyAppState extends State<MyApp> {
                 },
               ),
               const SizedBox(height: 50),
-              const CountryPickerBottomSheet(),
+              CountryPickerBottomSheet(),
             ],
           ),
         ),
