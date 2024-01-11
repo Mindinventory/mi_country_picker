@@ -10,7 +10,21 @@ class CountryPikersDialog extends StatefulWidget {
   /// this parameter is use to remove particular country from our list.
   final List<String>? excludeCountry;
 
+  /// this properties is use for hide-show country flag in our screen.
+  final bool showCountryMainFlag;
+
+  /// this properties is use for hide-show country name in our screen.
+  final bool showCountryMainName;
+
+  /// this properties is use for hide-show country code in our screen.
+  final bool showCountryMainCode;
+
+  /// text overflow in use to manage text overflow for country name.
+  final TextOverflow textOverflow;
+
   final Function(CountryCode? countryCode)? builder;
+  final double? flagWidth;
+  final double? flagHeight;
   final Color? barrierColor;
   final bool showCountryOnly;
   final BorderRadius? dialogBorderRadius;
@@ -43,6 +57,10 @@ class CountryPikersDialog extends StatefulWidget {
       this.listOfCountries = codes,
       this.countryFilter,
       this.comparator,
+      this.showCountryMainFlag = true,
+      this.showCountryMainCode = true,
+      this.showCountryMainName = true,
+      this.textOverflow = TextOverflow.ellipsis,
       this.selectInitialCountry,
       this.favorite,
       this.countryPickerThemeData,
@@ -61,7 +79,9 @@ class CountryPikersDialog extends StatefulWidget {
       this.showCircularFlag = false,
       this.excludeCountry,
       this.barrierColor,
-      this.builder});
+      this.builder,
+      this.flagWidth,
+      this.flagHeight});
 
   @override
   // ignore: no_logic_in_create_state
@@ -152,8 +172,37 @@ class _CountryPikersDialogState extends State<CountryPikersDialog> {
         child: widget.builder!(selectedItem),
       );
     } else {
-      return const SizedBox.shrink();
+      return SizedBox.shrink();
     }
+    // else {
+    //   return TextButton(
+    //     onPressed: () {
+    //       showCountryPickerDialog();
+    //     },
+    //     child: Flex(
+    //       direction: Axis.horizontal,
+    //       mainAxisSize: MainAxisSize.min,
+    //       children: <Widget>[
+    //         if (widget.showCountryMainFlag)
+    //           Container(
+    //             clipBehavior: widget.flagDecoration == null ? Clip.none : Clip.hardEdge,
+    //             decoration: widget.flagDecoration,
+    //             margin: const EdgeInsets.only(right: 12),
+    //             child: Image.asset(
+    //               selectedItem!.flagUri!,
+    //               package: 'country_picker',
+    //               width: widget.flagWidth ?? 32,
+    //             ),
+    //           ),
+    //         Text(
+    //           '${widget.showCountryMainCode ? selectedItem!.dialCode ?? '' : ''} ${widget.showCountryMainName ? selectedItem!.name! : ''}',
+    //           style: widget.countryPickerThemeData?.textStyle ?? const TextStyle(fontSize: 16),
+    //           overflow: widget.textOverflow,
+    //         ),
+    //       ],
+    //     ),
+    //   );
+    // }
   }
 
   void showCountryPickerDialog() async {
@@ -167,6 +216,8 @@ class _CountryPikersDialogState extends State<CountryPikersDialog> {
             child: CountrySelectionDialog(
               countriesElements,
               favoritesCountries,
+              flagHeight: widget.flagHeight,
+              flagWidth: widget.flagWidth,
               showCircularFlag: widget.showCircularFlag,
               countryPickerThemeData: widget.countryPickerThemeData,
               showCountryOnly: widget.showCountryOnly,

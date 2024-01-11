@@ -18,7 +18,6 @@ class CountryPickerThemeData {
   ///The flag size.
 
   /// If null, set to 25
-  final double? flagSize;
 
   ///The decoration used for the search field
   final InputDecoration? searchFieldInputDecoration;
@@ -36,7 +35,6 @@ class CountryPickerThemeData {
     this.backgroundColor,
     this.textStyle,
     this.searchTextStyle,
-    this.flagSize,
     this.searchFieldInputDecoration,
     this.borderRadius,
     this.modalBackgroundColor,
