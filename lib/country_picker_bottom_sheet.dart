@@ -196,13 +196,15 @@ class CountryPickerBottomSheetState extends State<CountryPickerBottomSheet> {
     super.didChangeDependencies();
     elements = elements.map((element) => element.localize(context)).toList();
 
-    for (int i = 0; i < (widget.excludeCountry?.length ?? 0); i++) {
-      for (int j = 0; j < elements.length; j++) {
-        if ((widget.excludeCountry?[i].toLowerCase() == elements[j].name?.toLowerCase()) ||
-            (widget.excludeCountry?[i] == elements[j].dialCode) ||
-            (widget.excludeCountry?[i].toUpperCase() == elements[j].code)) {
-          elements.removeAt(j);
-          break;
+    if ((widget.excludeCountry?.isNotEmpty ?? false) && widget.excludeCountry != null) {
+      for (int i = 0; i < (widget.excludeCountry?.length ?? 0); i++) {
+        for (int j = 0; j < elements.length; j++) {
+          if ((widget.excludeCountry?[i].toLowerCase() == elements[j].name?.toLowerCase()) ||
+              (widget.excludeCountry?[i] == elements[j].dialCode) ||
+              (widget.excludeCountry?[i].toUpperCase() == elements[j].code)) {
+            elements.removeAt(j);
+            break;
+          }
         }
       }
     }
@@ -229,15 +231,16 @@ class CountryPickerBottomSheetState extends State<CountryPickerBottomSheet> {
                 width: widget.flagWidth ?? 32,
               ),
             ),
-          if (widget.showCountryMainCode)
-            Text(
-              '${selectedItem!.dialCode ?? ''} ',
-              style: widget.countryPickerThemeData?.textStyle ?? Theme.of(context).textTheme.labelLarge,
-              overflow: widget.textOverflow,
-            ),
+          // if (widget.showCountryMainCode)
+          //   Text(
+          //     ,
+          //     style: widget.countryPickerThemeData?.textStyle ?? Theme.of(context).textTheme.labelLarge,
+          //     overflow: widget.textOverflow,
+          //   ),
+
           if (widget.showCountryMainName)
             Text(
-              selectedItem!.name!,
+              '${selectedItem!.dialCode ?? ''} ${selectedItem!.name!}',
               style: widget.countryPickerThemeData?.textStyle ?? Theme.of(context).textTheme.labelLarge,
               overflow: widget.textOverflow,
             ),
