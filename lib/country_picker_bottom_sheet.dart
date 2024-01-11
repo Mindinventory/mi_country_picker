@@ -131,6 +131,9 @@ class CountryPickerBottomSheet extends StatefulWidget {
   /// used to customize the country list
   final List<String>? countryFilter;
 
+  /// getCountryData is used to get selected data
+  final Function(CountryCode? countryCode)? getCountryData;
+
   const CountryPickerBottomSheet({
     super.key,
     this.countryList = codes,
@@ -163,6 +166,7 @@ class CountryPickerBottomSheet extends StatefulWidget {
     this.countryPickerThemeData,
     this.comparator,
     this.countryFilter,
+    this.getCountryData,
   })  : assert((showCountryMainFlag || showCountryMainCode || showCountryMainName), 'At-least one data we need to show in a widget.'),
         assert((showCountryFlag || showCountryCode || showCountryName), 'At-least one data we need to show in a our country list.'),
         assert(((excludeCountry == null) || (countryFilter == null)),
@@ -243,35 +247,40 @@ class CountryPickerBottomSheetState extends State<CountryPickerBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: () {
-        showCountryPickerBottomSheet();
-      },
-      child: Flex(
-        direction: Axis.horizontal,
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          if (widget.showCountryMainFlag)
-            Container(
-              clipBehavior: widget.flagDecoration == null ? Clip.none : Clip.hardEdge,
-              decoration: widget.flagDecoration,
-              margin: const EdgeInsets.only(right: 12),
-              child: Image.asset(
-                selectedItem!.flagUri!,
-                package: 'country_picker',
-                fit: BoxFit.cover,
-                width: widget.flagWidth ?? 32,
-                height: widget.flagHeight ?? 20,
+    if (widget.getCountryData != null) {
+      return InkWell(
+        onTap: showCountryPickerBottomSheet,
+        child: widget.getCountryData!(selectedItem),
+      );
+    } else {
+      return TextButton(
+        onPressed: showCountryPickerBottomSheet,
+        child: Flex(
+          direction: Axis.horizontal,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            if (widget.showCountryMainFlag)
+              Container(
+                clipBehavior: widget.flagDecoration == null ? Clip.none : Clip.hardEdge,
+                decoration: widget.flagDecoration,
+                margin: const EdgeInsets.only(right: 12),
+                child: Image.asset(
+                  selectedItem!.flagUri!,
+                  package: 'country_picker',
+                  fit: BoxFit.cover,
+                  width: widget.flagWidth ?? 32,
+                  height: widget.flagHeight ?? 20,
+                ),
               ),
+            Text(
+              '${widget.showCountryMainCode ? selectedItem!.dialCode ?? '' : ''} ${widget.showCountryMainName ? selectedItem!.name! : ''}',
+              style: widget.countryPickerThemeData?.textStyle ?? _defaultTextStyle,
+              overflow: widget.textOverflow,
             ),
-          Text(
-            '${widget.showCountryMainCode ? selectedItem!.dialCode ?? '' : ''} ${widget.showCountryMainName ? selectedItem!.name! : ''}',
-            style: widget.countryPickerThemeData?.textStyle ?? _defaultTextStyle,
-            overflow: widget.textOverflow,
-          ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
+    }
   }
 
   void showCountryPickerBottomSheet() async {
