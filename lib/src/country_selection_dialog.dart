@@ -1,11 +1,8 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:country_picker/src/country_code.dart';
-import 'package:country_picker/src/dimension.dart';
 import 'package:flutter/material.dart';
 
 class CountrySelectionDialog extends StatefulWidget {
-  final Dimension dimension;
-
   final List<CountryCode> elements;
   final Size? size;
   final bool? showCircularFlag;
@@ -24,7 +21,6 @@ class CountrySelectionDialog extends StatefulWidget {
   final CountryPickerThemeData? countryPickerThemeData;
 
   const CountrySelectionDialog(
-    this.dimension,
     this.elements,
     this.favoritesCountries, {
     super.key,
@@ -51,6 +47,7 @@ class CountrySelectionDialog extends StatefulWidget {
 class _CountrySelectionDialogState extends State<CountrySelectionDialog> {
   List<CountryCode> filterElements = [];
   Color? _backGroundColor;
+  double? setWidthOfDialog;
 
   TextStyle get _defaultTextStyle => const TextStyle(fontSize: 16);
 
@@ -70,6 +67,17 @@ class _CountrySelectionDialogState extends State<CountrySelectionDialog> {
         _backGroundColor = Colors.black;
       }
     }
+
+    /// by default set the dimension of dialog according to platform.
+
+    if (MediaQuery.of(context).size.width > 400 && MediaQuery.of(context).size.width < 800) {
+      setWidthOfDialog = MediaQuery.of(context).size.width * 0.5;
+    } else if (MediaQuery.of(context).size.width > 800) {
+      setWidthOfDialog = MediaQuery.of(context).size.width * 0.25;
+    } else {
+      setWidthOfDialog = MediaQuery.of(context).size.width * 0.8;
+    }
+
     super.didChangeDependencies();
   }
 
@@ -78,8 +86,8 @@ class _CountrySelectionDialogState extends State<CountrySelectionDialog> {
     return Padding(
       padding: const EdgeInsets.all(0.0),
       child: Container(
-        width: widget.size?.width ?? MediaQuery.of(context).size.width,
-        height: widget.size?.height ?? MediaQuery.of(context).size.height * widget.dimension.getHeight(0.82),
+        width: widget.size?.width ?? setWidthOfDialog,
+        height: widget.size?.height ?? MediaQuery.of(context).size.height * 0.72,
         decoration: BoxDecoration(
           color: _backGroundColor,
           borderRadius: widget.countryPickerThemeData?.borderRadius ?? const BorderRadius.all(Radius.circular(12.0)),
@@ -96,13 +104,16 @@ class _CountrySelectionDialogState extends State<CountrySelectionDialog> {
                   icon: widget.closedDialogIcon ?? const Icon(Icons.close)),
             if (widget.showSearchBar!)
               Padding(
-                padding: widget.searchPadding ?? EdgeInsets.symmetric(horizontal: widget.dimension.getHeight(24)),
+                padding: widget.searchPadding ?? const EdgeInsets.symmetric(horizontal: 24),
                 child: TextField(
                   onChanged: (value) {
                     _filterElements(value);
                   },
                   decoration: widget.countryPickerThemeData?.searchFieldInputDecoration ??
-                      InputDecoration(prefixIcon: widget.searchIcon ?? const Icon(Icons.search), hintText: "search"),
+                      InputDecoration(
+                        prefixIcon: widget.searchIcon ?? const Icon(Icons.search),
+                        hintText: "search",
+                      ),
                 ),
               ),
             Expanded(
@@ -163,7 +174,7 @@ class _CountrySelectionDialogState extends State<CountrySelectionDialog> {
         if (widget.showFlag!)
           Flexible(
             child: Container(
-              margin: const EdgeInsets.only(right: 16.0),
+              margin: const EdgeInsets.only(right: 16),
               decoration: widget.flagDecoration,
               clipBehavior: widget.flagDecoration == null ? Clip.none : Clip.hardEdge,
               child: (widget.showCircularFlag!)
