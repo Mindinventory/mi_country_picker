@@ -107,7 +107,7 @@ class _CountrySelectionDialogState extends State<CountrySelectionDialog> {
                   icon: widget.closedDialogIcon ?? const Icon(Icons.close)),
             if (widget.showSearchBar!)
               Padding(
-                padding: widget.searchPadding ?? const EdgeInsets.symmetric(horizontal: 24),
+                padding: widget.searchPadding ?? const EdgeInsets.only(left: 24, right: 24),
                 child: TextField(
                   onChanged: (value) {
                     _filterElements(value);

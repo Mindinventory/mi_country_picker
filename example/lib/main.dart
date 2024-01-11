@@ -101,6 +101,11 @@ class MyAppState extends State<MyApp> {
         body: Column(
           children: <Widget>[
             CountryPikersDialog(
+              showCountryMainCode: false,
+              getCountryData: (countryCode) {
+                debugPrint('countryCode::${countryCode?.name},,,,${countryCode?.code},,,,${countryCode?.dialCode}');
+              },
+              showCountryMainName: false,
               favorite: const ['+91', '+376'],
               // set your favorite country
               // with this property ,set background clr of dialog, textStyle of of country name, decorate the search field, set flag size....
@@ -114,7 +119,6 @@ class MyAppState extends State<MyApp> {
               },
             ),
             const SizedBox(height: 50),
-            CountryPickerBottomSheet(),
           ],
         ),
       ),
