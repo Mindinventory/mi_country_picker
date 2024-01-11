@@ -1,8 +1,6 @@
 import 'package:country_picker/country_picker.dart';
-import 'package:example/dimension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() => runApp(const MyApp());
 
@@ -109,7 +107,7 @@ class MyAppState extends State<MyApp> {
                 showCircularFlag: true,
                 favorite: const ['+91', '+376'], // set your favorite country
                 countryPickerThemeData:
-                const CountryPickerThemeData(), // with this property ,set background clr of dialog, textStyle of of country name, decorate the search field, set flag size....
+                    const CountryPickerThemeData(), // with this property ,set background clr of dialog, textStyle of of country name, decorate the search field, set flag size....
                 comparator: (a, b) {
                   /// show country list with Alphabetic order.
                   return a.name!.compareTo(b.name.toString());
@@ -119,11 +117,8 @@ class MyAppState extends State<MyApp> {
                   return const Center(child: Text('not found'));
                 },
               ),
-
-              SizedBox(height: 50),
-              CountryPickerBottomSheet(
-
-              ),
+              const SizedBox(height: 50),
+              const CountryPickerBottomSheet(),
             ],
           ),
         ),
