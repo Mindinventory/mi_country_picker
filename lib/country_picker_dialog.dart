@@ -7,6 +7,11 @@ class CountryPikersDialog extends StatefulWidget {
   /// it is optional argument to set your own custom country list
   final List<Map<String, String>> listOfCountries;
 
+  /// this parameter is use to remove particular country from our list.
+  final List<String>? excludeCountry;
+
+  final Function(CountryCode? countryCode)? builder;
+  final Color? barrierColor;
   final bool showCountryOnly;
   final BorderRadius? dialogBorderRadius;
   final Icon? closedDialogIcon;
@@ -53,7 +58,10 @@ class CountryPikersDialog extends StatefulWidget {
       this.showFlag = true,
       this.showSearchBar = true,
       this.size,
-      this.showCircularFlag = false});
+      this.showCircularFlag = false,
+      this.excludeCountry,
+      this.barrierColor,
+      this.builder});
 
   @override
   // ignore: no_logic_in_create_state
@@ -96,6 +104,18 @@ class _CountryPikersDialogState extends State<CountryPikersDialog> {
         orElse: () => countriesElements[0],
       );
     }
+    if (widget.excludeCountry != null && widget.excludeCountry!.isNotEmpty) {
+      for (int i = 0; i < (widget.excludeCountry?.length ?? 0); i++) {
+        for (int j = 0; j < countriesElements.length; j++) {
+          if ((widget.excludeCountry?[i].toLowerCase() == countriesElements[j].name?.toLowerCase()) ||
+              (widget.excludeCountry?[i] == countriesElements[j].dialCode) ||
+              (widget.excludeCountry?[i].toUpperCase() == countriesElements[j].code)) {
+            countriesElements.removeAt(j);
+            break;
+          }
+        }
+      }
+    }
     debugPrint('widget.favorite::${widget.favorite}');
     if (widget.favorite != null) {
       favoritesCountries = countriesElements.where((element) => widget.favorite?.contains(element.dialCode) ?? false).toList();
@@ -126,25 +146,24 @@ class _CountryPikersDialogState extends State<CountryPikersDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: InkWell(
-        onTap: () {
-          showCountryPickerDialog(context);
-        },
-        child: const Text("onTap"),
-      ),
-    );
+    if (widget.builder != null) {
+      return InkWell(
+        onTap: showCountryPickerDialog,
+        child: widget.builder!(selectedItem),
+      );
+    } else {
+      return const SizedBox.shrink();
+    }
   }
 
-  Future<void> showCountryPickerDialog(BuildContext context) async {
+  void showCountryPickerDialog() async {
     final selectedValue = await showDialog(
+      barrierColor: widget.barrierColor,
       context: context,
       builder: (context) {
         return Center(
           child: Dialog(
             surfaceTintColor: Colors.blue,
-            backgroundColor: Colors.blue,
-            elevation: 500,
             child: CountrySelectionDialog(
               countriesElements,
               favoritesCountries,

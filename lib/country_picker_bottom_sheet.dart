@@ -161,7 +161,7 @@ class CountryPickerBottomSheet extends StatefulWidget {
     this.countryFilter,
   })  : assert((showCountryMainFlag || showCountryMainCode || showCountryMainName), 'At-least one data we need to show in a widget.'),
         assert((showCountryFlag || showCountryCode || showCountryName), 'At-least one data we need to show in a our country list.'),
-        assert(((excludeCountry != null) && (countryFilter != null)),
+        assert(((excludeCountry == null) || (countryFilter == null)),
             'We will provide either exclude country or country filter, So we are not providing both at a same time.');
 
   @override

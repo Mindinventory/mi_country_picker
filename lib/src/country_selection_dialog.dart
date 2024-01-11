@@ -169,42 +169,46 @@ class _CountrySelectionDialogState extends State<CountrySelectionDialog> {
   }
 
   Widget buildList(BuildContext context, CountryCode e) {
-    return Row(
-      children: [
-        if (widget.showFlag!)
-          Flexible(
-            child: Container(
-              margin: const EdgeInsets.only(right: 16),
-              decoration: widget.flagDecoration,
-              clipBehavior: widget.flagDecoration == null ? Clip.none : Clip.hardEdge,
-              child: (widget.showCircularFlag!)
-                  ? ClipOval(
-                      child: SizedBox.fromSize(
-                        child: Image.asset(
-                          e.flagUri!,
-                          package: 'country_picker',
-                          width: widget.countryPickerThemeData?.flagSize ?? 25,
-                          fit: BoxFit.fill,
-                          height: widget.countryPickerThemeData?.flagSize ?? 25,
+    return SizedBox(
+      width: 400,
+      child: Flex(
+        direction: Axis.horizontal,
+        children: [
+          if (widget.showFlag!)
+            Flexible(
+              child: Container(
+                margin: const EdgeInsets.only(right: 16),
+                decoration: widget.flagDecoration,
+                clipBehavior: widget.flagDecoration == null ? Clip.none : Clip.hardEdge,
+                child: (widget.showCircularFlag!)
+                    ? ClipOval(
+                        child: SizedBox.fromSize(
+                          child: Image.asset(
+                            e.flagUri!,
+                            package: 'country_picker',
+                            width: widget.countryPickerThemeData?.flagSize ?? 25,
+                            fit: BoxFit.fill,
+                            height: widget.countryPickerThemeData?.flagSize ?? 25,
+                          ),
                         ),
+                      )
+                    : Image.asset(
+                        e.flagUri!,
+                        package: 'country_picker',
+                        width: widget.countryPickerThemeData?.flagSize ?? 25,
                       ),
-                    )
-                  : Image.asset(
-                      e.flagUri!,
-                      package: 'country_picker',
-                      width: widget.countryPickerThemeData?.flagSize ?? 25,
-                    ),
+              ),
+            ),
+          Expanded(
+            flex: 4,
+            child: Text(
+              widget.showCountryOnly! ? e.toCountryStringOnly() : e.toLongString(),
+              overflow: TextOverflow.fade,
+              style: widget.countryPickerThemeData?.textStyle ?? _defaultTextStyle,
             ),
           ),
-        Expanded(
-          flex: 4,
-          child: Text(
-            widget.showCountryOnly! ? e.toCountryStringOnly() : e.toLongString(),
-            overflow: TextOverflow.fade,
-            style: widget.countryPickerThemeData?.textStyle ?? _defaultTextStyle,
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
