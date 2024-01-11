@@ -42,10 +42,10 @@ class CountryPickerBottomSheet extends StatefulWidget {
   final Decoration? flagDecoration;
 
   /// Width of the flag images
-  final double flagWidth;
+  final double? flagWidth;
 
   /// this properties is used to provide height of country picker.
-  final double heightOfPicker;
+  final double? heightOfPicker;
 
   /// Bottom sheet properties
 
@@ -71,6 +71,10 @@ class CountryPickerBottomSheet extends StatefulWidget {
   /// that is also null, defaults to false.
   final bool showDragHandle;
 
+  final bool? useRootNavigator;
+
+  final AnimationController? transitionAnimationController;
+
   /// Cupertino picker properties
 
   /// Relative ratio between this picker's height and the simulated cylinder's diameter.
@@ -86,7 +90,7 @@ class CountryPickerBottomSheet extends StatefulWidget {
   ///
   /// All children will be given the [BoxConstraints] to match this exact
   /// height. Must be a positive value.
-  final double itemExtent;
+  final double? itemExtent;
 
   /// A widget overlaid on the picker to highlight the currently selected entry.
   ///
@@ -115,6 +119,8 @@ class CountryPickerBottomSheet extends StatefulWidget {
   final double magnification;
   final bool useMagnifier;
 
+  final CountryPickerThemeData? countryPickerThemeData;
+
   const CountryPickerBottomSheet({
     this.countryList = codes,
     this.initialValue,
@@ -128,18 +134,21 @@ class CountryPickerBottomSheet extends StatefulWidget {
     this.showCountryMainName = true,
     this.showCountryName = true,
     this.flagDecoration,
-    this.flagWidth = 32.0,
-    this.heightOfPicker = 250,
+    this.flagWidth,
+    this.heightOfPicker,
     this.useSafeArea = true,
     this.showDragHandle = false,
+    this.useRootNavigator,
+    this.transitionAnimationController,
     this.diameterRatio = 1.1,
-    this.itemExtent = 32,
+    this.itemExtent,
     this.selectionOverlayWidget,
     this.backgroundColor,
     this.offAxisFraction = 0.2,
     this.squeeze = 1.45,
     this.magnification = 1.0,
     this.useMagnifier = true,
+    this.countryPickerThemeData,
     Key? key,
   }) : super(key: key);
 
@@ -202,7 +211,9 @@ class CountryPickerBottomSheetState extends State<CountryPickerBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: showCountryPickerBottomSheet,
+      onPressed: () {
+        showCountryPickerBottomSheet();
+      },
       child: Flex(
         direction: Axis.horizontal,
         mainAxisSize: MainAxisSize.min,
@@ -211,23 +222,23 @@ class CountryPickerBottomSheetState extends State<CountryPickerBottomSheet> {
             Container(
               clipBehavior: widget.flagDecoration == null ? Clip.none : Clip.hardEdge,
               decoration: widget.flagDecoration,
-              margin: const EdgeInsets.only(right: 16.0),
+              margin: const EdgeInsets.only(right: 16),
               child: Image.asset(
                 selectedItem!.flagUri!,
                 package: 'country_picker',
-                width: widget.flagWidth,
+                width: widget.flagWidth ?? 32,
               ),
             ),
           if (widget.showCountryMainCode)
             Text(
               '${selectedItem!.dialCode ?? ''} ',
-              style: widget.textStyle ?? Theme.of(context).textTheme.labelLarge,
+              style: widget.countryPickerThemeData?.textStyle ?? Theme.of(context).textTheme.labelLarge,
               overflow: widget.textOverflow,
             ),
           if (widget.showCountryMainName)
             Text(
               selectedItem!.name!,
-              style: widget.textStyle ?? Theme.of(context).textTheme.labelLarge,
+              style: widget.countryPickerThemeData?.textStyle ?? Theme.of(context).textTheme.labelLarge,
               overflow: widget.textOverflow,
             ),
         ],
@@ -247,7 +258,12 @@ class CountryPickerBottomSheetState extends State<CountryPickerBottomSheet> {
     }
 
     await showModalBottomSheet(
-
+      backgroundColor: widget.countryPickerThemeData?.modalBackgroundColor ?? Theme.of(context).bottomSheetTheme.modalBackgroundColor,
+      barrierColor: widget.countryPickerThemeData?.modalBarrierColor ?? Theme.of(context).bottomSheetTheme.modalBarrierColor,
+      elevation: widget.countryPickerThemeData?.modalElevation ?? Theme.of(context).bottomSheetTheme.modalElevation,
+      transitionAnimationController: widget.transitionAnimationController,
+      clipBehavior: widget.countryPickerThemeData?.clipBehavior ?? Theme.of(context).bottomSheetTheme.clipBehavior,
+      useRootNavigator: widget.useRootNavigator ?? false,
       showDragHandle: widget.showDragHandle,
       useSafeArea: widget.useSafeArea,
       context: context,
@@ -256,7 +272,7 @@ class CountryPickerBottomSheetState extends State<CountryPickerBottomSheet> {
           mainAxisSize: MainAxisSize.min,
           children: [
             SizedBox(
-              height: widget.heightOfPicker,
+              height: widget.heightOfPicker ?? 250,
               child: CupertinoPicker(
                 selectionOverlay: widget.selectionOverlayWidget ??
                     Container(
@@ -266,12 +282,13 @@ class CountryPickerBottomSheetState extends State<CountryPickerBottomSheet> {
                         color: Colors.grey.withOpacity(0.2),
                       ),
                     ),
-                diameterRatio: widget.diameterRatio,
+
+                // diameterRatio: widget.diameterRatio,
                 magnification: widget.magnification,
                 useMagnifier: widget.useMagnifier,
                 squeeze: widget.squeeze,
                 offAxisFraction: widget.offAxisFraction,
-                itemExtent: widget.itemExtent,
+                itemExtent: widget.itemExtent ?? 32,
                 backgroundColor: widget.backgroundColor,
                 onSelectedItemChanged: (int value) {
                   setState(() {
@@ -293,11 +310,11 @@ class CountryPickerBottomSheetState extends State<CountryPickerBottomSheet> {
                             Container(
                               clipBehavior: widget.flagDecoration == null ? Clip.none : Clip.hardEdge,
                               decoration: widget.flagDecoration,
-                              margin: const EdgeInsets.only(right: 16.0),
+                              margin: const EdgeInsets.only(right: 8),
                               child: Image.asset(
                                 elements[index].flagUri ?? "",
                                 package: 'country_picker',
-                                width: widget.flagWidth,
+                                width: widget.flagWidth ?? 32,
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -308,7 +325,7 @@ class CountryPickerBottomSheetState extends State<CountryPickerBottomSheet> {
                               child: Text(
                                 '${elements[index].dialCode}  ',
                                 overflow: TextOverflow.ellipsis,
-                                style: widget.textStyle,
+                                style: widget.countryPickerThemeData?.textStyle ?? Theme.of(context).textTheme.labelLarge,
                               ),
                             ),
                           if (widget.showCountryName)
@@ -318,7 +335,7 @@ class CountryPickerBottomSheetState extends State<CountryPickerBottomSheet> {
                               child: Text(
                                 elements[index].name ?? '',
                                 overflow: TextOverflow.ellipsis,
-                                style: widget.textStyle,
+                                style: widget.countryPickerThemeData?.textStyle ?? Theme.of(context).textTheme.labelLarge,
                               ),
                             ),
                         ],

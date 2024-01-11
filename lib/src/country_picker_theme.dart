@@ -25,16 +25,12 @@ class CountryPickerThemeData {
 
   ///The border radius of country picker
   final BorderRadius? borderRadius;
-  // ///Country list modal height
-  // ///
-  // /// By default it's fullscreen
-  // final double? bottomSheetHeight;
-  //
-  // /// set the padding of the bottom
-  // final EdgeInsets? padding;
-  //
-  // /// the margin of the bottom sheet
-  // final EdgeInsets? margin;
+
+  ///
+  final Color? modalBackgroundColor;
+  final Color? modalBarrierColor;
+  final double? modalElevation;
+  final Clip? clipBehavior;
 
   const CountryPickerThemeData({
     this.backgroundColor,
@@ -43,8 +39,9 @@ class CountryPickerThemeData {
     this.flagSize,
     this.searchFieldInputDecoration,
     this.borderRadius,
-    // this.bottomSheetHeight,
-    // this.padding,
-    // this.margin,
+    this.modalBackgroundColor,
+    this.modalBarrierColor,
+    this.modalElevation,
+    this.clipBehavior,
   });
 }
