@@ -119,7 +119,14 @@ class CountryPickerBottomSheet extends StatefulWidget {
   final double magnification;
   final bool useMagnifier;
 
+  /// used to provide custom data.
   final CountryPickerThemeData? countryPickerThemeData;
+
+  /// using this comparator to change the order of options.
+  final Comparator<CountryCode>? comparator;
+
+  /// used to customize the country list
+  final List<String>? countryFilter;
 
   const CountryPickerBottomSheet({
     super.key,
@@ -150,8 +157,12 @@ class CountryPickerBottomSheet extends StatefulWidget {
     this.magnification = 1.0,
     this.useMagnifier = true,
     this.countryPickerThemeData,
+    this.comparator,
+    this.countryFilter,
   })  : assert((showCountryMainFlag || showCountryMainCode || showCountryMainName), 'At-least one data we need to show in a widget.'),
-        assert((showCountryFlag || showCountryCode || showCountryName), 'At-least one data we need to show in a our country list.');
+        assert((showCountryFlag || showCountryCode || showCountryName), 'At-least one data we need to show in a our country list.'),
+        assert(((excludeCountry != null) && (countryFilter != null)),
+            'We will provide either exclude country or country filter, So we are not providing both at a same time.');
 
   @override
   // ignore: no_logic_in_create_state
