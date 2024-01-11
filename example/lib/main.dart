@@ -117,7 +117,9 @@ class MyAppState extends State<MyApp> {
                 },
               ),
               const SizedBox(height: 50),
-              CountryPickerBottomSheet(),
+              CountryPickerBottomSheet(
+                flagDecoration: BoxDecoration(borderRadius: BorderRadius.circular(40)),
+              ),
             ],
           ),
         ),

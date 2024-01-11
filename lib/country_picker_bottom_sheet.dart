@@ -44,6 +44,9 @@ class CountryPickerBottomSheet extends StatefulWidget {
   /// Width of the flag images
   final double? flagWidth;
 
+  /// Height of the flag images
+  final double? flagHeight;
+
   /// this properties is used to provide height of country picker.
   final double? heightOfPicker;
 
@@ -143,6 +146,7 @@ class CountryPickerBottomSheet extends StatefulWidget {
     this.showCountryName = true,
     this.flagDecoration,
     this.flagWidth,
+    this.flagHeight,
     this.heightOfPicker,
     this.useSafeArea = true,
     this.showDragHandle = false,
@@ -167,8 +171,21 @@ class CountryPickerBottomSheet extends StatefulWidget {
   @override
   // ignore: no_logic_in_create_state
   State<CountryPickerBottomSheet> createState() {
-    List<Map<String, String>> jsonList = countryList;
-    List<CountryCode> elements = jsonList.map((json) => CountryCode.fromJson(json)).toList();
+    List<CountryCode> elements = countryList.map((json) => CountryCode.fromJson(json)).toList();
+
+    if (comparator != null) {
+      elements.sort(comparator);
+    }
+
+    if (countryFilter != null && countryFilter!.isNotEmpty) {
+      final uppercaseFilterElement = countryFilter?.map((e) => e.toUpperCase()).toList();
+      elements = elements
+          .where((element) =>
+              uppercaseFilterElement!.contains(element.name) ||
+              uppercaseFilterElement.contains(element.dialCode) ||
+              uppercaseFilterElement.contains(element.code))
+          .toList();
+    }
     return CountryPickerBottomSheetState(elements);
   }
 }
@@ -242,7 +259,9 @@ class CountryPickerBottomSheetState extends State<CountryPickerBottomSheet> {
               child: Image.asset(
                 selectedItem!.flagUri!,
                 package: 'country_picker',
+                fit: BoxFit.cover,
                 width: widget.flagWidth ?? 32,
+                height: widget.flagHeight ?? 20,
               ),
             ),
           Text(
@@ -321,8 +340,9 @@ class CountryPickerBottomSheetState extends State<CountryPickerBottomSheet> {
                               child: Image.asset(
                                 elements[index].flagUri ?? "",
                                 package: 'country_picker',
-                                width: widget.flagWidth ?? 32,
                                 fit: BoxFit.cover,
+                                width: widget.flagWidth ?? 32,
+                                height: widget.flagHeight ?? 20,
                               ),
                             ),
                           Flexible(
