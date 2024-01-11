@@ -1,7 +1,6 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:country_picker/src/country_code.dart';
 import 'package:country_picker/src/country_selection_dialog.dart';
-import 'package:country_picker/src/dimension.dart';
 import 'package:flutter/material.dart';
 
 class CountryPikersDialog extends StatefulWidget {
@@ -127,23 +126,26 @@ class _CountryPikersDialogState extends State<CountryPikersDialog> {
 
   @override
   Widget build(BuildContext context) {
-    Dimension dimension = Dimension(height: MediaQuery.of(context).size.height, width: MediaQuery.of(context).size.width);
-    return InkWell(
-      onTap: () {
-        showCountryPickerDialog(context, dimension);
-      },
-      child: const Text("onTap"),
+    return Center(
+      child: InkWell(
+        onTap: () {
+          showCountryPickerDialog(context);
+        },
+        child: const Text("onTap"),
+      ),
     );
   }
 
-  Future<void> showCountryPickerDialog(BuildContext context, Dimension dimension) async {
+  Future<void> showCountryPickerDialog(BuildContext context) async {
     final selectedValue = await showDialog(
       context: context,
       builder: (context) {
         return Center(
           child: Dialog(
+            surfaceTintColor: Colors.blue,
+            backgroundColor: Colors.blue,
+            elevation: 500,
             child: CountrySelectionDialog(
-              dimension,
               countriesElements,
               favoritesCountries,
               showCircularFlag: widget.showCircularFlag,
