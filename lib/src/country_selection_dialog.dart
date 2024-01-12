@@ -16,10 +16,8 @@ class CountrySelectionDialog extends StatefulWidget {
   final List<CountryCode> favoritesCountries;
   final WidgetBuilder? emptySearchBuilder;
   final Decoration? flagDecoration;
-  final bool? showFlag;
   final bool hideCloseIcon;
   final bool? showSearchBar;
-  final bool? showCountryOnly;
   final Icon? searchIcon;
   final Icon? closedDialogIcon;
   final BorderRadius? dialogBorderRadius; //
@@ -36,9 +34,7 @@ class CountrySelectionDialog extends StatefulWidget {
     this.searchPadding,
     this.hideCloseIcon = false,
     this.dialogBorderRadius,
-    this.showFlag,
     this.flagDecoration,
-    this.showCountryOnly,
     this.dialogItemPadding,
     this.emptySearchBuilder,
     this.size,
@@ -183,7 +179,8 @@ class _CountrySelectionDialogState extends State<CountrySelectionDialog> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           if (widget.showCountryFlag ?? true)
-            Flexible(
+            Align(
+              alignment: Alignment.centerLeft,
               child: Container(
                 margin: const EdgeInsets.only(right: 16),
                 decoration: widget.flagDecoration,
@@ -200,8 +197,8 @@ class _CountrySelectionDialogState extends State<CountrySelectionDialog> {
           Expanded(
             flex: 4,
             child: Text(
-              textAlign: TextAlign.end, // set text align
-              widget.showCountryCode! ? e.toLongString() : e.toCountryStringOnly(),
+              // set text align
+              "${widget.showCountryCode! ? e.toString() : ""}  ${widget.showCountryName! ? e.toCountryStringOnly() : ""}",
               overflow: TextOverflow.fade,
               style: widget.countryPickerThemeData?.textStyle ?? _defaultTextStyle,
             ),
@@ -216,7 +213,7 @@ class _CountrySelectionDialogState extends State<CountrySelectionDialog> {
             flex: 4,
             child: Text(
               textAlign: TextAlign.start,
-              widget.showCountryCode! ? e.toLongString() : e.toCountryStringOnly(),
+              "${widget.showCountryCode! ? e.toString() : ""}  ${widget.showCountryName! ? e.toCountryStringOnly() : ""}",
               overflow: TextOverflow.fade,
               style: widget.countryPickerThemeData?.textStyle ?? _defaultTextStyle,
             ),
@@ -225,6 +222,7 @@ class _CountrySelectionDialogState extends State<CountrySelectionDialog> {
             Align(
               alignment: Alignment.centerRight,
               child: Container(
+                margin: const EdgeInsets.only(left: 16.0),
                 decoration: widget.flagDecoration,
                 clipBehavior: widget.flagDecoration == null ? Clip.none : Clip.hardEdge,
                 child: Image.asset(

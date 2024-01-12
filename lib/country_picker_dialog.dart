@@ -48,7 +48,7 @@ class CountryPikersDialog extends StatefulWidget {
   final bool hideCloseIcon;
   final Icon? searchIcon;
   final EdgeInsetsGeometry? searchPadding;
-  final bool showFlag;
+  // final bool showFlag;
   final bool showSearchBar;
   final Size? size;
 
@@ -86,7 +86,6 @@ class CountryPikersDialog extends StatefulWidget {
       this.hideCloseIcon = false,
       this.searchIcon,
       this.searchPadding,
-      this.showFlag = true,
       this.showSearchBar = true,
       this.size,
       this.excludeCountry,
@@ -97,8 +96,8 @@ class CountryPikersDialog extends StatefulWidget {
       this.setCountryElementsInSequence = Sequence.flagCodeAndCountryName})
       : assert((showCountryMainFlag || showCountryMainCode || showCountryMainName), 'At-least one data we need to show in a widget.'),
         assert(((excludeCountry == null) || (countryFilter == null)),
-            'We will provide either exclude country or country filter, So we are not providing both at a same time.');
-
+            'We will provide either exclude country or country filter, So we are not providing both at a same time.'),
+        assert((showCountryFlag || showCountryCode || showCountryName), 'At-least one data we need to show in a our country list.');
   @override
   // ignore: no_logic_in_create_state
   State<CountryPikersDialog> createState() {
@@ -244,7 +243,6 @@ class _CountryPikersDialogState extends State<CountryPikersDialog> {
               hideCloseIcon: widget.hideCloseIcon,
               searchIcon: widget.searchIcon,
               searchPadding: widget.searchPadding,
-              showFlag: widget.showFlag,
               showSearchBar: widget.showSearchBar,
               size: widget.size,
             ),
