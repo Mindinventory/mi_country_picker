@@ -223,6 +223,7 @@ class CountryPickerBottomSheetState extends State<CountryPickerBottomSheet> {
     } else {
       selectedItem = elements[0];
       initialItem = 0;
+      // widget.getCountryData!(selectedItem);
     }
   }
 
@@ -247,40 +248,33 @@ class CountryPickerBottomSheetState extends State<CountryPickerBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.getCountryData != null) {
-      return InkWell(
-        onTap: showCountryPickerBottomSheet,
-        child: widget.getCountryData!(selectedItem),
-      );
-    } else {
-      return TextButton(
-        onPressed: showCountryPickerBottomSheet,
-        child: Flex(
-          direction: Axis.horizontal,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            if (widget.showCountryMainFlag)
-              Container(
-                clipBehavior: widget.flagDecoration == null ? Clip.none : Clip.hardEdge,
-                decoration: widget.flagDecoration,
-                margin: const EdgeInsets.only(right: 12),
-                child: Image.asset(
-                  selectedItem!.flagUri!,
-                  package: 'country_picker',
-                  fit: BoxFit.cover,
-                  width: widget.flagWidth ?? 32,
-                  height: widget.flagHeight ?? 20,
-                ),
+    return TextButton(
+      onPressed: showCountryPickerBottomSheet,
+      child: Flex(
+        direction: Axis.horizontal,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          if (widget.showCountryMainFlag)
+            Container(
+              clipBehavior: widget.flagDecoration == null ? Clip.none : Clip.hardEdge,
+              decoration: widget.flagDecoration,
+              margin: const EdgeInsets.only(right: 12),
+              child: Image.asset(
+                selectedItem!.flagUri!,
+                package: 'country_picker',
+                fit: BoxFit.cover,
+                width: widget.flagWidth ?? 32,
+                height: widget.flagHeight ?? 20,
               ),
-            Text(
-              '${widget.showCountryMainCode ? selectedItem!.dialCode ?? '' : ''} ${widget.showCountryMainName ? selectedItem!.name! : ''}',
-              style: widget.countryPickerThemeData?.textStyle ?? _defaultTextStyle,
-              overflow: widget.textOverflow,
             ),
-          ],
-        ),
-      );
-    }
+          Text(
+            '${widget.showCountryMainCode ? selectedItem!.dialCode ?? '' : ''} ${widget.showCountryMainName ? selectedItem!.name! : ''}',
+            style: widget.countryPickerThemeData?.textStyle ?? _defaultTextStyle,
+            overflow: widget.textOverflow,
+          ),
+        ],
+      ),
+    );
   }
 
   void showCountryPickerBottomSheet() async {
@@ -329,6 +323,7 @@ class CountryPickerBottomSheetState extends State<CountryPickerBottomSheet> {
                   setState(() {
                     HapticFeedback.heavyImpact();
                     selectedItem = elements[value];
+                    widget.getCountryData!(selectedItem);
                   });
                 },
                 scrollController: FixedExtentScrollController(initialItem: initialItem),
