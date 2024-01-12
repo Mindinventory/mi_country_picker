@@ -15,6 +15,7 @@ class MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      // theme: ThemeData.dark(),
       debugShowCheckedModeBanner: false,
       supportedLocales: const [
         Locale("af"),
@@ -98,30 +99,43 @@ class MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Country Picker'),
         ),
-        body: Center(
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              CountryPikersDialog(
-                showCircularFlag: true,
-                favorite: const ['+91', '+376'],
-                // set your favorite country
-                countryPickerThemeData: const CountryPickerThemeData(),
-                // with this property ,set background clr of dialog, textStyle of of country name, decorate the search field, set flag size....
-                comparator: (a, b) {
-                  /// show country list with Alphabetic order.
-                  return a.name!.compareTo(b.name.toString());
-                },
-                emptySearchBuilder: (context) {
-                  /// if country not found when searching in search box , then show your widget...
-                  return const Center(child: Text('not found'));
-                },
+              const Text('1. Country Picker using Dialog.'),
+              Center(
+                child: CountryPikersDialog(
+                  getCountryData: (value) {
+                    print('value :--> $value');
+                  },
+                  showCircularFlag: true,
+                  favorite: const ['+91', '+376'],
+                  // set your favorite country
+                  countryPickerThemeData: const CountryPickerThemeData(),
+                  // with this property ,set background clr of dialog, textStyle of of country name, decorate the search field, set flag size....
+                  comparator: (a, b) {
+                    /// show country list with Alphabetic order.
+                    return a.name!.compareTo(b.name.toString());
+                  },
+                  emptySearchBuilder: (context) {
+                    /// if country not found when searching in search box , then show your widget...
+                    return const Center(child: Text('not found'));
+                  },
+                ),
               ),
-              const SizedBox(height: 50),
-              CountryPickerBottomSheet(
-                // getCountryData: (value){
-                //   print('value :--> $value');
-                // },
+              const SizedBox(height: 40),
+              const Text('2. Country Picker using cupertino picker with bottom sheet.'),
+              Center(
+                child: CountryPickerBottomSheet(
+                  getCountryData: (value) {
+                    debugPrint('value :--> $value');
+                  },
+                ),
               ),
+              const SizedBox(height: 40),
             ],
           ),
         ),
