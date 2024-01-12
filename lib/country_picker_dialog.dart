@@ -22,7 +22,7 @@ class CountryPikersDialog extends StatefulWidget {
   /// text overflow in use to manage text overflow for country name.
   final TextOverflow textOverflow;
 
-  final void Function(CountryCode? countryCode)? getCountryData;
+  final void Function(CountryCode value)? getCountryData;
   final double? flagWidth;
   final double? flagHeight;
   final Color? barrierColor;
@@ -128,7 +128,7 @@ class _CountryPikersDialogState extends State<CountryPikersDialog> {
       );
     } else {
       selectedItem = countriesElements[0];
-      widget.getCountryData!(selectedItem);
+      widget.getCountryData!(selectedItem!);
     }
     if (widget.excludeCountry != null && widget.excludeCountry!.isNotEmpty) {
       for (int i = 0; i < (widget.excludeCountry?.length ?? 0); i++) {
@@ -190,6 +190,8 @@ class _CountryPikersDialogState extends State<CountryPikersDialog> {
                   selectedItem!.flagUri!,
                   package: 'country_picker',
                   width: widget.flagWidth ?? 32,
+                  height: widget.flagHeight ?? 20,
+                  fit: BoxFit.cover,
                 ),
               ),
             Text(
@@ -239,7 +241,7 @@ class _CountryPikersDialogState extends State<CountryPikersDialog> {
     if (selectedValue != null) {
       setState(() {
         selectedItem = selectedValue;
-        widget.getCountryData!(selectedItem);
+        widget.getCountryData!(selectedItem!);
         debugPrint('selectedItem::$selectedItem');
       });
     }

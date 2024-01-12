@@ -15,6 +15,7 @@ class MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(),
       debugShowCheckedModeBanner: false,
       supportedLocales: const [
         Locale("af"),
@@ -102,8 +103,8 @@ class MyAppState extends State<MyApp> {
           children: <Widget>[
             CountryPikersDialog(
               showCountryMainCode: false,
-              getCountryData: (countryCode) {
-                debugPrint('countryCode::${countryCode?.name},,,,${countryCode?.code},,,,${countryCode?.dialCode}');
+              getCountryData: (value) {
+                debugPrint('countryCode::${value.name},,,,${value.code},,,,${value.dialCode}');
               },
               showCountryMainName: false,
               favorite: const ['+91', '+376'],
