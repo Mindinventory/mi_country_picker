@@ -102,6 +102,13 @@ class MyAppState extends State<MyApp> {
         body: Column(
           children: <Widget>[
             CountryPikersDialog(
+              flagHeight: 25,
+              flagWidth: 25,
+              // showCountryName: false,
+              // showCountryFlag: false,
+              // showCountryCode: false,
+              setCountryElementsInSequence: Sequence.codeCountryNameAndFlag,
+              flagDecoration: const BoxDecoration(shape: BoxShape.circle),
               showCountryMainCode: false,
               getCountryData: (value) {
                 debugPrint('countryCode::${value.name},,,,${value.code},,,,${value.dialCode}');
