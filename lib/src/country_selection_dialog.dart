@@ -3,11 +3,14 @@ import 'package:country_picker/src/country_code.dart';
 import 'package:flutter/material.dart';
 
 class CountrySelectionDialog extends StatefulWidget {
+  final bool? showCountryFlag;
+  final bool? showCountryCode;
+  final bool? showCountryName;
   final List<CountryCode> elements;
+  final Sequence setCountryElementsInSequence;
   final double? flagWidth;
   final double? flagHeight;
   final Size? size;
-  final bool? showCircularFlag;
   final EdgeInsetsGeometry? searchPadding;
   final EdgeInsetsGeometry? dialogItemPadding;
   final List<CountryCode> favoritesCountries;
@@ -39,9 +42,12 @@ class CountrySelectionDialog extends StatefulWidget {
     this.dialogItemPadding,
     this.emptySearchBuilder,
     this.size,
-    this.showCircularFlag,
     this.flagWidth,
     this.flagHeight,
+    required this.setCountryElementsInSequence,
+    this.showCountryFlag,
+    this.showCountryCode,
+    this.showCountryName,
   });
 
   @override
@@ -172,12 +178,11 @@ class _CountrySelectionDialogState extends State<CountrySelectionDialog> {
   }
 
   Widget buildList(BuildContext context, CountryCode e) {
-    return SizedBox(
-      width: 400,
-      child: Flex(
-        direction: Axis.horizontal,
+    if (widget.setCountryElementsInSequence == Sequence.flagCodeAndCountryName) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          if (widget.showFlag!)
+          if (widget.showCountryFlag ?? true)
             Flexible(
               child: Container(
                 margin: const EdgeInsets.only(right: 16),
@@ -195,14 +200,45 @@ class _CountrySelectionDialogState extends State<CountrySelectionDialog> {
           Expanded(
             flex: 4,
             child: Text(
-              widget.showCountryOnly! ? e.toCountryStringOnly() : e.toLongString(),
+              textAlign: TextAlign.end, // set text align
+              widget.showCountryCode! ? e.toLongString() : e.toCountryStringOnly(),
               overflow: TextOverflow.fade,
               style: widget.countryPickerThemeData?.textStyle ?? _defaultTextStyle,
             ),
           ),
         ],
-      ),
-    );
+      );
+    } else {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Expanded(
+            flex: 4,
+            child: Text(
+              textAlign: TextAlign.start,
+              widget.showCountryCode! ? e.toLongString() : e.toCountryStringOnly(),
+              overflow: TextOverflow.fade,
+              style: widget.countryPickerThemeData?.textStyle ?? _defaultTextStyle,
+            ),
+          ),
+          if (widget.showCountryFlag ?? true)
+            Align(
+              alignment: Alignment.centerRight,
+              child: Container(
+                decoration: widget.flagDecoration,
+                clipBehavior: widget.flagDecoration == null ? Clip.none : Clip.hardEdge,
+                child: Image.asset(
+                  e.flagUri!,
+                  package: 'country_picker',
+                  width: widget.flagWidth ?? 32,
+                  height: widget.flagHeight ?? 20,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+        ],
+      );
+    }
   }
 
   void _filterElements(String s) {

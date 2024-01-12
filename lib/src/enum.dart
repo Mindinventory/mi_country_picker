@@ -1,0 +1,1 @@
+enum Sequence { flagCodeAndCountryName, codeCountryNameAndFlag }
