@@ -1174,11 +1174,7 @@ const List<Map<String, String>> codes = [
     "code": "GB",
     "dial_code": "+44",
   },
-  {
-    "name": "United States",
-    "code": "US",
-    "dial_code": "+1",
-  },
+  {"name": "United States", "code": "US", "dial_code": "+1"},
   {
     "name": "Uruguay",
     "code": "UY",

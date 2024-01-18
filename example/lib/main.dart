@@ -15,7 +15,7 @@ class MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(),
+      theme: ThemeData.light(),
       debugShowCheckedModeBanner: false,
       supportedLocales: const [
         Locale("af"),
@@ -100,21 +100,22 @@ class MyAppState extends State<MyApp> {
           title: const Text('Country Picker'),
         ),
         body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               const Text('1. Country Picker using Dialog.'),
               Center(
-                child: CountryPikersDialog(
+                child: CountryPickerDialog(
+                  searchMargin: const EdgeInsets.symmetric(horizontal: 16),
                   getCountryData: (value) {
-                    print('value :--> $value');
+                    debugPrint('value :--> ${value.name}');
                   },
-                  showCircularFlag: true,
-                  favorite: const ['+91', '+376'],
                   // set your favorite country
+                  elementsSequence: Sequence.codeCountryNameAndFlag,
                   countryPickerThemeData: const CountryPickerThemeData(),
+
                   // with this property ,set background clr of dialog, textStyle of of country name, decorate the search field, set flag size....
                   comparator: (a, b) {
                     /// show country list with Alphabetic order.
@@ -131,7 +132,7 @@ class MyAppState extends State<MyApp> {
               Center(
                 child: CountryPickerBottomSheet(
                   getCountryData: (value) {
-                    debugPrint('value :--> $value');
+                    debugPrint('value :--> ${value?.name}');
                   },
                 ),
               ),

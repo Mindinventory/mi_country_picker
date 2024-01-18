@@ -1,10 +1,9 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:country_picker/src/country_code.dart';
 import 'package:country_picker/src/country_selection_dialog.dart';
-import 'package:country_picker/src/enum.dart';
 import 'package:flutter/material.dart';
 
-class CountryPikersDialog extends StatefulWidget {
+class CountryPickerDialog extends StatefulWidget {
   /// it is optional argument to set your own custom country list
   final List<Map<String, String>> listOfCountries;
 
@@ -33,21 +32,20 @@ class CountryPikersDialog extends StatefulWidget {
   final TextOverflow textOverflow;
 
   /// set sequence of country elements. By default it is select [flagCodeAndCountryName]
-  final Sequence setCountryElementsInSequence;
+  final Sequence elementsSequence;
 
   final void Function(CountryCode value)? getCountryData;
   final double? flagWidth;
   final double? flagHeight;
   final Color? barrierColor;
-  final BorderRadius? dialogBorderRadius;
   final Icon? closedDialogIcon;
   final WidgetBuilder? emptySearchBuilder;
-  final EdgeInsetsGeometry? dialogItemPadding;
+  final EdgeInsetsGeometry? countryItemPadding;
   final String? selectInitialCountry;
   final Decoration? flagDecoration;
   final bool hideCloseIcon;
   final Icon? searchIcon;
-  final EdgeInsetsGeometry? searchPadding;
+  final EdgeInsetsGeometry? searchMargin;
   // final bool showFlag;
   final bool showSearchBar;
   final Size? size;
@@ -57,13 +55,13 @@ class CountryPikersDialog extends StatefulWidget {
 
   final CountryPickerThemeData? countryPickerThemeData;
 
-  /// used to customize the country list
+  /// used to customize the country list,
   final List<String>? countryFilter;
 
   /// add your favorites countries
   final List<String>? favorite;
 
-  const CountryPikersDialog(
+  const CountryPickerDialog(
       {super.key,
       this.listOfCountries = codes,
       this.countryFilter,
@@ -78,14 +76,13 @@ class CountryPikersDialog extends StatefulWidget {
       this.selectInitialCountry,
       this.favorite,
       this.countryPickerThemeData,
-      this.dialogBorderRadius,
       this.closedDialogIcon,
-      this.dialogItemPadding,
+      this.countryItemPadding,
       this.emptySearchBuilder,
       this.flagDecoration,
       this.hideCloseIcon = false,
       this.searchIcon,
-      this.searchPadding,
+      this.searchMargin,
       this.showSearchBar = true,
       this.size,
       this.excludeCountry,
@@ -93,14 +90,14 @@ class CountryPikersDialog extends StatefulWidget {
       this.getCountryData,
       this.flagWidth,
       this.flagHeight,
-      this.setCountryElementsInSequence = Sequence.flagCodeAndCountryName})
+      this.elementsSequence = Sequence.flagCodeAndCountryName})
       : assert((showCountryMainFlag || showCountryMainCode || showCountryMainName), 'At-least one data we need to show in a widget.'),
         assert(((excludeCountry == null) || (countryFilter == null)),
             'We will provide either exclude country or country filter, So we are not providing both at a same time.'),
         assert((showCountryFlag || showCountryCode || showCountryName), 'At-least one data we need to show in a our country list.');
   @override
   // ignore: no_logic_in_create_state
-  State<CountryPikersDialog> createState() {
+  State<CountryPickerDialog> createState() {
     List<CountryCode> countriesElements = listOfCountries.map((element) => CountryCode.fromJson(element)).toList();
 
     if (comparator != null) {
@@ -116,16 +113,16 @@ class CountryPikersDialog extends StatefulWidget {
               uppercaseFilterElement.contains(element.code))
           .toList();
     }
-    return _CountryPikersDialogState(countriesElements);
+    return _CountryPickerDialogState(countriesElements);
   }
 }
 
-class _CountryPikersDialogState extends State<CountryPikersDialog> {
+class _CountryPickerDialogState extends State<CountryPickerDialog> {
   List<CountryCode> countriesElements = [];
   CountryCode? selectedItem;
   List<CountryCode> favoritesCountries = [];
 
-  _CountryPikersDialogState(this.countriesElements);
+  _CountryPickerDialogState(this.countriesElements);
 
   @override
   void initState() {
@@ -136,11 +133,17 @@ class _CountryPikersDialogState extends State<CountryPikersDialog> {
             element.name == widget.selectInitialCountry?.toUpperCase() ||
             element.dialCode == widget.selectInitialCountry?.toUpperCase() ||
             element.code == widget.selectInitialCountry?.toUpperCase(),
-        orElse: () => countriesElements[0],
+        orElse: () =>
+            countriesElements.firstWhere((element) => element.name == "भारत" || element.dialCode == "+91" || element.code == "IN"),
       );
     } else {
-      selectedItem = countriesElements[0];
-      widget.getCountryData!(selectedItem!);
+      if (widget.countryFilter != null) {
+        selectedItem ??= countriesElements.first;
+      } else {
+        selectedItem =
+            countriesElements.firstWhere((element) => element.name == "भारत" || element.dialCode == "+91" || element.code == "IN");
+      }
+      debugPrint('select item::$selectedItem');
     }
     if (widget.excludeCountry != null && widget.excludeCountry!.isNotEmpty) {
       for (int i = 0; i < (widget.excludeCountry?.length ?? 0); i++) {
@@ -160,7 +163,7 @@ class _CountryPikersDialogState extends State<CountryPikersDialog> {
   }
 
   @override
-  void didUpdateWidget(covariant CountryPikersDialog oldWidget) {
+  void didUpdateWidget(covariant CountryPickerDialog oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.selectInitialCountry != widget.selectInitialCountry) {
       if (widget.selectInitialCountry != null) {
@@ -201,8 +204,8 @@ class _CountryPikersDialogState extends State<CountryPikersDialog> {
                 child: Image.asset(
                   selectedItem!.flagUri!,
                   package: 'country_picker',
-                  width: widget.flagWidth ?? 32,
-                  height: widget.flagHeight ?? 20,
+                  width: widget.flagWidth ?? 28,
+                  height: widget.flagHeight ?? 18,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -224,6 +227,8 @@ class _CountryPikersDialogState extends State<CountryPikersDialog> {
       builder: (context) {
         return Center(
           child: Dialog(
+            // shape: OutlineInputBorder(
+            //     borderSide: BorderSide(color: Colors.purple, width: 2), borderRadius: BorderRadius.all(Radius.circular(10))),
             surfaceTintColor: Colors.blue,
             child: CountrySelectionDialog(
               countriesElements,
@@ -231,18 +236,17 @@ class _CountryPikersDialogState extends State<CountryPikersDialog> {
               showCountryCode: widget.showCountryCode,
               showCountryFlag: widget.showCountryFlag,
               showCountryName: widget.showCountryName,
-              setCountryElementsInSequence: widget.setCountryElementsInSequence,
+              elementsSequence: widget.elementsSequence,
               flagHeight: widget.flagHeight,
               flagWidth: widget.flagWidth,
               countryPickerThemeData: widget.countryPickerThemeData,
-              dialogBorderRadius: widget.dialogBorderRadius,
               closedDialogIcon: widget.closedDialogIcon,
-              dialogItemPadding: widget.dialogItemPadding,
+              countryItemPadding: widget.countryItemPadding,
               emptySearchBuilder: widget.emptySearchBuilder,
               flagDecoration: widget.flagDecoration,
               hideCloseIcon: widget.hideCloseIcon,
               searchIcon: widget.searchIcon,
-              searchPadding: widget.searchPadding,
+              searchMargin: widget.searchMargin,
               showSearchBar: widget.showSearchBar,
               size: widget.size,
             ),
