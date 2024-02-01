@@ -1,27 +1,35 @@
 import 'package:country_picker/country_picker.dart';
-import 'package:country_picker/src/country_code.dart';
+import 'package:country_picker/src/country_data_model.dart';
 import 'package:flutter/material.dart';
 
 class CountrySelectionDialog extends StatefulWidget {
+  final TextStyle? textStyle;
+  final InputDecoration? searchFieldInputDecoration;
+  final BorderRadiusGeometry? borderRadius;
   final bool? showCountryFlag;
+  final Color? backGroundColor;
   final bool? showCountryCode;
   final bool? showCountryName;
-  final List<CountryCode> elements;
-  final Sequence elementsSequence;
+  final List<CountryData> elements;
+  final Sequence? elementsSequence;
+  final bool showDialogHeading;
   final double? flagWidth;
+  final TextStyle? searchStyle;
   final double? flagHeight;
+  final double? searchBoxHeight;
   final Size? size;
-  final EdgeInsetsGeometry? searchMargin;
+  final EdgeInsetsGeometry? searchBoxMargin;
   final EdgeInsetsGeometry? countryItemPadding;
-  final List<CountryCode> favoritesCountries;
+  final List<CountryData> favoritesCountries;
   final WidgetBuilder? emptySearchBuilder;
   final Decoration? flagDecoration;
   final bool hideCloseIcon;
+  final String? hintText;
   final bool? showSearchBar;
   final Icon? searchIcon;
   final Icon? closedDialogIcon;
   final EdgeInsets? countryListPadding;
-  final CountryPickerThemeData? countryPickerThemeData;
+  final Text? countryPickerDialogHeading;
 
   const CountrySelectionDialog(
     this.elements,
@@ -29,9 +37,8 @@ class CountrySelectionDialog extends StatefulWidget {
     super.key,
     this.searchIcon,
     this.closedDialogIcon,
-    this.countryPickerThemeData,
     this.showSearchBar,
-    this.searchMargin,
+    this.searchBoxMargin,
     this.hideCloseIcon = false,
     this.flagDecoration,
     this.countryItemPadding,
@@ -39,11 +46,20 @@ class CountrySelectionDialog extends StatefulWidget {
     this.size,
     this.flagWidth,
     this.flagHeight,
-    required this.elementsSequence,
+    this.elementsSequence,
     this.showCountryFlag,
     this.showCountryCode,
     this.showCountryName,
     this.countryListPadding,
+    this.countryPickerDialogHeading,
+    this.showDialogHeading = true,
+    this.hintText,
+    this.searchStyle,
+    this.searchBoxHeight,
+    this.backGroundColor,
+    this.textStyle,
+    this.borderRadius,
+    this.searchFieldInputDecoration,
   });
 
   @override
@@ -51,8 +67,7 @@ class CountrySelectionDialog extends StatefulWidget {
 }
 
 class _CountrySelectionDialogState extends State<CountrySelectionDialog> {
-  List<CountryCode> filterElements = [];
-  Color? _backGroundColor;
+  List<CountryData> filterElements = [];
   double? setWidthOfDialog;
 
   TextStyle get _defaultTextStyle => const TextStyle(fontSize: 14);
@@ -65,15 +80,6 @@ class _CountrySelectionDialogState extends State<CountrySelectionDialog> {
 
   @override
   void didChangeDependencies() {
-    _backGroundColor = widget.countryPickerThemeData?.backgroundColor ?? Theme.of(context).dialogBackgroundColor;
-    if (_backGroundColor == null) {
-      if (Theme.of(context).brightness == Brightness.light) {
-        _backGroundColor = Colors.white;
-      } else {
-        _backGroundColor = Colors.black;
-      }
-    }
-
     /// by default set the dimension of dialog according to platform.
     if (MediaQuery.of(context).size.width > 400 && MediaQuery.of(context).size.width < 800) {
       setWidthOfDialog = MediaQuery.of(context).size.width * 0.5;
@@ -97,23 +103,25 @@ class _CountrySelectionDialogState extends State<CountrySelectionDialog> {
       width: widget.size?.width ?? setWidthOfDialog,
       height: widget.size?.height ?? MediaQuery.of(context).size.height * 0.72,
       decoration: BoxDecoration(
-        color: _backGroundColor,
-        borderRadius: widget.countryPickerThemeData?.borderRadius ?? const BorderRadius.all(Radius.circular(18.0)),
+        color: widget.backGroundColor ?? Theme.of(context).dialogBackgroundColor,
+        borderRadius: widget.borderRadius ?? const BorderRadius.all(Radius.circular(18.0)),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Padding(
-                padding: EdgeInsets.only(left: 20),
-                child: Text(
-                  "Select Country",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+              if (widget.showDialogHeading == true)
+                Padding(
+                  padding: const EdgeInsets.only(left: 20),
+                  child: widget.countryPickerDialogHeading ??
+                      const Text(
+                        "Select Country",
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                      ),
                 ),
-              ),
+              const Spacer(),
               if (!widget.hideCloseIcon)
                 IconButton(
                     iconSize: 20,
@@ -126,18 +134,21 @@ class _CountrySelectionDialogState extends State<CountrySelectionDialog> {
           ),
           if (widget.showSearchBar!)
             Container(
-              margin: widget.searchMargin ?? const EdgeInsets.only(right: 16, left: 16, top: 2),
-              height: 40,
+              margin: widget.searchBoxMargin ??
+                  const EdgeInsets.only(
+                    right: 16,
+                    left: 16,
+                  ),
+              height: widget.searchBoxHeight ?? 40,
               child: TextField(
+                style: widget.searchStyle ?? const TextStyle(fontSize: 14, height: 16 / 14),
                 textAlignVertical: TextAlignVertical.center,
-                cursorHeight: 19,
                 onChanged: (value) {
                   _filterElements(value);
                 },
-                decoration: widget.countryPickerThemeData?.searchFieldInputDecoration ??
+                decoration: widget.searchFieldInputDecoration ??
                     InputDecoration(
                         isCollapsed: true,
-                        contentPadding: const EdgeInsets.only(bottom: 5),
                         border: const OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(8)),
                         ),
@@ -157,7 +168,7 @@ class _CountrySelectionDialogState extends State<CountrySelectionDialog> {
                                 package: 'country_picker',
                               ),
                         ),
-                        hintText: "Search",
+                        hintText: widget.hintText ?? "Search",
                         hintStyle: TextStyle(fontSize: 14, color: Colors.grey.shade400)),
               ),
             ),
@@ -221,7 +232,7 @@ class _CountrySelectionDialogState extends State<CountrySelectionDialog> {
     );
   }
 
-  Widget buildList(BuildContext context, CountryCode e) {
+  Widget buildList(BuildContext context, CountryData e) {
     if (widget.elementsSequence == Sequence.flagCodeAndCountryName) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -242,22 +253,23 @@ class _CountrySelectionDialogState extends State<CountrySelectionDialog> {
                 ),
               ),
             ),
-          SizedBox(
-            width: calculateSize(widget.countryPickerThemeData?.textStyle?.fontSize ?? _defaultTextStyle.fontSize!),
-            child: Text(
-              textAlign: TextAlign.start,
-              widget.showCountryCode! ? e.toString() : "",
-              overflow: TextOverflow.fade,
-              style: widget.countryPickerThemeData?.textStyle ?? _defaultTextStyle,
+          if (widget.showCountryCode!)
+            SizedBox(
+              width: calculateSize(widget.textStyle?.fontSize ?? _defaultTextStyle.fontSize!),
+              child: Text(
+                textAlign: TextAlign.start,
+                e.toString(),
+                overflow: TextOverflow.fade,
+                style: widget.textStyle ?? _defaultTextStyle,
+              ),
             ),
-          ),
           Expanded(
             child: Text(
               textDirection: TextDirection.rtl,
               textAlign: TextAlign.left,
               " ${widget.showCountryName! ? e.toCountryStringOnly() : ""}",
               overflow: TextOverflow.fade,
-              style: widget.countryPickerThemeData?.textStyle ?? _defaultTextStyle,
+              style: widget.textStyle ?? _defaultTextStyle,
             ),
           ),
         ],
@@ -267,22 +279,23 @@ class _CountrySelectionDialogState extends State<CountrySelectionDialog> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            width: calculateSize(widget.countryPickerThemeData?.textStyle?.fontSize ?? _defaultTextStyle.fontSize!),
-            child: Text(
-              textAlign: TextAlign.start,
-              widget.showCountryCode! ? e.toString() : "",
-              overflow: TextOverflow.fade,
-              style: widget.countryPickerThemeData?.textStyle ?? _defaultTextStyle,
+          if (widget.showCountryCode!)
+            SizedBox(
+              width: calculateSize(widget.textStyle?.fontSize ?? _defaultTextStyle.fontSize!),
+              child: Text(
+                textAlign: TextAlign.start,
+                e.toString(),
+                overflow: TextOverflow.fade,
+                style: widget.textStyle ?? _defaultTextStyle,
+              ),
             ),
-          ),
           Expanded(
             child: Text(
               textDirection: TextDirection.rtl,
               textAlign: TextAlign.left,
               " ${widget.showCountryName! ? e.toCountryStringOnly() : ""}",
               overflow: TextOverflow.fade,
-              style: widget.countryPickerThemeData?.textStyle ?? _defaultTextStyle,
+              style: widget.textStyle ?? _defaultTextStyle,
             ),
           ),
           if (widget.showCountryFlag ?? true)
@@ -314,7 +327,7 @@ class _CountrySelectionDialogState extends State<CountrySelectionDialog> {
     });
   }
 
-  void _selectItem(CountryCode e) {
+  void _selectItem(CountryData e) {
     Navigator.pop(context, e);
   }
 }

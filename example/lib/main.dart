@@ -1,5 +1,6 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() => runApp(const MyApp());
@@ -14,6 +15,11 @@ class MyApp extends StatefulWidget {
 class MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: Colors.blue,
+      statusBarBrightness: Brightness.dark,
+      statusBarIconBrightness: Brightness.light,
+    ));
     return MaterialApp(
       theme: ThemeData.light(),
       debugShowCheckedModeBanner: false,
@@ -108,35 +114,69 @@ class MyAppState extends State<MyApp> {
               const Text('1. Country Picker using Dialog.'),
               Center(
                 child: CountryPickerDialog(
-                  searchMargin: const EdgeInsets.symmetric(horizontal: 16),
-                  getCountryData: (value) {
-                    debugPrint('value :--> ${value.name}');
-                  },
-                  // set your favorite country
-                  elementsSequence: Sequence.codeCountryNameAndFlag,
-                  countryPickerThemeData: const CountryPickerThemeData(),
-
-                  // with this property ,set background clr of dialog, textStyle of of country name, decorate the search field, set flag size....
-                  comparator: (a, b) {
-                    /// show country list with Alphabetic order.
-                    return a.name!.compareTo(b.name.toString());
+                  onSelectValue: (value) {
+                    debugPrint('CountryPickerDialog ${value.name}');
                   },
                   emptySearchBuilder: (context) {
-                    /// if country not found when searching in search box , then show your widget...
-                    return const Center(child: Text('not found'));
+                    // if country not found when searching in search box , then show your widget...
+                    return const Center(
+                      child: Text('not found'),
+                    );
                   },
                 ),
               ),
               const SizedBox(height: 40),
               const Text('2. Country Picker using cupertino picker with bottom sheet.'),
               Center(
-                child: CountryPickerBottomSheet(
-                  getCountryData: (value) {
-                    debugPrint('value :--> ${value?.name}');
+                child: CountryPickerCupertinoBottomSheet(
+                  layoutConfig: const LayoutConfig(elementsSequence: Sequence.flagCodeAndCountryName),
+                  onSelectValue: (value) {
+                    debugPrint('CountryPickerBottomSheet  ${value.name}');
                   },
                 ),
               ),
               const SizedBox(height: 40),
+              const Text('3. Country Picker using Drop down.'),
+              Center(
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.3,
+                  child: CountryPickerDropDown(
+                    layoutConfig: const LayoutConfig(showCountryName: false),
+                    onSelectValue: (value) {
+                      debugPrint('CountryPickerDropDown ${value.name}');
+                    },
+                    onTap: () {},
+                    iconDisabledColor: Colors.blue,
+                    underline: const SizedBox.shrink(),
+                    padding: const EdgeInsets.symmetric(horizontal: 0),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 40),
+              const Text('4. Country Picker using Bottom sheet.'),
+              Center(
+                child: CountryPickerBottomSheet(
+                  onSelectValue: (value) {
+                    debugPrint('CountryPickerBottomSheet::>>>>${value.name}');
+                  },
+                  layoutConfig: const LayoutConfig(
+                    showCountryFlag: true,
+                    showCountryName: true,
+                    showCountryCode: true,
+                    elementsSequence: Sequence.flagCodeAndCountryName,
+                    isDismissible: false,
+                  ),
+                  countryListConfig: CountryListConfig(
+                    selectInitialCountry: "+244",
+                    excludeCountry: ["+91", '+1264'],
+                    favorite: ["+91", "+1264"],
+                    comparator: (a, b) {
+                      return a.name!.compareTo(b.name.toString());
+                    },
+                  ),
+                  // showDragHandle: true,
+                ),
+              ),
             ],
           ),
         ),
