@@ -1,7 +1,7 @@
-import 'package:country_picker/country_picker.dart';
-import 'package:country_picker/src/country_data_model.dart';
-import 'package:country_picker/src/country_selection_bottom.dart';
+import 'package:mi_country_picker/mi_country_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:mi_country_picker/src/codes.dart';
+import 'package:mi_country_picker/src/country_selection_bottom.dart';
 
 class CountryPickerBottomSheet extends StatefulWidget {
   ///here this [onSelectValue] get the selected country value.
@@ -10,7 +10,12 @@ class CountryPickerBottomSheet extends StatefulWidget {
   /// it is optional argument to set your own custom country list
   final List<Map<String, String>> listOfCountries;
 
+  /// add your favorites countries
+  final List<String>? favorite;
+
   final LayoutConfig? layoutConfig;
+
+  final bool? isDismissible;
 
   final CountryListConfig? countryListConfig;
 
@@ -27,7 +32,8 @@ class CountryPickerBottomSheet extends StatefulWidget {
   final bool showSearchBar;
   final double? searchBoxHeight;
   final String? hintText;
-  final TextStyle? searchStyle;
+  final TextStyle? searchTextStyle;
+  final SearchStyle? searchStyle;
   final Color? backgroundColor;
   final ShapeBorder? shape;
   final Color? barrierColor;
@@ -83,6 +89,9 @@ class CountryPickerBottomSheet extends StatefulWidget {
     this.countryListConfig,
     this.searchFieldInputDecoration,
     this.listOfCountries = codes,
+    this.favorite,
+    this.isDismissible,
+    this.searchTextStyle,
   });
 
   @override
@@ -118,23 +127,23 @@ class _CountryPickerBottomSheetState extends State<CountryPickerBottomSheet> {
   @override
   void initState() {
     super.initState();
-    if (widget.countryListConfig?.selectInitialCountry != null) {
-      selectedItem = countriesElements.firstWhere(
-        (element) =>
-            element.name == widget.countryListConfig?.selectInitialCountry?.toUpperCase() ||
-            element.dialCode == widget.countryListConfig?.selectInitialCountry?.toUpperCase() ||
-            element.code == widget.countryListConfig?.selectInitialCountry?.toUpperCase(),
-        orElse: () =>
-            countriesElements.firstWhere((element) => element.name == "भारत" || element.dialCode == "+91" || element.code == "IN"),
-      );
-    } else {
-      if (widget.countryListConfig?.countryFilter != null) {
-        selectedItem ??= countriesElements.first;
-      } else {
-        selectedItem =
-            countriesElements.firstWhere((element) => element.name == "भारत" || element.dialCode == "+91" || element.code == "IN");
-      }
-    }
+    // if (widget.countryListConfig?.selectInitialCountry != null) {
+    //   selectedItem = countriesElements.firstWhere(
+    //     (element) =>
+    //         element.name == widget.countryListConfig?.selectInitialCountry?.toUpperCase() ||
+    //         element.dialCode == widget.countryListConfig?.selectInitialCountry?.toUpperCase() ||
+    //         element.code == widget.countryListConfig?.selectInitialCountry?.toUpperCase(),
+    //     orElse: () =>
+    //         countriesElements.firstWhere((element) => element.name == "भारत" || element.dialCode == "+91" || element.code == "IN"),
+    //   );
+    // } else {
+    //   if (widget.countryListConfig?.countryFilter != null) {
+    //     selectedItem ??= countriesElements.first;
+    //   } else {
+    //     selectedItem =
+    //         countriesElements.firstWhere((element) => element.name == "भारत" || element.dialCode == "+91" || element.code == "IN");
+    //   }
+    // }
     if (widget.countryListConfig?.excludeCountry != null && widget.countryListConfig!.excludeCountry!.isNotEmpty) {
       for (int i = 0; i < (widget.countryListConfig?.excludeCountry?.length ?? 0); i++) {
         for (int j = 0; j < countriesElements.length; j++) {
@@ -147,9 +156,8 @@ class _CountryPickerBottomSheetState extends State<CountryPickerBottomSheet> {
         }
       }
     }
-    if (widget.countryListConfig?.favorite != null) {
-      favoritesCountries =
-          countriesElements.where((element) => widget.countryListConfig?.favorite?.contains(element.dialCode) ?? false).toList();
+    if (widget.favorite != null) {
+      favoritesCountries = countriesElements.where((element) => widget.favorite?.contains(element.dialCode) ?? false).toList();
     }
     widget.onSelectValue(selectedItem!);
   }
@@ -157,17 +165,17 @@ class _CountryPickerBottomSheetState extends State<CountryPickerBottomSheet> {
   @override
   void didUpdateWidget(covariant CountryPickerBottomSheet oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.countryListConfig?.selectInitialCountry != widget.countryListConfig?.selectInitialCountry) {
-      if (widget.countryListConfig?.selectInitialCountry != null) {
-        selectedItem = countriesElements.firstWhere(
-          (element) =>
-              element.name == widget.countryListConfig?.selectInitialCountry?.toUpperCase() ||
-              element.dialCode == widget.countryListConfig?.selectInitialCountry?.toUpperCase() ||
-              element.code == widget.countryListConfig?.selectInitialCountry?.toUpperCase(),
-          orElse: () => countriesElements[0],
-        );
-      }
-    }
+    // if (oldWidget.countryListConfig?.selectInitialCountry != widget.countryListConfig?.selectInitialCountry) {
+    //   if (widget.countryListConfig?.selectInitialCountry != null) {
+    //     selectedItem = countriesElements.firstWhere(
+    //       (element) =>
+    //           element.name == widget.countryListConfig?.selectInitialCountry?.toUpperCase() ||
+    //           element.dialCode == widget.countryListConfig?.selectInitialCountry?.toUpperCase() ||
+    //           element.code == widget.countryListConfig?.selectInitialCountry?.toUpperCase(),
+    //       orElse: () => countriesElements[0],
+    //     );
+    //   }
+    // }
   }
 
   @override
@@ -200,7 +208,7 @@ class _CountryPickerBottomSheetState extends State<CountryPickerBottomSheet> {
                 margin: const EdgeInsets.only(right: 12),
                 child: Image.asset(
                   selectedItem!.flagUri!,
-                  package: 'country_picker',
+                  package: 'mi_country_picker',
                   width: widget.layoutConfig?.flagWidth ?? 24,
                   height: widget.layoutConfig?.flagHeight ?? 18,
                   fit: BoxFit.cover,
@@ -224,7 +232,7 @@ class _CountryPickerBottomSheetState extends State<CountryPickerBottomSheet> {
       shape: widget.shape,
       barrierColor: widget.barrierColor ?? Theme.of(context).bottomSheetTheme.modalBarrierColor,
       useSafeArea: widget.useSafeArea ?? false,
-      isDismissible: widget.layoutConfig?.isDismissible ?? true,
+      isDismissible: widget.isDismissible ?? true,
       anchorPoint: widget.anchorPoint,
       constraints: widget.constraints,
       clipBehavior: widget.clipBehavior ?? Theme.of(context).bottomSheetTheme.clipBehavior,
@@ -240,36 +248,13 @@ class _CountryPickerBottomSheetState extends State<CountryPickerBottomSheet> {
       context: context,
       builder: (_) {
         return CountrySelectionBottom(
-          getSelectedItem: (value) {
-            setState(() {
-              selectedItem = value;
-              widget.onSelectValue(selectedItem!);
-            });
-          },
-          countriesElements,
-          favoritesCountries,
-          elementsSequence: widget.layoutConfig?.elementsSequence,
-          flagWidth: widget.layoutConfig?.flagWidth,
-          flagHeight: widget.layoutConfig?.flagHeight,
-          flagDecoration: widget.layoutConfig?.flagDecoration,
-          showCountryFlag: widget.layoutConfig?.showCountryFlag,
-          showCountryCode: widget.layoutConfig?.showCountryCode,
-          showCountryName: widget.layoutConfig?.showCountryName,
-          searchBoxHeight: widget.searchBoxHeight,
+          layoutConfig: widget.layoutConfig,
+          countryListConfig: widget.countryListConfig,
           searchStyle: widget.searchStyle,
-          hintText: widget.hintText,
-          hideCloseIcon: widget.hideCloseIcon,
-          showDialogHeading: widget.showDialogHeading ?? true,
           showSearchBar: widget.showSearchBar,
-          countryPickerDialogHeading: widget.countryPickerDialogHeading,
-          countryListViewPadding: widget.countryListViewPadding,
-          textStyle: widget.layoutConfig?.textStyle,
+          header: widget.countryPickerDialogHeading,
           emptySearchBuilder: widget.emptySearchBuilder,
-          searchIcon: widget.searchIcon,
-          searchFieldInputDecoration: widget.searchFieldInputDecoration,
-          closedDialogIcon: widget.closedDialogIcon,
-          countryItemPadding: widget.countryItemPadding,
-          searchBoxMargin: widget.searchBoxMargin,
+          countryTilePadding: widget.countryItemPadding,
         );
       },
     );

@@ -1,14 +1,21 @@
-import 'package:country_picker/country_picker.dart';
-import 'package:country_picker/src/country_data_model.dart';
-import 'package:country_picker/src/country_selection_dialog.dart';
+import 'package:mi_country_picker/mi_country_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:mi_country_picker/src/codes.dart';
+import 'package:mi_country_picker/src/country_selection_dialog.dart';
 
 class CountryPickerDialog extends StatefulWidget {
   /// it is optional argument to set your own custom country list
   final List<Map<String, String>> listOfCountries;
 
+  /// add your favorites countries
+  final List<String>? favorite;
+
+  final SearchStyle? searchStyle;
+
   /// this properties is use for hide-show country flag in our screen.
   final bool showCountryMainFlag;
+
+  final bool? isDismissible;
 
   final TextStyle? mainTextStyle;
 
@@ -37,7 +44,7 @@ class CountryPickerDialog extends StatefulWidget {
   final EdgeInsets? insetPadding;
   final Color? shadowColor;
   final Text? countryPickerDialogHeading;
-  final TextStyle? searchStyle;
+  final TextStyle? searchTextStyle;
   final String? hintText;
   final EdgeInsets? countryListPadding;
   final bool? showDialogHeading;
@@ -46,13 +53,13 @@ class CountryPickerDialog extends StatefulWidget {
   final Icon? closedDialogIcon;
   final WidgetBuilder? emptySearchBuilder;
   final EdgeInsetsGeometry? countryItemPadding;
-  final Function(CountryData?)? builder;
-  final Decoration? flagDecoration;
+  final Widget Function(CountryData? value)? builder;
   final bool hideCloseIcon;
   final Icon? searchIcon;
   final EdgeInsetsGeometry? searchBoxMargin;
   final bool showSearchBar;
   final Size? size;
+
   const CountryPickerDialog({
     super.key,
     this.listOfCountries = codes,
@@ -63,7 +70,6 @@ class CountryPickerDialog extends StatefulWidget {
     this.closedDialogIcon,
     this.countryItemPadding,
     this.emptySearchBuilder,
-    this.flagDecoration,
     this.hideCloseIcon = false,
     this.searchIcon,
     this.searchBoxMargin,
@@ -76,7 +82,7 @@ class CountryPickerDialog extends StatefulWidget {
     this.showDialogHeading,
     this.hintText,
     this.builder,
-    this.searchStyle,
+    this.searchTextStyle,
     this.searchBoxHeight,
     this.dialogAlignment,
     this.clipBehavior,
@@ -89,8 +95,12 @@ class CountryPickerDialog extends StatefulWidget {
     this.mainTextStyle,
     this.searchFieldInputDecoration,
     this.borderRadius,
+    this.favorite,
+    this.isDismissible,
+    this.searchStyle,
   }) : assert((showCountryMainFlag || showCountryMainCode || showCountryMainName), 'At-least one data we need to show in a widget.');
 
+  /// Move to initState
   @override
   // ignore: no_logic_in_create_state
   State<CountryPickerDialog> createState() {
@@ -123,23 +133,23 @@ class _CountryPickerDialogState extends State<CountryPickerDialog> {
   @override
   void initState() {
     super.initState();
-    if (widget.countryListConfig?.selectInitialCountry != null) {
-      selectedItem = countriesElements.firstWhere(
-        (element) =>
-            element.name == widget.countryListConfig?.selectInitialCountry?.toUpperCase() ||
-            element.dialCode == widget.countryListConfig?.selectInitialCountry?.toUpperCase() ||
-            element.code == widget.countryListConfig?.selectInitialCountry?.toUpperCase(),
-        orElse: () =>
-            countriesElements.firstWhere((element) => element.name == "भारत" || element.dialCode == "+91" || element.code == "IN"),
-      );
-    } else {
-      if (widget.countryListConfig?.countryFilter != null) {
-        selectedItem ??= countriesElements.first;
-      } else {
-        selectedItem =
-            countriesElements.firstWhere((element) => element.name == "भारत" || element.dialCode == "+91" || element.code == "IN");
-      }
-    }
+    // if (widget.countryListConfig?.selectInitialCountry != null) {
+    //   selectedItem = countriesElements.firstWhere(
+    //     (element) =>
+    //         element.name == widget.countryListConfig?.selectInitialCountry?.toUpperCase() ||
+    //         element.dialCode == widget.countryListConfig?.selectInitialCountry?.toUpperCase() ||
+    //         element.code == widget.countryListConfig?.selectInitialCountry?.toUpperCase(),
+    //     orElse: () =>
+    //         countriesElements.firstWhere((element) => element.name == "भारत" || element.dialCode == "+91" || element.code == "IN"),
+    //   );
+    // } else {
+    //   if (widget.countryListConfig?.countryFilter != null) {
+    //     selectedItem ??= countriesElements.first;
+    //   } else {
+    //     selectedItem =
+    //         countriesElements.firstWhere((element) => element.name == "भारत" || element.dialCode == "+91" || element.code == "IN");
+    //   }
+    // }
     if (widget.countryListConfig?.excludeCountry != null && widget.countryListConfig!.excludeCountry!.isNotEmpty) {
       for (int i = 0; i < (widget.countryListConfig?.excludeCountry?.length ?? 0); i++) {
         for (int j = 0; j < countriesElements.length; j++) {
@@ -152,9 +162,8 @@ class _CountryPickerDialogState extends State<CountryPickerDialog> {
         }
       }
     }
-    if (widget.countryListConfig?.favorite != null) {
-      favoritesCountries =
-          countriesElements.where((element) => widget.countryListConfig?.favorite?.contains(element.dialCode) ?? false).toList();
+    if (widget.favorite != null) {
+      favoritesCountries = countriesElements.where((element) => widget.favorite?.contains(element.dialCode) ?? false).toList();
     }
     widget.onSelectValue(selectedItem!);
   }
@@ -162,17 +171,17 @@ class _CountryPickerDialogState extends State<CountryPickerDialog> {
   @override
   void didUpdateWidget(covariant CountryPickerDialog oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.countryListConfig?.selectInitialCountry != widget.countryListConfig?.selectInitialCountry) {
-      if (widget.countryListConfig?.selectInitialCountry != null) {
-        selectedItem = countriesElements.firstWhere(
-          (element) =>
-              element.name == widget.countryListConfig?.selectInitialCountry?.toUpperCase() ||
-              element.dialCode == widget.countryListConfig?.selectInitialCountry?.toUpperCase() ||
-              element.code == widget.countryListConfig?.selectInitialCountry?.toUpperCase(),
-          orElse: () => countriesElements[0],
-        );
-      }
-    }
+    // if (oldWidget.countryListConfig?.selectInitialCountry != widget.countryListConfig?.selectInitialCountry) {
+    //   if (widget.countryListConfig?.selectInitialCountry != null) {
+    //     selectedItem = countriesElements.firstWhere(
+    //       (element) =>
+    //           element.name == widget.countryListConfig?.selectInitialCountry?.toUpperCase() ||
+    //           element.dialCode == widget.countryListConfig?.selectInitialCountry?.toUpperCase() ||
+    //           element.code == widget.countryListConfig?.selectInitialCountry?.toUpperCase(),
+    //       orElse: () => countriesElements[0],
+    //     );
+    //   }
+    // }
   }
 
   @override
@@ -183,30 +192,21 @@ class _CountryPickerDialogState extends State<CountryPickerDialog> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.builder != null) {
-      return InkWell(
-        onTap: showCountryPickerDialog,
-        child: widget.builder!(selectedItem),
-      );
-    } else {
-      return InkWell(
-        onTap: showCountryPickerDialog,
-        child: TextButton(
-          onPressed: () {
-            showCountryPickerDialog();
-          },
-          child: Flex(
+    return GestureDetector(
+      onTap: showCountryPickerDialog,
+      child: widget.builder?.call(selectedItem) ??
+          Flex(
             direction: Axis.horizontal,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               if (widget.showCountryMainFlag)
                 Container(
-                  clipBehavior: widget.flagDecoration == null ? Clip.none : Clip.hardEdge,
-                  decoration: widget.flagDecoration,
+                  clipBehavior: widget.layoutConfig?.flagDecoration == null ? Clip.none : Clip.hardEdge,
+                  decoration: widget.layoutConfig?.flagDecoration,
                   margin: const EdgeInsets.only(right: 12),
                   child: Image.asset(
                     selectedItem!.flagUri!,
-                    package: 'country_picker',
+                    package: 'mi_country_picker',
                     width: widget.layoutConfig?.flagWidth ?? 24,
                     height: widget.layoutConfig?.flagHeight ?? 18,
                     fit: BoxFit.cover,
@@ -219,52 +219,34 @@ class _CountryPickerDialogState extends State<CountryPickerDialog> {
               ),
             ],
           ),
-        ),
-      );
-    }
+    );
   }
 
   void showCountryPickerDialog() async {
     final selectedValue = await showDialog(
       useSafeArea: widget.useSafeArea ?? true,
-      barrierDismissible: widget.layoutConfig?.isDismissible ?? true,
+      barrierDismissible: widget.isDismissible ?? true,
       barrierColor: widget.barrierColor,
       context: context,
       builder: (context) {
         return Center(
           child: Dialog(
+            backgroundColor: Colors.transparent,
             shadowColor: widget.shadowColor,
             insetPadding: widget.insetPadding,
             clipBehavior: widget.clipBehavior ?? Clip.none,
             alignment: widget.dialogAlignment,
             child: CountrySelectionDialog(
-              countriesElements,
-              favoritesCountries,
-              searchFieldInputDecoration: widget.searchFieldInputDecoration,
-              textStyle: widget.layoutConfig?.textStyle,
-              borderRadius: widget.borderRadius,
               searchStyle: widget.searchStyle,
+              countryListConfig: widget.countryListConfig,
+              layoutConfig: widget.layoutConfig,
+              borderRadius: widget.borderRadius,
               backGroundColor: widget.backGroundColor ?? Theme.of(context).dialogBackgroundColor,
-              showDialogHeading: widget.showDialogHeading ?? true,
-              showCountryCode: widget.layoutConfig?.showCountryCode,
-              showCountryFlag: widget.layoutConfig?.showCountryFlag,
-              showCountryName: widget.layoutConfig?.showCountryName,
-              elementsSequence: widget.layoutConfig?.elementsSequence,
-              flagHeight: widget.layoutConfig?.flagHeight,
-              searchBoxHeight: widget.searchBoxHeight,
-              flagWidth: widget.layoutConfig?.flagWidth,
-              hintText: widget.hintText,
-              closedDialogIcon: widget.closedDialogIcon,
-              countryItemPadding: widget.countryItemPadding,
+              countryTilePadding: widget.countryItemPadding,
               emptySearchBuilder: widget.emptySearchBuilder,
-              flagDecoration: widget.flagDecoration,
-              hideCloseIcon: widget.hideCloseIcon,
-              searchIcon: widget.searchIcon,
-              searchBoxMargin: widget.searchBoxMargin,
               showSearchBar: widget.showSearchBar,
               size: widget.size,
-              countryListPadding: widget.countryListPadding,
-              countryPickerDialogHeading: widget.countryPickerDialogHeading,
+              header: widget.countryPickerDialogHeading,
             ),
           ),
         );

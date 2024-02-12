@@ -1,11 +1,9 @@
-import 'package:country_picker/src/country_data_model.dart';
 import 'package:flutter/material.dart';
+import 'package:mi_country_picker/src/codes.dart';
 
-import 'country_picker.dart';
+import 'mi_country_picker.dart';
 
 class CountryPickerDropDown extends StatefulWidget {
-  /// it is optional argument to set your own custom country list
-  final List<Map<String, String>> listOfCountries;
   final Color? backGroundColor;
   final LayoutConfig? layoutConfig;
   final CountryListConfig? countryListConfig;
@@ -39,13 +37,13 @@ class CountryPickerDropDown extends StatefulWidget {
 
   final Function(CountryData?)? getCountryData;
 
+  /// set your initial Country
+  final String? selectInitialCountry;
+
   // final CountryPickerThemeData? countryPickerThemeData;
 
   const CountryPickerDropDown({
     super.key,
-    this.listOfCountries = codes,
-    // this.countryPickerThemeData,
-    this.getCountryData,
     this.iconSize = 24,
     this.onTap,
     this.borderRadius,
@@ -58,33 +56,17 @@ class CountryPickerDropDown extends StatefulWidget {
     this.itemHeight = kMinInteractiveDimension,
     this.onTapDropdownMenuButton,
     this.backGroundColor,
-    required this.onSelectValue,
     this.selectedItemBuilder,
     this.layoutConfig = const LayoutConfig(),
     this.countryListConfig,
+    required this.onSelectValue,
+    this.getCountryData,
+    this.selectInitialCountry,
   });
 
   @override
   // ignore: no_logic_in_create_state
-  State<CountryPickerDropDown> createState() {
-    List<CountryData> countriesElements = listOfCountries.map((json) => CountryData.fromJson(json)).toList();
-
-    if (countryListConfig?.comparator != null) {
-      countriesElements.sort(countryListConfig?.comparator);
-    }
-
-    if (countryListConfig?.countryFilter != null && countryListConfig!.countryFilter!.isNotEmpty) {
-      final uppercaseFilterElement = countryListConfig?.countryFilter?.map((e) => e.toUpperCase()).toList();
-      countriesElements = countriesElements
-          .where((element) =>
-              uppercaseFilterElement!.contains(element.name) ||
-              uppercaseFilterElement.contains(element.dialCode) ||
-              uppercaseFilterElement.contains(element.code))
-          .toList();
-    }
-
-    return _CountryPickerDropDownState(countriesElements);
-  }
+  State<CountryPickerDropDown> createState() => _CountryPickerDropDownState();
 }
 
 class _CountryPickerDropDownState extends State<CountryPickerDropDown> {
@@ -97,26 +79,38 @@ class _CountryPickerDropDownState extends State<CountryPickerDropDown> {
         fontSize: 14,
       );
 
-  _CountryPickerDropDownState(this.countriesElements);
-
   double calculateSize(double size) {
     int defaultSize = 80;
-    debugPrint('$size====>${(size * defaultSize / _defaultTextStyle.fontSize!)}');
     return (size * defaultSize / _defaultTextStyle.fontSize!);
   }
 
   @override
   void initState() {
+    countriesElements = codes.map((json) => CountryData.fromJson(json)).toList();
+
+    if (widget.countryListConfig?.comparator != null) {
+      countriesElements.sort(widget.countryListConfig?.comparator);
+    }
+
+    if (widget.countryListConfig?.countryFilter != null && widget.countryListConfig!.countryFilter!.isNotEmpty) {
+      final uppercaseFilterElement = widget.countryListConfig?.countryFilter?.map((e) => e.toUpperCase()).toList();
+      countriesElements = countriesElements
+          .where((element) =>
+              uppercaseFilterElement!.contains(element.name) ||
+              uppercaseFilterElement.contains(element.dialCode) ||
+              uppercaseFilterElement.contains(element.code))
+          .toList();
+    }
+
     super.initState();
-    if (widget.countryListConfig?.selectInitialCountry != null) {
+    if (widget.selectInitialCountry != null) {
       selectedItem = countriesElements.firstWhere(
-        (element) =>
-            element.name == widget.countryListConfig?.selectInitialCountry?.toUpperCase() ||
-            element.dialCode == widget.countryListConfig?.selectInitialCountry?.toUpperCase() ||
-            element.code == widget.countryListConfig?.selectInitialCountry?.toUpperCase(),
-        orElse: () =>
-            countriesElements.firstWhere((element) => element.name == "भारत" || element.dialCode == "+91" || element.code == "IN"),
-      );
+          (element) =>
+              element.name == widget.selectInitialCountry?.toUpperCase() ||
+              element.dialCode == widget.selectInitialCountry?.toUpperCase() ||
+              element.code == widget.selectInitialCountry?.toUpperCase(),
+          orElse: () =>
+              countriesElements.firstWhere((element) => element.name == "भारत" || element.dialCode == "+91" || element.code == "IN"));
     } else {
       if (widget.countryListConfig?.countryFilter != null) {
         selectedItem ??= countriesElements.first;
@@ -137,23 +131,19 @@ class _CountryPickerDropDownState extends State<CountryPickerDropDown> {
         }
       }
     }
-    if (widget.countryListConfig?.favorite != null) {
-      favoritesCountries =
-          countriesElements.where((element) => widget.countryListConfig?.favorite?.contains(element.dialCode) ?? false).toList();
-    }
     widget.onSelectValue(selectedItem!);
   }
 
   @override
   void didUpdateWidget(covariant CountryPickerDropDown oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.countryListConfig?.selectInitialCountry != widget.countryListConfig?.selectInitialCountry) {
-      if (widget.countryListConfig?.selectInitialCountry != null) {
+    if (oldWidget.selectInitialCountry != widget.selectInitialCountry) {
+      if (widget.selectInitialCountry != null) {
         selectedItem = countriesElements.firstWhere(
           (element) =>
-              element.name == widget.countryListConfig?.selectInitialCountry?.toUpperCase() ||
-              element.dialCode == widget.countryListConfig?.selectInitialCountry?.toUpperCase() ||
-              element.code == widget.countryListConfig?.selectInitialCountry?.toUpperCase(),
+              element.name == widget.selectInitialCountry?.toUpperCase() ||
+              element.dialCode == widget.selectInitialCountry?.toUpperCase() ||
+              element.code == widget.selectInitialCountry?.toUpperCase(),
           orElse: () => countriesElements[0],
         );
       }
@@ -185,7 +175,7 @@ class _CountryPickerDropDownState extends State<CountryPickerDropDown> {
                           clipBehavior: widget.layoutConfig?.flagDecoration == null ? Clip.none : Clip.hardEdge,
                           child: Image.asset(
                             e.flagUri!,
-                            package: 'country_picker',
+                            package: 'mi_country_picker',
                             width: widget.layoutConfig?.flagWidth ?? 24,
                             height: widget.layoutConfig?.flagHeight ?? 18,
                             fit: BoxFit.cover,
@@ -248,7 +238,7 @@ class _CountryPickerDropDownState extends State<CountryPickerDropDown> {
                           clipBehavior: widget.layoutConfig?.flagDecoration == null ? Clip.none : Clip.hardEdge,
                           child: Image.asset(
                             e.flagUri!,
-                            package: 'country_picker',
+                            package: 'mi_country_picker',
                             width: widget.layoutConfig?.flagWidth ?? 28,
                             height: widget.layoutConfig?.flagHeight ?? 18,
                             fit: BoxFit.cover,

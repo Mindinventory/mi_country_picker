@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
-import 'package:country_picker/country_picker.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:mi_country_picker/mi_country_picker.dart';
+import 'package:mi_country_picker/src/codes.dart';
 
 mixin ToAlias {}
 
@@ -31,6 +32,10 @@ class CountryData {
     );
     return CountryData.fromJson(jsonCode!);
   }
+  @override
+  bool operator ==(Object other) {
+    return (other is CountryData) && other.name == name;
+  }
 
   factory CountryData.fromDialCode(String dialCode) {
     final Map<String, String>? jsonCode = codes.firstWhereOrNull(
@@ -48,7 +53,7 @@ class CountryData {
       name: json['name'],
       code: json['code'],
       dialCode: json['dial_code'],
-      flagUri: 'assets/flags/${json['code'].toLowerCase()}.png',
+      flagUri: 'lib/assets/flags/${json['code'].toLowerCase()}.png',
     );
   }
 
