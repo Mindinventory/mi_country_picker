@@ -49,10 +49,12 @@ class CountryPickerCupertinoBottomSheet extends StatefulWidget {
   });
 
   @override
-  State<CountryPickerCupertinoBottomSheet> createState() => CountryPickerCupertinoBottomSheetState();
+  State<CountryPickerCupertinoBottomSheet> createState() =>
+      CountryPickerCupertinoBottomSheetState();
 }
 
-class CountryPickerCupertinoBottomSheetState extends State<CountryPickerCupertinoBottomSheet> {
+class CountryPickerCupertinoBottomSheetState
+    extends State<CountryPickerCupertinoBottomSheet> {
   CountryData? selectedItem;
   List<CountryData> countriesElements = [];
   int initialItem = 0;
@@ -68,14 +70,18 @@ class CountryPickerCupertinoBottomSheetState extends State<CountryPickerCupertin
   void initState() {
     super.initState();
 
-    countriesElements = codes.map((json) => CountryData.fromJson(json)).toList();
+    countriesElements =
+        codes.map((json) => CountryData.fromJson(json)).toList();
 
     if (widget.countryListConfig?.comparator != null) {
       countriesElements.sort(widget.countryListConfig?.comparator);
     }
 
-    if (widget.countryListConfig?.countryFilter != null && widget.countryListConfig!.countryFilter!.isNotEmpty) {
-      final uppercaseFilterElement = widget.countryListConfig?.countryFilter?.map((e) => e.toUpperCase()).toList();
+    if (widget.countryListConfig?.countryFilter != null &&
+        widget.countryListConfig!.countryFilter!.isNotEmpty) {
+      final uppercaseFilterElement = widget.countryListConfig?.countryFilter
+          ?.map((e) => e.toUpperCase())
+          .toList();
       countriesElements = countriesElements
           .where((element) =>
               uppercaseFilterElement!.contains(element.name) ||
@@ -84,12 +90,18 @@ class CountryPickerCupertinoBottomSheetState extends State<CountryPickerCupertin
           .toList();
     }
 
-    if ((widget.countryListConfig?.excludeCountry?.isNotEmpty ?? false) && widget.countryListConfig?.excludeCountry != null) {
-      for (int i = 0; i < (widget.countryListConfig?.excludeCountry?.length ?? 0); i++) {
+    if ((widget.countryListConfig?.excludeCountry?.isNotEmpty ?? false) &&
+        widget.countryListConfig?.excludeCountry != null) {
+      for (int i = 0;
+          i < (widget.countryListConfig?.excludeCountry?.length ?? 0);
+          i++) {
         for (int j = 0; j < countriesElements.length; j++) {
-          if ((widget.countryListConfig?.excludeCountry?[i].toLowerCase() == countriesElements[j].name?.toLowerCase()) ||
-              (widget.countryListConfig?.excludeCountry?[i] == countriesElements[j].dialCode) ||
-              (widget.countryListConfig?.excludeCountry?[i].toUpperCase() == countriesElements[j].code)) {
+          if ((widget.countryListConfig?.excludeCountry?[i].toLowerCase() ==
+                  countriesElements[j].name?.toLowerCase()) ||
+              (widget.countryListConfig?.excludeCountry?[i] ==
+                  countriesElements[j].dialCode) ||
+              (widget.countryListConfig?.excludeCountry?[i].toUpperCase() ==
+                  countriesElements[j].code)) {
             countriesElements.removeAt(j);
             break;
           }
@@ -101,7 +113,8 @@ class CountryPickerCupertinoBottomSheetState extends State<CountryPickerCupertin
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    countriesElements = countriesElements.map((element) => element.localize(context)).toList();
+    countriesElements =
+        countriesElements.map((element) => element.localize(context)).toList();
     if ((widget.setInitialValue != null)) {
       for (int i = 0; i < countriesElements.length; i++) {
         if (widget.setInitialValue?.name == countriesElements[i].name) {
@@ -145,13 +158,16 @@ class CountryPickerCupertinoBottomSheetState extends State<CountryPickerCupertin
                 widget.onChanged(countriesElements[value]);
               });
             },
-            scrollController: FixedExtentScrollController(initialItem: initialItem),
+            scrollController:
+                FixedExtentScrollController(initialItem: initialItem),
             children: List<Widget>.generate(
               countriesElements.length,
               (int index) {
-                if (widget.layoutConfig?.elementsSequence == Sequence.flagCodeAndCountryName) {
+                if (widget.layoutConfig?.elementsSequence ==
+                    Sequence.flagCodeAndCountryName) {
                   return Padding(
-                    padding: widget.countryTilePadding ?? const EdgeInsets.symmetric(horizontal: 16),
+                    padding: widget.countryTilePadding ??
+                        const EdgeInsets.symmetric(horizontal: 16),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -161,7 +177,10 @@ class CountryPickerCupertinoBottomSheetState extends State<CountryPickerCupertin
                             child: Container(
                               margin: const EdgeInsets.only(right: 16),
                               decoration: widget.layoutConfig?.flagDecoration,
-                              clipBehavior: widget.layoutConfig?.flagDecoration == null ? Clip.none : Clip.hardEdge,
+                              clipBehavior:
+                                  widget.layoutConfig?.flagDecoration == null
+                                      ? Clip.none
+                                      : Clip.hardEdge,
                               child: Image.asset(
                                 countriesElements[index].flagUri!,
                                 package: 'mi_country_picker',
@@ -173,12 +192,15 @@ class CountryPickerCupertinoBottomSheetState extends State<CountryPickerCupertin
                           ),
                         if (widget.layoutConfig?.showCountryCode ?? true)
                           SizedBox(
-                            width: calculateTextWidth(widget.layoutConfig?.textStyle?.fontSize ?? _defaultTextStyle.fontSize!),
+                            width: calculateTextWidth(
+                                widget.layoutConfig?.textStyle?.fontSize ??
+                                    _defaultTextStyle.fontSize!),
                             child: Text(
                               textAlign: TextAlign.start,
                               countriesElements[index].toString(),
                               overflow: TextOverflow.fade,
-                              style: widget.layoutConfig?.textStyle ?? _defaultTextStyle,
+                              style: widget.layoutConfig?.textStyle ??
+                                  _defaultTextStyle,
                             ),
                           ),
                         Expanded(
@@ -187,7 +209,8 @@ class CountryPickerCupertinoBottomSheetState extends State<CountryPickerCupertin
                             textAlign: TextAlign.left,
                             " ${widget.layoutConfig?.showCountryName ?? true ? countriesElements[index].toCountryStringOnly() : ""}",
                             overflow: TextOverflow.fade,
-                            style: widget.layoutConfig?.textStyle ?? _defaultTextStyle,
+                            style: widget.layoutConfig?.textStyle ??
+                                _defaultTextStyle,
                           ),
                         ),
                       ],
@@ -195,19 +218,23 @@ class CountryPickerCupertinoBottomSheetState extends State<CountryPickerCupertin
                   );
                 } else {
                   return Padding(
-                    padding: widget.countryTilePadding ?? const EdgeInsets.symmetric(horizontal: 16),
+                    padding: widget.countryTilePadding ??
+                        const EdgeInsets.symmetric(horizontal: 16),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         if (widget.layoutConfig?.showCountryCode ?? true)
                           SizedBox(
-                            width: calculateTextWidth(widget.layoutConfig?.textStyle?.fontSize ?? _defaultTextStyle.fontSize!),
+                            width: calculateTextWidth(
+                                widget.layoutConfig?.textStyle?.fontSize ??
+                                    _defaultTextStyle.fontSize!),
                             child: Text(
                               textAlign: TextAlign.start,
                               countriesElements[index].toString(),
                               overflow: TextOverflow.fade,
-                              style: widget.layoutConfig?.textStyle ?? _defaultTextStyle,
+                              style: widget.layoutConfig?.textStyle ??
+                                  _defaultTextStyle,
                             ),
                           ),
                         Expanded(
@@ -216,7 +243,8 @@ class CountryPickerCupertinoBottomSheetState extends State<CountryPickerCupertin
                             textAlign: TextAlign.left,
                             " ${widget.layoutConfig?.showCountryName ?? true ? countriesElements[index].toCountryStringOnly() : ""}",
                             overflow: TextOverflow.fade,
-                            style: widget.layoutConfig?.textStyle ?? _defaultTextStyle,
+                            style: widget.layoutConfig?.textStyle ??
+                                _defaultTextStyle,
                           ),
                         ),
                         if (widget.layoutConfig?.showCountryFlag ?? true)
@@ -225,7 +253,10 @@ class CountryPickerCupertinoBottomSheetState extends State<CountryPickerCupertin
                             child: Container(
                               margin: const EdgeInsets.only(left: 16.0),
                               decoration: widget.layoutConfig?.flagDecoration,
-                              clipBehavior: widget.layoutConfig?.flagDecoration == null ? Clip.none : Clip.hardEdge,
+                              clipBehavior:
+                                  widget.layoutConfig?.flagDecoration == null
+                                      ? Clip.none
+                                      : Clip.hardEdge,
                               child: Image.asset(
                                 countriesElements[index].flagUri!,
                                 package: 'mi_country_picker',

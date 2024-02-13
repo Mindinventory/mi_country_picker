@@ -35,7 +35,8 @@ class LayoutConfig {
     this.showCountryFlag = true,
     this.showCountryName = true,
     this.showCountryCode = true,
-  }) : assert((showCountryFlag || showCountryCode || showCountryName), 'At-least one data we need to show in a our country list.');
+  }) : assert((showCountryFlag || showCountryCode || showCountryName),
+            'At-least one data we need to show in a our country list.');
 }
 
 class SearchStyle {

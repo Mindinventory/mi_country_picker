@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mi_country_picker/src/codes.dart';
 
-import 'mi_country_picker.dart';
+import '../mi_country_picker.dart';
 
 class CountryPickerDropDown extends StatefulWidget {
   final Color? backGroundColor;
@@ -86,14 +86,18 @@ class _CountryPickerDropDownState extends State<CountryPickerDropDown> {
 
   @override
   void initState() {
-    countriesElements = codes.map((json) => CountryData.fromJson(json)).toList();
+    countriesElements =
+        codes.map((json) => CountryData.fromJson(json)).toList();
 
     if (widget.countryListConfig?.comparator != null) {
       countriesElements.sort(widget.countryListConfig?.comparator);
     }
 
-    if (widget.countryListConfig?.countryFilter != null && widget.countryListConfig!.countryFilter!.isNotEmpty) {
-      final uppercaseFilterElement = widget.countryListConfig?.countryFilter?.map((e) => e.toUpperCase()).toList();
+    if (widget.countryListConfig?.countryFilter != null &&
+        widget.countryListConfig!.countryFilter!.isNotEmpty) {
+      final uppercaseFilterElement = widget.countryListConfig?.countryFilter
+          ?.map((e) => e.toUpperCase())
+          .toList();
       countriesElements = countriesElements
           .where((element) =>
               uppercaseFilterElement!.contains(element.name) ||
@@ -109,22 +113,32 @@ class _CountryPickerDropDownState extends State<CountryPickerDropDown> {
               element.name == widget.selectInitialCountry?.toUpperCase() ||
               element.dialCode == widget.selectInitialCountry?.toUpperCase() ||
               element.code == widget.selectInitialCountry?.toUpperCase(),
-          orElse: () =>
-              countriesElements.firstWhere((element) => element.name == "भारत" || element.dialCode == "+91" || element.code == "IN"));
+          orElse: () => countriesElements.firstWhere((element) =>
+              element.name == "भारत" ||
+              element.dialCode == "+91" ||
+              element.code == "IN"));
     } else {
       if (widget.countryListConfig?.countryFilter != null) {
         selectedItem ??= countriesElements.first;
       } else {
-        selectedItem =
-            countriesElements.firstWhere((element) => element.name == "भारत" || element.dialCode == "+91" || element.code == "IN");
+        selectedItem = countriesElements.firstWhere((element) =>
+            element.name == "भारत" ||
+            element.dialCode == "+91" ||
+            element.code == "IN");
       }
     }
-    if (widget.countryListConfig?.excludeCountry != null && widget.countryListConfig!.excludeCountry!.isNotEmpty) {
-      for (int i = 0; i < (widget.countryListConfig?.excludeCountry?.length ?? 0); i++) {
+    if (widget.countryListConfig?.excludeCountry != null &&
+        widget.countryListConfig!.excludeCountry!.isNotEmpty) {
+      for (int i = 0;
+          i < (widget.countryListConfig?.excludeCountry?.length ?? 0);
+          i++) {
         for (int j = 0; j < countriesElements.length; j++) {
-          if ((widget.countryListConfig?.excludeCountry?[i].toLowerCase() == countriesElements[j].name?.toLowerCase()) ||
-              (widget.countryListConfig?.excludeCountry?[i] == countriesElements[j].dialCode) ||
-              (widget.countryListConfig?.excludeCountry?[i].toUpperCase() == countriesElements[j].code)) {
+          if ((widget.countryListConfig?.excludeCountry?[i].toLowerCase() ==
+                  countriesElements[j].name?.toLowerCase()) ||
+              (widget.countryListConfig?.excludeCountry?[i] ==
+                  countriesElements[j].dialCode) ||
+              (widget.countryListConfig?.excludeCountry?[i].toUpperCase() ==
+                  countriesElements[j].code)) {
             countriesElements.removeAt(j);
             break;
           }
@@ -153,7 +167,8 @@ class _CountryPickerDropDownState extends State<CountryPickerDropDown> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    countriesElements = countriesElements.map((e) => e.localize(context)).toList();
+    countriesElements =
+        countriesElements.map((e) => e.localize(context)).toList();
   }
 
   @override
@@ -163,7 +178,8 @@ class _CountryPickerDropDownState extends State<CountryPickerDropDown> {
           alignment: Alignment.center,
           onTap: widget.onTapDropdownMenuButton,
           value: e,
-          child: (widget.layoutConfig?.elementsSequence == Sequence.flagCodeAndCountryName)
+          child: (widget.layoutConfig?.elementsSequence ==
+                  Sequence.flagCodeAndCountryName)
               ? Row(
                   children: [
                     if (widget.layoutConfig!.showCountryFlag)
@@ -172,7 +188,10 @@ class _CountryPickerDropDownState extends State<CountryPickerDropDown> {
                         child: Container(
                           margin: const EdgeInsets.only(right: 14),
                           decoration: widget.layoutConfig?.flagDecoration,
-                          clipBehavior: widget.layoutConfig?.flagDecoration == null ? Clip.none : Clip.hardEdge,
+                          clipBehavior:
+                              widget.layoutConfig?.flagDecoration == null
+                                  ? Clip.none
+                                  : Clip.hardEdge,
                           child: Image.asset(
                             e.flagUri!,
                             package: 'mi_country_picker',
@@ -185,12 +204,18 @@ class _CountryPickerDropDownState extends State<CountryPickerDropDown> {
                     if (widget.layoutConfig!.showCountryCode)
                       Flexible(
                         child: SizedBox(
-                          width: calculateSize(widget.layoutConfig?.textStyle?.fontSize ??
-                              Theme.of(context).dropdownMenuTheme.textStyle?.fontSize ??
-                              _defaultTextStyle.fontSize!),
+                          width: calculateSize(
+                              widget.layoutConfig?.textStyle?.fontSize ??
+                                  Theme.of(context)
+                                      .dropdownMenuTheme
+                                      .textStyle
+                                      ?.fontSize ??
+                                  _defaultTextStyle.fontSize!),
                           child: Text(
                             "${e.toString()}(${e.code})",
-                            style: widget.layoutConfig?.textStyle ?? Theme.of(context).dropdownMenuTheme.textStyle ?? _defaultTextStyle,
+                            style: widget.layoutConfig?.textStyle ??
+                                Theme.of(context).dropdownMenuTheme.textStyle ??
+                                _defaultTextStyle,
                           ),
                         ),
                       ),
@@ -200,23 +225,35 @@ class _CountryPickerDropDownState extends State<CountryPickerDropDown> {
                           textDirection: TextDirection.rtl,
                           textAlign: TextAlign.left,
                           e.toCountryStringOnly(),
-                          style: widget.layoutConfig?.textStyle ?? Theme.of(context).dropdownMenuTheme.textStyle ?? _defaultTextStyle,
+                          style: widget.layoutConfig?.textStyle ??
+                              Theme.of(context).dropdownMenuTheme.textStyle ??
+                              _defaultTextStyle,
                         ),
                       ),
                   ],
                 )
               : Row(
                   mainAxisAlignment:
-                      (widget.layoutConfig?.showCountryName == false) ? MainAxisAlignment.spaceBetween : MainAxisAlignment.start,
+                      (widget.layoutConfig?.showCountryName == false)
+                          ? MainAxisAlignment.spaceBetween
+                          : MainAxisAlignment.start,
                   children: [
                     if (widget.layoutConfig!.showCountryCode)
                       Flexible(
                         child: SizedBox(
-                          width: calculateSize(widget.layoutConfig?.textStyle?.fontSize ??
-                              Theme.of(context).dropdownMenuTheme.textStyle?.fontSize ??
-                              _defaultTextStyle.fontSize!),
+                          width: calculateSize(
+                              widget.layoutConfig?.textStyle?.fontSize ??
+                                  Theme.of(context)
+                                      .dropdownMenuTheme
+                                      .textStyle
+                                      ?.fontSize ??
+                                  _defaultTextStyle.fontSize!),
                           child: Text("${e.toString()}(${e.code})",
-                              style: widget.layoutConfig?.textStyle ?? Theme.of(context).dropdownMenuTheme.textStyle ?? _defaultTextStyle),
+                              style: widget.layoutConfig?.textStyle ??
+                                  Theme.of(context)
+                                      .dropdownMenuTheme
+                                      .textStyle ??
+                                  _defaultTextStyle),
                         ),
                       ),
                     if (widget.layoutConfig!.showCountryName)
@@ -226,7 +263,9 @@ class _CountryPickerDropDownState extends State<CountryPickerDropDown> {
                           textAlign: TextAlign.left,
                           e.toCountryStringOnly(),
                           overflow: TextOverflow.fade,
-                          style: widget.layoutConfig?.textStyle ?? Theme.of(context).dropdownMenuTheme.textStyle ?? _defaultTextStyle,
+                          style: widget.layoutConfig?.textStyle ??
+                              Theme.of(context).dropdownMenuTheme.textStyle ??
+                              _defaultTextStyle,
                         ),
                       ),
                     if (widget.layoutConfig!.showCountryFlag)
@@ -235,7 +274,10 @@ class _CountryPickerDropDownState extends State<CountryPickerDropDown> {
                         child: Container(
                           margin: const EdgeInsets.only(left: 14.0),
                           decoration: widget.layoutConfig?.flagDecoration,
-                          clipBehavior: widget.layoutConfig?.flagDecoration == null ? Clip.none : Clip.hardEdge,
+                          clipBehavior:
+                              widget.layoutConfig?.flagDecoration == null
+                                  ? Clip.none
+                                  : Clip.hardEdge,
                           child: Image.asset(
                             e.flagUri!,
                             package: 'mi_country_picker',
@@ -251,7 +293,9 @@ class _CountryPickerDropDownState extends State<CountryPickerDropDown> {
     return DropdownButton(
       selectedItemBuilder: widget.selectedItemBuilder != null
           ? (context) {
-              return countriesElements.map((c) => widget.selectedItemBuilder!(c)).toList();
+              return countriesElements
+                  .map((c) => widget.selectedItemBuilder!(c))
+                  .toList();
             }
           : null,
       dropdownColor: widget.backGroundColor,

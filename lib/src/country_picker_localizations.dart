@@ -7,13 +7,16 @@ class CountryPickerLocalizations {
   CountryPickerLocalizations(this.locale);
 
   static CountryPickerLocalizations? of(BuildContext context) {
-    return Localizations.of<CountryPickerLocalizations>(context, CountryPickerLocalizations);
+    return Localizations.of<CountryPickerLocalizations>(
+        context, CountryPickerLocalizations);
   }
 
-  static LocalizationsDelegate<CountryPickerLocalizations> delegate = const _CountryPickerLocalizationDelegate();
+  static LocalizationsDelegate<CountryPickerLocalizations> delegate =
+      const _CountryPickerLocalizationDelegate();
   late Map<String, String> _localizedStrings;
   Future<bool> load() async {
-    String jsonString = await rootBundle.loadString('packages/mi_country_picker/src/i18n/${locale.languageCode}.json');
+    String jsonString = await rootBundle.loadString(
+        'packages/mi_country_picker/src/i18n/${locale.languageCode}.json');
     Map<String, dynamic> jsonMap = json.decode(jsonString);
     _localizedStrings = jsonMap.map((key, value) {
       return MapEntry(key, value.toString());
@@ -26,7 +29,8 @@ class CountryPickerLocalizations {
   }
 }
 
-class _CountryPickerLocalizationDelegate extends LocalizationsDelegate<CountryPickerLocalizations> {
+class _CountryPickerLocalizationDelegate
+    extends LocalizationsDelegate<CountryPickerLocalizations> {
   const _CountryPickerLocalizationDelegate();
   @override
   bool isSupported(Locale locale) {
@@ -106,7 +110,8 @@ class _CountryPickerLocalizationDelegate extends LocalizationsDelegate<CountryPi
 
   @override
   Future<CountryPickerLocalizations> load(Locale locale) async {
-    CountryPickerLocalizations localizations = CountryPickerLocalizations(locale);
+    CountryPickerLocalizations localizations =
+        CountryPickerLocalizations(locale);
     await localizations.load();
     return localizations;
   }

@@ -3,7 +3,7 @@ import 'package:mi_country_picker/src/codes.dart';
 import 'package:mi_country_picker/src/country_selection_bottom.dart';
 import 'package:mi_country_picker/src/country_selection_dialog.dart';
 
-import 'country_picker_cupertino_bottom_sheet.dart';
+import 'src/country_picker_cupertino_bottom_sheet.dart';
 import 'mi_country_picker.dart';
 
 class CountryPicker {
@@ -86,7 +86,7 @@ class CountryPicker {
     return CountryData.fromJson(getInitialValue).localize(context);
   }
 
-  static Future<CountryData?> showCountryPickerBottom(
+  static Future<CountryData?> showCountryPickerBottomSheet(
       {required BuildContext context,
       Color? backgroundColor,
       LayoutConfig? layoutConfig,
@@ -134,7 +134,7 @@ class CountryPicker {
       useRootNavigator: useRootNavigator ?? false,
       context: context,
       builder: (_) {
-        return CountrySelectionBottom(
+        return CountrySelectionBottomSheet(
           favouriteCountries: favouriteCountries,
           searchStyle: searchStyle,
           countryListConfig: countryListConfig,
@@ -149,7 +149,7 @@ class CountryPicker {
     );
   }
 
-  static Future<CountryData?> showCountryPickerCupertinoBottom(
+  static Future<CountryData?> showCountryPickerCupertinoBottomSheet(
       {required BuildContext context,
       CountryData? setInitialValue,
       bool? isScrollControlled,

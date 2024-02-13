@@ -1,11 +1,9 @@
 name: mi_country_picker
-description: "A new Flutter project."
+description: "mi_country_picker is a Flutter package for selecting country codes from a list. It offers multiple modes for the country code picker and supports the locale of the current device in 70 different languages."
 version: 0.0.1
-homepage:
 
 environment:
   sdk: '>=3.2.3 <4.0.0'
-  flutter: ">=1.17.0"
 
 dependencies:
   flutter:
@@ -15,12 +13,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
+  flutter_lints: ^3.0.1
 
-# For information on the generic Dart part of this file, see the
-# following page: https://dart.dev/tools/pub/pubspec
-
-# The following section is specific to Flutter packages.
 flutter:
   assets:
     - lib/assets/flags/

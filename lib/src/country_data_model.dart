@@ -37,6 +37,9 @@ class CountryData {
     return (other is CountryData) && other.name == name;
   }
 
+  @override
+  int get hashCode => name.hashCode;
+
   factory CountryData.fromDialCode(String dialCode) {
     final Map<String, String>? jsonCode = codes.firstWhereOrNull(
       (code) => code['dial_code'] == dialCode,
@@ -45,7 +48,8 @@ class CountryData {
   }
 
   CountryData localize(BuildContext context) {
-    return this..name = CountryPickerLocalizations.of(context)?.translate(code) ?? name;
+    return this
+      ..name = CountryPickerLocalizations.of(context)?.translate(code) ?? name;
   }
 
   factory CountryData.fromJson(Map<String, dynamic> json) {
