@@ -22,7 +22,7 @@
 A Flutter package for selecting country codes from a list. It offers multiple modes for the country code picker and supports the locale of the current device in 70 different languages.
 
 ## Overview
-<img  src="https://git.mindinventory.com/miopensource/mi-country-picker/blob/dev-manish/lib/assets/bottom.gif"  width="250" height=500/> <img  src="https://git.mindinventory.com/miopensource/mi-country-picker/-/blob/dev-manish/lib/assets/dialog.gif"  width="250" height=500/> 
+<img  src="https://git.mindinventory.com/miopensource/mi-country-picker/blob/dev-manish/lib/assets/bottom.gif"  width="250" height=500 typeof="video/mp4"/> <img  src="https://git.mindinventory.com/miopensource/mi-country-picker/-/blob/dev-manish/lib/assets/dialog.gif"  width="250" height=500/> 
 
 <img  src="https://git.mindinventory.com/miopensource/mi-country-picker/blob/dev-manish/lib/assets/cupertino_bottom.gif"  width="250" height=500/>  <img  src="https://git.mindinventory.com/miopensource/mi-country-picker/-/blob/dev-manish/lib/assets/dropdown.gif"  width="250" height=500/>
 
