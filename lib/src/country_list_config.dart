@@ -11,6 +11,5 @@ class CountryListConfig {
   final List<String>? excludeCountry;
 
   CountryListConfig({this.countryFilter, this.excludeCountry, this.comparator})
-      : assert(((excludeCountry == null) || (countryFilter == null)),
-            'either provide excludeCountry or countryFilter');
+      : assert(((excludeCountry == null) || (countryFilter == null)), 'either provide excludeCountry or countryFilter');
 }

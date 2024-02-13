@@ -417,9 +417,8 @@ class _HomePageState extends State<HomePage> {
                                 ElevatedButton(
                                   onPressed: () {
                                     CountryPicker.showCountryPickerCupertinoBottom(
-                                      setInitialValue: initialCupertinoBottomDefaultValue,
                                       context: context,
-                                      layoutConfig: const LayoutConfig(elementsSequence: Sequence.flagCodeAndCountryName),
+                                      setInitialValue: initialCupertinoBottomDefaultValue,
                                     ).then(
                                       (value) {
                                         if (value != null) {

@@ -213,46 +213,4 @@ class CountryPicker {
     );
     return countryData;
   }
-
-// static Future<CountryData?> showCountryPickerDropDown({
-//   List<Map<String, String>>? listOfCountries,
-//   Color? backGroundColor,
-//   LayoutConfig? layoutConfig,
-//   CountryListConfig? countryListConfig,
-//   double? iconSize,
-//   BorderRadius? borderRadius,
-//   EdgeInsetsGeometry? padding,
-//   double? menuMaxHeight,
-//   Color? iconDisabledColor,
-//   Color? iconEnabledColor,
-//   double? itemHeight,
-//   Widget? icon,
-//   Widget? underline,
-//   Widget Function(CountryData)? selectedItemBuilder,
-//   VoidCallback? onTap,
-//   VoidCallback? onTapDropdownMenuButton,
-// }) async {
-//   debugPrint('open dropdown');
-//   CountryData? countryData;
-//   CountryPickerDropDown(
-//     onChanged: (value) => countryData = value,
-//     countryListConfig: countryListConfig,
-//     layoutConfig: layoutConfig,
-//     listOfCountries: listOfCountries ?? codes,
-//     padding: padding,
-//     onTap: onTap,
-//     borderRadius: borderRadius,
-//     backGroundColor: backGroundColor,
-//     menuMaxHeight: menuMaxHeight,
-//     itemHeight: itemHeight,
-//     underline: underline,
-//     iconDisabledColor: iconDisabledColor,
-//     icon: icon,
-//     iconSize: iconSize ?? 24,
-//     iconEnabledColor: iconEnabledColor,
-//     onTapDropdownMenuButton: onTapDropdownMenuButton,
-//     selectedItemBuilder: selectedItemBuilder,
-//   );
-//   return countryData;
-// }
 }
