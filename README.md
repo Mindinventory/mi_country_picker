@@ -22,11 +22,12 @@
 A Flutter package for selecting country codes from a list. It offers multiple modes for the country code picker and supports the locale of the current device in 70 different languages.
 
 ## Overview
-<img  src="https://github.com/Mindinventory/country_picker/blob/dev-manish/lib/assets/cupertino_bottom.gif"  width="250" height=500/> <img  src="https://github.com/Mindinventory/country_picker/blob/dev-manish/lib/assets/bottom.gif"  width="250" height=500/> 
+<img  src="https://github.com/Mindinventory/country_picker/blob/dev-manish/lib/assets/cupertino_bottom.gif?raw=true"  width="250" height=500/> <img  src="https://github.com/Mindinventory/country_picker/blob/dev-manish/lib/assets/bottom.gif?raw=true"  width="250" height=500/> 
 
-<img  src="https://github.com/Mindinventory/country_picker/blob/dev-manish/lib/assets/dialog.gif"  width="250" height=500/>  <img  src="https://github.com/Mindinventory/country_picker/blob/dev-manish/lib/assets/dropdown.gif"  width="250" height=500/>
+<img  src="https://github.com/Mindinventory/country_picker/blob/dev-manish/lib/assets/dialog.gif?raw=true"  width="250" height=500/>  <img  src="https://github.com/Mindinventory/country_picker/blob/dev-manish/lib/assets/dropdown.gif?raw=true"  width="250" height=500/>
 ## localization support
-<img  src="https://github.com/Mindinventory/country_picker/blob/dev-manish/lib/assets/localization_support.gif"  width="250" height=500 />
+<img  src="https://github.com/Mindinventory/country_picker/blob/dev-manish/lib/assets/localization_support.gif?raw=true"  width="250" height=500 />
+
 ## Example
 For Country picker dialog
 ```dart
@@ -57,7 +58,7 @@ CountryPicker.getCountryData(context: context,code: "+1");
 ### For localization
 Add the `CountryPickerLocalizations.delegate` to the list of your app delegates.
 ```dart
- return MaterialApp(
+return MaterialApp(
     supportedLocales: [
         Locale("hi"),
         Locale("tk"),
@@ -73,20 +74,21 @@ Add the `CountryPickerLocalizations.delegate` to the list of your app delegates.
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
+);
 ```
 ----
 
 ### CountryPicker
 The **`CountryPicker`** class encapsulates all functionalities of this package. Utilize these optional properties to customize the appearance and view of the picker according to your preferences.
 
-|Fields|Type|Description
-|:---:|:---:|:---|
-| **context** | `BuildContext` | A handle to the location of a widget in the widget tree `Required`.|
-|**favouriteCountries**|`List<String>?`| favouriteCountries will be placed on the top of list.|
-|**barrierColor**| `Color?`|barrierColor that covers the screen behind a modal or overlay widget.
-|**isDismissible**| `bool?` | isDismissible determines whether the widget can be dismissed or closed by tapping outside of it.
-|**backgroundColor**| `Color?`| backgroundColor is a property to set the background color of the country picker widget.
-|**useSafeArea**|`bool?`| useSafeArea is for visible/avoids overlapping with system UI elements.
+|         Fields         |      Type       | Description                                                                                      |
+|:----------------------:|:---------------:|:-------------------------------------------------------------------------------------------------|
+|      **context**       | `BuildContext`  | A handle to the location of a widget in the widget tree `Required`.                              |
+| **favouriteCountries** | `List<String>?` | favouriteCountries will be placed on the top of list.                                            |
+|    **barrierColor**    |    `Color?`     | barrierColor that covers the screen behind a modal or overlay widget.                            |
+|   **isDismissible**    |     `bool?`     | isDismissible determines whether the widget can be dismissed or closed by tapping outside of it. |
+|  **backgroundColor**   |    `Color?`     | backgroundColor is a property to set the background color of the country picker widget.          |
+|    **useSafeArea**     |     `bool?`     | useSafeArea is for visible/avoids overlapping with system UI elements.                           |
 
 **`LayoutConfig`** and **`SearchStyle`** models are used to configure the layout and styling of the interface.
 |Fields|Type|Description
