@@ -22,7 +22,7 @@
 A Flutter package for selecting country codes from a list. It offers multiple modes for the country code picker and supports the locale of the current device in 70 different languages.
 
 ## Overview
-<img  src="https://git.mindinventory.com/miopensource/mi-country-picker/-/blob/4c20ffee0376621d873bba5ada186319514d72d6/lib/assets/dialog.gif"  width="250" height=500 typeof="video/mp4"/> <img  src="https://git.mindinventory.com/miopensource/mi-country-picker/-/blob/dev-manish/lib/assets/dialog.gif"  width="250" height=500/> 
+<img  src="https://git.mindinventory.com/miopensource/mi-country-picker/-/blob/lib/assets/dialog.gif"  width="250" height=500 typeof="video/mp4"/> <img  src="https://git.mindinventory.com/miopensource/mi-country-picker/-/blob/dev-manish/lib/assets/dialog.gif"  width="250" height=500/> 
 
 <img  src="assets/cupertino_bottom.gif"  width="250" height=500/>  <img  src="https://git.mindinventory.com/miopensource/mi-country-picker/-/blob/dev-manish/lib/assets/dropdown.gif"  width="250" height=500/>
 
@@ -30,6 +30,10 @@ A Flutter package for selecting country codes from a list. It offers multiple mo
 For Country picker dialog
 ```dart
 final country= await CountryPicker.showCountryPickerDialog(context: context);
+```
+For Country picker bottom sheet
+```dart
+final country= await CountryPicker.showCountryPickerBottomSheet(context: context);
 ```
 
 For Country picker cupertino bottom sheet
@@ -44,7 +48,7 @@ CountryPickerDropDown(
       },
     );
 ```
-Set the initial country with `CountryPicker.getInitialValue`, by default, it takes `+91` code
+get the initial country with `CountryPicker.getInitialValue`, by default, it takes `+91` code
 ```dart
 CountryPicker.getInitialValue(context: context,initialCountryValue: "+1"); 
 ```

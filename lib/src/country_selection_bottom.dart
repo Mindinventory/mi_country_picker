@@ -30,10 +30,12 @@ class CountrySelectionBottomSheet extends StatefulWidget {
 
   @override
   // ignore: no_logic_in_create_state
-  State<CountrySelectionBottomSheet> createState() => _CountrySelectionBottomSheetState();
+  State<CountrySelectionBottomSheet> createState() =>
+      _CountrySelectionBottomSheetState();
 }
 
-class _CountrySelectionBottomSheetState extends State<CountrySelectionBottomSheet> {
+class _CountrySelectionBottomSheetState
+    extends State<CountrySelectionBottomSheet> {
   List<CountryData> countriesElements = [];
   CountryData? selectedItem;
   List<CountryData> favoriteCountries = [];

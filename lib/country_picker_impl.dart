@@ -51,7 +51,8 @@ class CountryPicker {
               closeIconWidget: closeIconWidget,
               layoutConfig: layoutConfig,
               borderRadius: borderRadius,
-              backGroundColor: backgroundColor ?? Theme.of(context).dialogBackgroundColor,
+              backGroundColor:
+                  backgroundColor ?? Theme.of(context).dialogBackgroundColor,
               countryTilePadding: countryTilePadding,
               emptySearchBuilder: emptySearchBuilder,
               showSearchBar: showSearchBar,
@@ -73,7 +74,8 @@ class CountryPicker {
       getInitialValue = codes.firstWhere(
         (element) =>
             element['code'] == initialCountryValue ||
-            element['name']?.toLowerCase() == initialCountryValue.toLowerCase() ||
+            element['name']?.toLowerCase() ==
+                initialCountryValue.toLowerCase() ||
             element['dial_code'] == initialCountryValue,
       );
     } else {
@@ -115,20 +117,24 @@ class CountryPicker {
       AnimationController? transitionAnimationController,
       bool? useRootNavigator}) async {
     return await showModalBottomSheet(
-      backgroundColor: backgroundColor ?? Theme.of(context).bottomSheetTheme.backgroundColor,
+      backgroundColor:
+          backgroundColor ?? Theme.of(context).bottomSheetTheme.backgroundColor,
       shape: shape,
-      barrierColor: barrierColor ?? Theme.of(context).bottomSheetTheme.modalBarrierColor,
+      barrierColor:
+          barrierColor ?? Theme.of(context).bottomSheetTheme.modalBarrierColor,
       useSafeArea: useSafeArea ?? false,
       isDismissible: isDismissible ?? true,
       anchorPoint: anchorPoint,
       constraints: constraints,
-      clipBehavior: clipBehavior ?? Theme.of(context).bottomSheetTheme.clipBehavior,
+      clipBehavior:
+          clipBehavior ?? Theme.of(context).bottomSheetTheme.clipBehavior,
       isScrollControlled: isScrollControlled ?? false,
       barrierLabel: barrierLabel,
       elevation: elevation ?? Theme.of(context).bottomSheetTheme.elevation,
       enableDrag: enableDrag ?? true,
       routeSettings: routeSettings,
-      scrollControlDisabledMaxHeightRatio: scrollControlDisabledMaxHeightRatio ?? 9.0 / 16.0,
+      scrollControlDisabledMaxHeightRatio:
+          scrollControlDisabledMaxHeightRatio ?? 9.0 / 16.0,
       showDragHandle: showDragHandle ?? false,
       transitionAnimationController: transitionAnimationController,
       useRootNavigator: useRootNavigator ?? false,
@@ -182,8 +188,10 @@ class CountryPicker {
       context: context,
       shape: shape,
       isDismissible: isDismissible ?? true,
-      backgroundColor: backgroundColor ?? Theme.of(context).bottomSheetTheme.modalBackgroundColor,
-      barrierColor: barrierColor ?? Theme.of(context).bottomSheetTheme.modalBarrierColor,
+      backgroundColor: backgroundColor ??
+          Theme.of(context).bottomSheetTheme.modalBackgroundColor,
+      barrierColor:
+          barrierColor ?? Theme.of(context).bottomSheetTheme.modalBarrierColor,
       elevation: elevation ?? Theme.of(context).bottomSheetTheme.modalElevation,
       transitionAnimationController: transitionAnimationController,
       clipBehavior: clipBehavior,
@@ -205,7 +213,8 @@ class CountryPicker {
           squeeze: squeeze ?? 1.45,
           offAxisFraction: offAxisFraction ?? 0.0,
           itemExtent: itemExtent ?? 32,
-          backgroundColor: backgroundColor ?? Theme.of(context).bottomSheetTheme.modalBackgroundColor,
+          backgroundColor: backgroundColor ??
+              Theme.of(context).bottomSheetTheme.modalBackgroundColor,
           layoutConfig: layoutConfig,
           countryListConfig: countryListConfig,
         );
