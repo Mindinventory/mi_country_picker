@@ -111,7 +111,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  TextStyle get _defaultTextStyle => const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black);
+  TextStyle get _defaultTextStyle => const TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
+      );
+
   Widget title({String? title}) {
     return Text(
       title ?? "",
