@@ -1,5 +1,5 @@
 name: mi_country_picker
-description: mi_country_picker is a Flutter package for selecting country codes from a list. It offers multiple modes for the country code picker and supports the locale of the current device in 70 different languages.
+description: Flutter package for selecting country codes. Offers multiple modes for picker and supports locale in 70 languages.
 version: 0.0.1
 repository: https://github.com/Mindinventory/mi_country_picker
 issue_tracker: https://github.com/Mindinventory/mi_country_picker/issues
