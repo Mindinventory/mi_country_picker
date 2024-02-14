@@ -58,11 +58,11 @@ class _CountrySelectionBottomSheetState
           ?.map((e) => e.toUpperCase())
           .toList();
       countriesElements = countriesElements
-          .where((element) =>
-              uppercaseFilterElement!.contains(element.name) ||
-              uppercaseFilterElement.contains(element.dialCode) ||
-              uppercaseFilterElement.contains(element.code))
+          .where((element) => uppercaseFilterElement!.contains(element.code))
           .toList();
+      if (countriesElements.isEmpty) {
+        throw ("Invalid country list");
+      }
     }
 
     filteredElements = countriesElements;
@@ -72,12 +72,8 @@ class _CountrySelectionBottomSheetState
           i < (widget.countryListConfig?.excludeCountry?.length ?? 0);
           i++) {
         for (int j = 0; j < countriesElements.length; j++) {
-          if ((widget.countryListConfig?.excludeCountry?[i].toLowerCase() ==
-                  countriesElements[j].name?.toLowerCase()) ||
-              (widget.countryListConfig?.excludeCountry?[i] ==
-                  countriesElements[j].dialCode) ||
-              (widget.countryListConfig?.excludeCountry?[i].toUpperCase() ==
-                  countriesElements[j].code)) {
+          if ((widget.countryListConfig?.excludeCountry?[i].toUpperCase() ==
+              countriesElements[j].code)) {
             countriesElements.removeAt(j);
             break;
           }
@@ -87,7 +83,7 @@ class _CountrySelectionBottomSheetState
     if (widget.favouriteCountries != null) {
       favoriteCountries = countriesElements
           .where((element) =>
-              widget.favouriteCountries?.contains(element.dialCode) ?? false)
+              widget.favouriteCountries?.contains(element.code) ?? false)
           .toList();
     }
     super.initState();

@@ -134,17 +134,18 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void didChangeDependencies() {
-    initialDialogDefaultValue = CountryPicker.getInitialValue(context: context);
-    initialDialogCustomValue = CountryPicker.getInitialValue(
-        context: context, initialCountryValue: "+213");
-    initialBottomDefaultValue = CountryPicker.getInitialValue(context: context);
-    initialBottomCustomValue = CountryPicker.getInitialValue(
-        context: context, initialCountryValue: "+61");
-    initialCupertinoBottomDefaultValue = CountryPicker.getInitialValue(
-      context: context,
-    );
-    initialCupertinoBottomCustomValue = CountryPicker.getInitialValue(
-        context: context, initialCountryValue: "+44");
+    initialDialogDefaultValue =
+        CountryPicker.getCountryData(context: context, code: "IN");
+    initialDialogCustomValue =
+        CountryPicker.getCountryData(context: context, code: "ID");
+    initialBottomDefaultValue =
+        CountryPicker.getCountryData(context: context, code: "IN");
+    initialBottomCustomValue =
+        CountryPicker.getCountryData(context: context, code: "IS");
+    initialCupertinoBottomDefaultValue =
+        CountryPicker.getCountryData(context: context, code: "IN");
+    initialCupertinoBottomCustomValue =
+        CountryPicker.getCountryData(context: context, code: "UY");
     super.didChangeDependencies();
   }
 
@@ -285,6 +286,7 @@ class _HomePageState extends State<HomePage> {
                                 ElevatedButton(
                                   onPressed: () => CountryPicker
                                       .showCountryPickerBottomSheet(
+                                    favouriteCountries: ["India"],
                                     layoutConfig: const LayoutConfig(
                                         elementsSequence:
                                             Sequence.flagCodeAndCountryName),

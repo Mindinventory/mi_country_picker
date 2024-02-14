@@ -1,7 +1,5 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:mi_country_picker/mi_country_picker.dart';
-import 'package:mi_country_picker/src/codes.dart';
 
 mixin ToAlias {}
 
@@ -26,12 +24,6 @@ class CountryData {
     this.dialCode,
   });
 
-  factory CountryData.fromCountryCode(String countryCode) {
-    final Map<String, String>? jsonCode = codes.firstWhereOrNull(
-      (code) => code['code'] == countryCode,
-    );
-    return CountryData.fromJson(jsonCode!);
-  }
   @override
   bool operator ==(Object other) {
     return (other is CountryData) && other.name == name;
@@ -39,13 +31,6 @@ class CountryData {
 
   @override
   int get hashCode => name.hashCode;
-
-  factory CountryData.fromDialCode(String dialCode) {
-    final Map<String, String>? jsonCode = codes.firstWhereOrNull(
-      (code) => code['dial_code'] == dialCode,
-    );
-    return CountryData.fromJson(jsonCode!);
-  }
 
   CountryData localize(BuildContext context) {
     return this

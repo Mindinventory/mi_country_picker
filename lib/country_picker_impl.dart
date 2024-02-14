@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:mi_country_picker/src/codes.dart';
 import 'package:mi_country_picker/src/country_selection_bottom.dart';
@@ -65,27 +67,29 @@ class CountryPicker {
     );
   }
 
-  static CountryData getInitialValue({
+  static CountryData getCountryData({
     required BuildContext context,
-    String? initialCountryValue,
+    String? code,
   }) {
-    Map<String, String> getInitialValue;
-    if (initialCountryValue != null) {
-      getInitialValue = codes.firstWhere(
-        (element) =>
-            element['code'] == initialCountryValue ||
-            element['name']?.toLowerCase() ==
-                initialCountryValue.toLowerCase() ||
-            element['dial_code'] == initialCountryValue,
-      );
+    final region = PlatformDispatcher.instance.locale.countryCode;
+    Map<String, String>? initialValue;
+    if (code != null) {
+      initialValue = codes.firstWhere((element) => element['code'] == code,
+          orElse: () => {});
+      if (initialValue.isEmpty) {
+        throw ("Initial country value does not exist");
+      }
     } else {
-      getInitialValue = {
+      initialValue = codes.firstWhere((element) => element["code"] == region);
+    }
+    if (initialValue.isEmpty) {
+      initialValue = {
         "name": "भारत",
         "code": "IN",
         "dial_code": "+91",
       };
     }
-    return CountryData.fromJson(getInitialValue).localize(context);
+    return CountryData.fromJson(initialValue).localize(context);
   }
 
   static Future<CountryData?> showCountryPickerBottomSheet(

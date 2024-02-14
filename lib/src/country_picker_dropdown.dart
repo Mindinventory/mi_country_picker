@@ -99,32 +99,26 @@ class _CountryPickerDropDownState extends State<CountryPickerDropDown> {
           ?.map((e) => e.toUpperCase())
           .toList();
       countriesElements = countriesElements
-          .where((element) =>
-              uppercaseFilterElement!.contains(element.name) ||
-              uppercaseFilterElement.contains(element.dialCode) ||
-              uppercaseFilterElement.contains(element.code))
+          .where((element) => uppercaseFilterElement!.contains(element.code))
           .toList();
+      if (countriesElements.isEmpty) {
+        throw ("Invalid country list");
+      }
     }
 
     super.initState();
     if (widget.selectInitialCountry != null) {
       selectedItem = countriesElements.firstWhere(
           (element) =>
-              element.name == widget.selectInitialCountry?.toUpperCase() ||
-              element.dialCode == widget.selectInitialCountry?.toUpperCase() ||
               element.code == widget.selectInitialCountry?.toUpperCase(),
-          orElse: () => countriesElements.firstWhere((element) =>
-              element.name == "भारत" ||
-              element.dialCode == "+91" ||
-              element.code == "IN"));
+          orElse: () =>
+              countriesElements.firstWhere((element) => element.code == "IN"));
     } else {
       if (widget.countryListConfig?.countryFilter != null) {
         selectedItem ??= countriesElements.first;
       } else {
-        selectedItem = countriesElements.firstWhere((element) =>
-            element.name == "भारत" ||
-            element.dialCode == "+91" ||
-            element.code == "IN");
+        selectedItem =
+            countriesElements.firstWhere((element) => element.code == "IN");
       }
     }
     if (widget.countryListConfig?.excludeCountry != null &&
@@ -133,12 +127,8 @@ class _CountryPickerDropDownState extends State<CountryPickerDropDown> {
           i < (widget.countryListConfig?.excludeCountry?.length ?? 0);
           i++) {
         for (int j = 0; j < countriesElements.length; j++) {
-          if ((widget.countryListConfig?.excludeCountry?[i].toLowerCase() ==
-                  countriesElements[j].name?.toLowerCase()) ||
-              (widget.countryListConfig?.excludeCountry?[i] ==
-                  countriesElements[j].dialCode) ||
-              (widget.countryListConfig?.excludeCountry?[i].toUpperCase() ==
-                  countriesElements[j].code)) {
+          if ((widget.countryListConfig?.excludeCountry?[i].toUpperCase() ==
+              countriesElements[j].code)) {
             countriesElements.removeAt(j);
             break;
           }
@@ -155,8 +145,6 @@ class _CountryPickerDropDownState extends State<CountryPickerDropDown> {
       if (widget.selectInitialCountry != null) {
         selectedItem = countriesElements.firstWhere(
           (element) =>
-              element.name == widget.selectInitialCountry?.toUpperCase() ||
-              element.dialCode == widget.selectInitialCountry?.toUpperCase() ||
               element.code == widget.selectInitialCountry?.toUpperCase(),
           orElse: () => countriesElements[0],
         );

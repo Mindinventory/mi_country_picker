@@ -49,9 +49,9 @@ CountryPickerDropDown(
       },
     );
 ```
-get the initial country with `CountryPicker.getInitialValue`, by default, it takes `+91` code
+get the initial country with `CountryPicker.getCountryData`.
 ```dart
-CountryPicker.getInitialValue(context: context,initialCountryValue: "+1"); 
+CountryPicker.getCountryData(context: context,code: "+1"); 
 ```
 
 ### For localization
@@ -109,7 +109,7 @@ The **`CountryPicker`** class encapsulates all functionalities of this package. 
 **`CountryListConfig`** model is used to manipulate the country list.
 |Fields|Type|Description
 |:---:|:---:|:---|
-|**countryFilter**|`List<String>?`| Provide the list of countries name/code/dialCode to show the list of countries in Country picker.
+|**countryFilter**|`List<String>?`| Provide the list of countries country code to show the list of countries in Country picker.
 |**comparator**|`Comparator<CountryData>?`| comparator is used to change the order of country list.
 |**excludeCountry**|`List<String>??`| remove particular countries from our list.
 
@@ -125,7 +125,7 @@ It would be great for us if the reporter could share the below things to underst
 - Screenshot/video with steps to reproduce the issue
 
 # LICENSE!
-mi_country_picker is [MIT-licensed](https://git.mindinventory.com/miopensource/mi-country-picker/-/blob/dev-manish/LICENSE).
+mi_country_picker is [MIT-licensed](https://github.com/Mindinventory/mi_country_picker/blob/main/LICENSE).
 
 # Let us know!
 
