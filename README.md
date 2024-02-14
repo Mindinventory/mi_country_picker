@@ -128,4 +128,5 @@ It would be great for us if the reporter could share the below things to underst
 mi_country_picker is [MIT-licensed](https://git.mindinventory.com/miopensource/mi-country-picker/-/blob/dev-manish/LICENSE).
 
 # Let us know!
+
 We’d be really happy if you send us links to your projects where you use our component. Just send an email to sales@mindinventory.com And do let us know if you have any questions or suggestions regarding our work.
