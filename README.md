@@ -22,9 +22,9 @@
 A Flutter package for selecting country codes from a list. It offers multiple modes for the country code picker and supports the locale of the current device in 70 different languages.
 
 ## Overview
-<img  src="https://github.com/Mindinventory/country_picker/blob/dev-manish/lib/assets/cupertino_bottom.gif?raw=true"  width="250" height=500/> <img  src="https://github.com/Mindinventory/country_picker/blob/dev-manish/lib/assets/bottom.gif?raw=true"  width="250" height=500/> 
+<img  src="https://github.com/Mindinventory/country_picker/blob/main/lib/assets/cupertino_bottom.gif?raw=true"  width="250" height=500/> <img  src="https://github.com/Mindinventory/country_picker/blob/main/lib/assets/bottom.gif?raw=true"  width="250" height=500/> 
 
-<img  src="https://github.com/Mindinventory/country_picker/blob/dev-manish/lib/assets/dialog.gif?raw=true"  width="250" height=500/>  <img  src="https://github.com/Mindinventory/country_picker/blob/dev-manish/lib/assets/dropdown.gif?raw=true"  width="250" height=500/>
+<img  src="https://github.com/Mindinventory/country_picker/blob/main/lib/assets/dialog.gif?raw=true"  width="250" height=500/>  <img  src="https://github.com/Mindinventory/country_picker/blob/main/lib/assets/dropdown.gif?raw=true"  width="250" height=500/>
 ## localization support
 <img  src="https://github.com/Mindinventory/country_picker/blob/dev-manish/lib/assets/localization_support.gif?raw=true"  width="250" height=500 />
 
