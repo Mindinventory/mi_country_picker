@@ -26,7 +26,7 @@ A Flutter package for selecting country codes from a list. It offers multiple mo
 
 <img  src="https://github.com/Mindinventory/country_picker/blob/main/lib/assets/dialog.gif?raw=true"  width="250" height=500/>  <img  src="https://github.com/Mindinventory/country_picker/blob/main/lib/assets/dropdown.gif?raw=true"  width="250" height=500/>
 ## localization support
-<img  src="https://github.com/Mindinventory/country_picker/blob/dev-manish/lib/assets/localization_support.gif?raw=true"  width="250" height=500 />
+<img  src="https://github.com/Mindinventory/country_picker/blob/main/lib/assets/localization_support.gif?raw=true"  width="250" height=500 />
 
 ## Example
 For Country picker dialog
