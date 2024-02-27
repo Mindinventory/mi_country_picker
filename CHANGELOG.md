@@ -1,3 +1,6 @@
+## 0.0.5
+
+* Updated the package details.
 ## 0.0.4
 
 * Updated the package details.

@@ -30,10 +30,12 @@ class CountrySelectionBottomSheet extends StatefulWidget {
 
   @override
   // ignore: no_logic_in_create_state
-  State<CountrySelectionBottomSheet> createState() => _CountrySelectionBottomSheetState();
+  State<CountrySelectionBottomSheet> createState() =>
+      _CountrySelectionBottomSheetState();
 }
 
-class _CountrySelectionBottomSheetState extends State<CountrySelectionBottomSheet> {
+class _CountrySelectionBottomSheetState
+    extends State<CountrySelectionBottomSheet> {
   List<CountryData> countriesElements = [];
   CountryData? selectedItem;
   List<CountryData> favoriteCountries = [];
@@ -44,24 +46,34 @@ class _CountrySelectionBottomSheetState extends State<CountrySelectionBottomShee
 
   @override
   void initState() {
-    countriesElements = codes.map((element) => CountryData.fromJson(element)).toList();
+    countriesElements =
+        codes.map((element) => CountryData.fromJson(element)).toList();
     if (widget.countryListConfig?.comparator != null) {
       countriesElements.sort(widget.countryListConfig?.comparator);
     }
 
-    if (widget.countryListConfig?.countryFilter != null && widget.countryListConfig!.countryFilter!.isNotEmpty) {
-      final uppercaseFilterElement = widget.countryListConfig?.countryFilter?.map((e) => e.toUpperCase()).toList();
-      countriesElements = countriesElements.where((element) => uppercaseFilterElement!.contains(element.code)).toList();
+    if (widget.countryListConfig?.countryFilter != null &&
+        widget.countryListConfig!.countryFilter!.isNotEmpty) {
+      final uppercaseFilterElement = widget.countryListConfig?.countryFilter
+          ?.map((e) => e.toUpperCase())
+          .toList();
+      countriesElements = countriesElements
+          .where((element) => uppercaseFilterElement!.contains(element.code))
+          .toList();
       if (countriesElements.isEmpty) {
         throw ("Invalid country list");
       }
     }
 
     filteredElements = countriesElements;
-    if (widget.countryListConfig?.excludeCountry != null && widget.countryListConfig!.excludeCountry!.isNotEmpty) {
-      for (int i = 0; i < (widget.countryListConfig?.excludeCountry?.length ?? 0); i++) {
+    if (widget.countryListConfig?.excludeCountry != null &&
+        widget.countryListConfig!.excludeCountry!.isNotEmpty) {
+      for (int i = 0;
+          i < (widget.countryListConfig?.excludeCountry?.length ?? 0);
+          i++) {
         for (int j = 0; j < countriesElements.length; j++) {
-          if ((widget.countryListConfig?.excludeCountry?[i].toUpperCase() == countriesElements[j].code)) {
+          if ((widget.countryListConfig?.excludeCountry?[i].toUpperCase() ==
+              countriesElements[j].code)) {
             countriesElements.removeAt(j);
             break;
           }
@@ -69,14 +81,18 @@ class _CountrySelectionBottomSheetState extends State<CountrySelectionBottomShee
       }
     }
     if (widget.favouriteCountries != null) {
-      favoriteCountries = countriesElements.where((element) => widget.favouriteCountries?.contains(element.code) ?? false).toList();
+      favoriteCountries = countriesElements
+          .where((element) =>
+              widget.favouriteCountries?.contains(element.code) ?? false)
+          .toList();
     }
     super.initState();
   }
 
   @override
   void didChangeDependencies() {
-    countriesElements = countriesElements.map((e) => e.localize(context)).toList();
+    countriesElements =
+        countriesElements.map((e) => e.localize(context)).toList();
     super.didChangeDependencies();
   }
 
@@ -123,7 +139,8 @@ class _CountrySelectionBottomSheetState extends State<CountrySelectionBottomShee
                 ),
             height: widget.searchStyle?.searchBoxHeight ?? 40,
             child: TextField(
-              style: widget.searchStyle?.searchTextStyle ?? const TextStyle(fontSize: 14, height: 16 / 14),
+              style: widget.searchStyle?.searchTextStyle ??
+                  const TextStyle(fontSize: 14, height: 16 / 14),
               textAlignVertical: TextAlignVertical.center,
               onChanged: (value) {
                 _filterElements(value);
@@ -154,7 +171,8 @@ class _CountrySelectionBottomSheetState extends State<CountrySelectionBottomShee
                             ),
                       ),
                       hintText: widget.searchStyle?.hintText ?? "Search",
-                      hintStyle: TextStyle(fontSize: 14, color: Colors.grey.shade400)),
+                      hintStyle:
+                          TextStyle(fontSize: 14, color: Colors.grey.shade400)),
             ),
           ),
         Expanded(
@@ -174,7 +192,9 @@ class _CountrySelectionBottomSheetState extends State<CountrySelectionBottomShee
                             _selectItem(favoriteCountries[index]);
                           },
                           child: Padding(
-                            padding: widget.countryTilePadding ?? const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                            padding: widget.countryTilePadding ??
+                                const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 8),
                             child: buildList(context, favoriteCountries[index]),
                           ),
                         );
@@ -193,7 +213,9 @@ class _CountrySelectionBottomSheetState extends State<CountrySelectionBottomShee
                         _selectItem(filteredElements[index]);
                       },
                       child: Padding(
-                        padding: widget.countryTilePadding ?? const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                        padding: widget.countryTilePadding ??
+                            const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 8),
                         child: buildList(context, filteredElements[index]),
                       ),
                     );
@@ -213,13 +235,16 @@ class _CountrySelectionBottomSheetState extends State<CountrySelectionBottomShee
 
     return SliverFillRemaining(
       child: Center(
-        child: Text(CountryPickerLocalizations.of(context)?.translate('no_country') ?? 'Not found'),
+        child: Text(
+            CountryPickerLocalizations.of(context)?.translate('no_country') ??
+                'Not found'),
       ),
     );
   }
 
   Widget buildList(BuildContext context, CountryData e) {
-    if (widget.layoutConfig?.elementsSequence == Sequence.flagCodeAndCountryName) {
+    if (widget.layoutConfig?.elementsSequence ==
+        Sequence.flagCodeAndCountryName) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
@@ -229,7 +254,9 @@ class _CountrySelectionBottomSheetState extends State<CountrySelectionBottomShee
               child: Container(
                 margin: const EdgeInsets.only(right: 16),
                 decoration: widget.layoutConfig?.flagDecoration,
-                clipBehavior: widget.layoutConfig?.flagDecoration == null ? Clip.none : Clip.hardEdge,
+                clipBehavior: widget.layoutConfig?.flagDecoration == null
+                    ? Clip.none
+                    : Clip.hardEdge,
                 child: Image.asset(
                   e.flagUri!,
                   package: 'mi_country_picker',
@@ -241,7 +268,8 @@ class _CountrySelectionBottomSheetState extends State<CountrySelectionBottomShee
             ),
           if (widget.layoutConfig?.showCountryCode ?? true)
             SizedBox(
-              width: calculateSize(widget.layoutConfig?.textStyle?.fontSize ?? _defaultTextStyle.fontSize!),
+              width: calculateSize(widget.layoutConfig?.textStyle?.fontSize ??
+                  _defaultTextStyle.fontSize!),
               child: Text(
                 textAlign: TextAlign.start,
                 e.toString(),
@@ -267,7 +295,8 @@ class _CountrySelectionBottomSheetState extends State<CountrySelectionBottomShee
         children: [
           if (widget.layoutConfig?.showCountryCode ?? true)
             SizedBox(
-              width: calculateSize(widget.layoutConfig?.textStyle?.fontSize ?? _defaultTextStyle.fontSize!),
+              width: calculateSize(widget.layoutConfig?.textStyle?.fontSize ??
+                  _defaultTextStyle.fontSize!),
               child: Text(
                 textAlign: TextAlign.start,
                 e.toString(),
@@ -290,7 +319,9 @@ class _CountrySelectionBottomSheetState extends State<CountrySelectionBottomShee
               child: Container(
                 margin: const EdgeInsets.only(left: 16.0),
                 decoration: widget.layoutConfig?.flagDecoration,
-                clipBehavior: widget.layoutConfig?.flagDecoration == null ? Clip.none : Clip.hardEdge,
+                clipBehavior: widget.layoutConfig?.flagDecoration == null
+                    ? Clip.none
+                    : Clip.hardEdge,
                 child: Image.asset(
                   e.flagUri!,
                   package: 'mi_country_picker',
@@ -308,8 +339,12 @@ class _CountrySelectionBottomSheetState extends State<CountrySelectionBottomShee
   void _filterElements(String s) {
     s = s.toUpperCase();
     setState(() {
-      filteredElements =
-          countriesElements.where((e) => e.code!.contains(s) || e.dialCode!.contains(s) || e.name!.toUpperCase().contains(s)).toList();
+      filteredElements = countriesElements
+          .where((e) =>
+              e.code!.contains(s) ||
+              e.dialCode!.contains(s) ||
+              e.name!.toUpperCase().contains(s))
+          .toList();
     });
   }
 
