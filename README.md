@@ -52,7 +52,7 @@ CountryPickerDropDown(
 ```
 get the initial country with `CountryPicker.getCountryData`.
 ```dart
-CountryPicker.getCountryData(context: context,code: "+1"); 
+CountryPicker.getCountryData(context: context,code: "IN"); 
 ```
 
 ### For localization

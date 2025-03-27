@@ -16,6 +16,9 @@ class CountryPicker {
     CountryListConfig? countryListConfig,
     SearchStyle? searchStyle,
 
+    /// onCountrySelect is a callback function which returns the selected country data.
+    Function(CountryData?)? onCountrySelect,
+
     /// favourite countries will be placed on the top of list.
     List<String>? favouriteCountries,
     bool? isDismissible,
@@ -47,14 +50,14 @@ class CountryPicker {
             clipBehavior: clipBehavior ?? Clip.none,
             alignment: alignment,
             child: CountrySelectionDialog(
+              onCountrySelect: onCountrySelect,
               searchStyle: searchStyle,
               favouriteCountries: favouriteCountries,
               countryListConfig: countryListConfig,
               closeIconWidget: closeIconWidget,
               layoutConfig: layoutConfig,
               borderRadius: borderRadius,
-              backGroundColor:
-                  backgroundColor ?? Theme.of(context).dialogBackgroundColor,
+              backGroundColor: backgroundColor ?? Theme.of(context).dialogBackgroundColor,
               countryTilePadding: countryTilePadding,
               emptySearchBuilder: emptySearchBuilder,
               showSearchBar: showSearchBar,
@@ -74,8 +77,7 @@ class CountryPicker {
     final region = PlatformDispatcher.instance.locale.countryCode;
     Map<String, String>? initialValue;
     if (code != null) {
-      initialValue = codes.firstWhere((element) => element['code'] == code,
-          orElse: () => {});
+      initialValue = codes.firstWhere((element) => element['code'] == code, orElse: () => {});
       if (initialValue.isEmpty) {
         throw ("Initial country value does not exist");
       }
@@ -119,26 +121,23 @@ class CountryPicker {
       double? scrollControlDisabledMaxHeightRatio,
       bool? showDragHandle,
       AnimationController? transitionAnimationController,
+      Function(CountryData?)? onCountrySelect,
       bool? useRootNavigator}) async {
     return await showModalBottomSheet(
-      backgroundColor:
-          backgroundColor ?? Theme.of(context).bottomSheetTheme.backgroundColor,
+      backgroundColor: backgroundColor ?? Theme.of(context).bottomSheetTheme.backgroundColor,
       shape: shape,
-      barrierColor:
-          barrierColor ?? Theme.of(context).bottomSheetTheme.modalBarrierColor,
+      barrierColor: barrierColor ?? Theme.of(context).bottomSheetTheme.modalBarrierColor,
       useSafeArea: useSafeArea ?? false,
       isDismissible: isDismissible ?? true,
       anchorPoint: anchorPoint,
       constraints: constraints,
-      clipBehavior:
-          clipBehavior ?? Theme.of(context).bottomSheetTheme.clipBehavior,
+      clipBehavior: clipBehavior ?? Theme.of(context).bottomSheetTheme.clipBehavior,
       isScrollControlled: isScrollControlled ?? false,
       barrierLabel: barrierLabel,
       elevation: elevation ?? Theme.of(context).bottomSheetTheme.elevation,
       enableDrag: enableDrag ?? true,
       routeSettings: routeSettings,
-      scrollControlDisabledMaxHeightRatio:
-          scrollControlDisabledMaxHeightRatio ?? 9.0 / 16.0,
+      scrollControlDisabledMaxHeightRatio: scrollControlDisabledMaxHeightRatio ?? 9.0 / 16.0,
       showDragHandle: showDragHandle ?? false,
       transitionAnimationController: transitionAnimationController,
       useRootNavigator: useRootNavigator ?? false,
@@ -154,6 +153,7 @@ class CountryPicker {
           emptySearchBuilder: emptySearchBuilder,
           closeIconWidget: closeIconWidget,
           countryTilePadding: countryTilePadding,
+          onCountrySelect: onCountrySelect,
         );
       },
     );
@@ -184,6 +184,7 @@ class CountryPicker {
       LayoutConfig? layoutConfig,
       CountryListConfig? countryListConfig,
       double? diameterRatio,
+      Function(CountryData?)? onCountryChanged,
       EdgeInsets? countryTilePadding}) async {
     CountryData? countryData;
     await showModalBottomSheet(
@@ -192,10 +193,8 @@ class CountryPicker {
       context: context,
       shape: shape,
       isDismissible: isDismissible ?? true,
-      backgroundColor: backgroundColor ??
-          Theme.of(context).bottomSheetTheme.modalBackgroundColor,
-      barrierColor:
-          barrierColor ?? Theme.of(context).bottomSheetTheme.modalBarrierColor,
+      backgroundColor: backgroundColor ?? Theme.of(context).bottomSheetTheme.modalBackgroundColor,
+      barrierColor: barrierColor ?? Theme.of(context).bottomSheetTheme.modalBarrierColor,
       elevation: elevation ?? Theme.of(context).bottomSheetTheme.modalElevation,
       transitionAnimationController: transitionAnimationController,
       clipBehavior: clipBehavior,
@@ -205,9 +204,10 @@ class CountryPicker {
       builder: (BuildContext context) {
         return CountryPickerCupertinoBottomSheet(
           diameterRatio: diameterRatio,
-          onChanged: (value) {
-            countryData = value;
-          },
+          onChanged: onCountryChanged ??
+              (country) {
+                countryData = country;
+              },
           setInitialValue: setInitialValue,
           useMagnifier: useMagnifier ?? true,
           countryTilePadding: countryTilePadding,
@@ -217,8 +217,7 @@ class CountryPicker {
           squeeze: squeeze ?? 1.45,
           offAxisFraction: offAxisFraction ?? 0.0,
           itemExtent: itemExtent ?? 32,
-          backgroundColor: backgroundColor ??
-              Theme.of(context).bottomSheetTheme.modalBackgroundColor,
+          backgroundColor: backgroundColor ?? Theme.of(context).bottomSheetTheme.modalBackgroundColor,
           layoutConfig: layoutConfig,
           countryListConfig: countryListConfig,
         );

@@ -22,8 +22,12 @@ class CountrySelectionDialog extends StatefulWidget {
   final bool? showSearchBar;
   final Widget? header;
 
+  /// [onCountrySelect] is a callback function which returns the selected country data.
+  final Function(CountryData?)? onCountrySelect;
+
   const CountrySelectionDialog({
     super.key,
+    this.onCountrySelect,
     this.showSearchBar,
     this.countryTilePadding,
     this.emptySearchBuilder,
@@ -53,34 +57,23 @@ class _CountrySelectionDialogState extends State<CountrySelectionDialog> {
   @override
   void initState() {
     super.initState();
-    countriesElements = widget.listOfCountries
-        .map((element) => CountryData.fromJson(element))
-        .toList();
+    countriesElements = widget.listOfCountries.map((element) => CountryData.fromJson(element)).toList();
     if (widget.countryListConfig?.comparator != null) {
       countriesElements.sort(widget.countryListConfig?.comparator);
     }
 
-    if (widget.countryListConfig?.countryFilter != null &&
-        widget.countryListConfig!.countryFilter!.isNotEmpty) {
-      final uppercaseFilterElement = widget.countryListConfig?.countryFilter
-          ?.map((e) => e.toUpperCase())
-          .toList();
-      countriesElements = countriesElements
-          .where((element) => uppercaseFilterElement!.contains(element.code))
-          .toList();
+    if (widget.countryListConfig?.countryFilter != null && widget.countryListConfig!.countryFilter!.isNotEmpty) {
+      final uppercaseFilterElement = widget.countryListConfig?.countryFilter?.map((e) => e.toUpperCase()).toList();
+      countriesElements = countriesElements.where((element) => uppercaseFilterElement!.contains(element.code)).toList();
       if (countriesElements.isEmpty) {
         throw ("Invalid country list");
       }
     }
     filteredElements = countriesElements;
-    if (widget.countryListConfig?.excludeCountry != null &&
-        widget.countryListConfig!.excludeCountry!.isNotEmpty) {
-      for (int i = 0;
-          i < (widget.countryListConfig?.excludeCountry?.length ?? 0);
-          i++) {
+    if (widget.countryListConfig?.excludeCountry != null && widget.countryListConfig!.excludeCountry!.isNotEmpty) {
+      for (int i = 0; i < (widget.countryListConfig?.excludeCountry?.length ?? 0); i++) {
         for (int j = 0; j < countriesElements.length; j++) {
-          if ((widget.countryListConfig?.excludeCountry?[i].toUpperCase() ==
-              countriesElements[j].code)) {
+          if ((widget.countryListConfig?.excludeCountry?[i].toUpperCase() == countriesElements[j].code)) {
             countriesElements.removeAt(j);
             break;
           }
@@ -88,17 +81,14 @@ class _CountrySelectionDialogState extends State<CountrySelectionDialog> {
       }
     }
     if (widget.favouriteCountries != null) {
-      favoriteCountries = countriesElements
-          .where((element) =>
-              widget.favouriteCountries?.contains(element.code) ?? false)
-          .toList();
+      favoriteCountries =
+          countriesElements.where((element) => widget.favouriteCountries?.contains(element.code) ?? false).toList();
     }
   }
 
   @override
   void didChangeDependencies() {
-    countriesElements =
-        countriesElements.map((e) => e.localize(context)).toList();
+    countriesElements = countriesElements.map((e) => e.localize(context)).toList();
     super.didChangeDependencies();
   }
 
@@ -113,10 +103,8 @@ class _CountrySelectionDialogState extends State<CountrySelectionDialog> {
       width: widget.size?.width ?? MediaQuery.of(context).size.width * 0.8,
       height: widget.size?.height ?? MediaQuery.of(context).size.height * 0.72,
       decoration: BoxDecoration(
-        color:
-            widget.backGroundColor ?? Theme.of(context).dialogBackgroundColor,
-        borderRadius: widget.borderRadius ??
-            const BorderRadius.all(Radius.circular(16.0)),
+        color: widget.backGroundColor ?? Theme.of(context).dialogBackgroundColor,
+        borderRadius: widget.borderRadius ?? const BorderRadius.all(Radius.circular(16.0)),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -129,8 +117,7 @@ class _CountrySelectionDialogState extends State<CountrySelectionDialog> {
                 child: widget.header ??
                     const Text(
                       "Select Country",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
                     ),
               ),
               const Spacer(),
@@ -188,8 +175,7 @@ class _CountrySelectionDialogState extends State<CountrySelectionDialog> {
                             ),
                       ),
                       hintText: widget.searchStyle?.hintText ?? "Search",
-                      hintStyle:
-                          TextStyle(fontSize: 14, color: Colors.grey.shade400),
+                      hintStyle: TextStyle(fontSize: 14, color: Colors.grey.shade400),
                     ),
               ),
             ),
@@ -210,11 +196,9 @@ class _CountrySelectionDialogState extends State<CountrySelectionDialog> {
                               _selectItem(favoriteCountries[index]);
                             },
                             child: Padding(
-                              padding: widget.countryTilePadding ??
-                                  const EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 8),
-                              child:
-                                  buildList(context, favoriteCountries[index]),
+                              padding:
+                                  widget.countryTilePadding ?? const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                              child: buildList(context, favoriteCountries[index]),
                             ),
                           );
                         }
@@ -231,11 +215,9 @@ class _CountrySelectionDialogState extends State<CountrySelectionDialog> {
                               _selectItem(filteredElements[index]);
                             },
                             child: Padding(
-                              padding: widget.countryTilePadding ??
-                                  const EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 8),
-                              child:
-                                  buildList(context, filteredElements[index]),
+                              padding:
+                                  widget.countryTilePadding ?? const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                              child: buildList(context, filteredElements[index]),
                             ),
                           );
                         },
@@ -254,16 +236,13 @@ class _CountrySelectionDialogState extends State<CountrySelectionDialog> {
     }
     return SliverFillRemaining(
       child: Center(
-        child: Text(
-            CountryPickerLocalizations.of(context)?.translate('no_country') ??
-                'Not found'),
+        child: Text(CountryPickerLocalizations.of(context)?.translate('no_country') ?? 'Not found'),
       ),
     );
   }
 
   Widget buildList(BuildContext context, CountryData e) {
-    if (widget.layoutConfig?.elementsSequence ==
-        Sequence.flagCodeAndCountryName) {
+    if (widget.layoutConfig?.elementsSequence == Sequence.flagCodeAndCountryName) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
@@ -273,9 +252,7 @@ class _CountrySelectionDialogState extends State<CountrySelectionDialog> {
               child: Container(
                 margin: const EdgeInsets.only(right: 16),
                 decoration: widget.layoutConfig?.flagDecoration,
-                clipBehavior: widget.layoutConfig?.flagDecoration == null
-                    ? Clip.none
-                    : Clip.hardEdge,
+                clipBehavior: widget.layoutConfig?.flagDecoration == null ? Clip.none : Clip.hardEdge,
                 child: Image.asset(
                   e.flagUri!,
                   package: 'mi_country_picker',
@@ -287,9 +264,7 @@ class _CountrySelectionDialogState extends State<CountrySelectionDialog> {
             ),
           if (widget.layoutConfig?.showCountryCode ?? true)
             SizedBox(
-              width: calculateTextWidth(
-                  widget.layoutConfig?.textStyle?.fontSize ??
-                      _defaultTextStyle.fontSize!),
+              width: calculateTextWidth(widget.layoutConfig?.textStyle?.fontSize ?? _defaultTextStyle.fontSize!),
               child: Text(
                 e.toString(),
                 style: widget.layoutConfig?.textStyle ?? _defaultTextStyle,
@@ -315,9 +290,7 @@ class _CountrySelectionDialogState extends State<CountrySelectionDialog> {
         children: [
           if (widget.layoutConfig?.showCountryCode ?? true)
             SizedBox(
-              width: calculateTextWidth(
-                  widget.layoutConfig?.textStyle?.fontSize ??
-                      _defaultTextStyle.fontSize!),
+              width: calculateTextWidth(widget.layoutConfig?.textStyle?.fontSize ?? _defaultTextStyle.fontSize!),
               child: Text(
                 e.toString(),
                 style: widget.layoutConfig?.textStyle ?? _defaultTextStyle,
@@ -340,9 +313,7 @@ class _CountrySelectionDialogState extends State<CountrySelectionDialog> {
               child: Container(
                 margin: const EdgeInsets.only(left: 16.0),
                 decoration: widget.layoutConfig?.flagDecoration,
-                clipBehavior: widget.layoutConfig?.flagDecoration == null
-                    ? Clip.none
-                    : Clip.hardEdge,
+                clipBehavior: widget.layoutConfig?.flagDecoration == null ? Clip.none : Clip.hardEdge,
                 child: Image.asset(
                   e.flagUri!,
                   package: 'mi_country_picker',
@@ -361,15 +332,13 @@ class _CountrySelectionDialogState extends State<CountrySelectionDialog> {
     s = s.toUpperCase();
     setState(() {
       filteredElements = countriesElements
-          .where((e) =>
-              e.code!.contains(s) ||
-              e.dialCode!.contains(s) ||
-              e.name!.toUpperCase().contains(s))
+          .where((e) => e.code!.contains(s) || e.dialCode!.contains(s) || e.name!.toUpperCase().contains(s))
           .toList();
     });
   }
 
   void _selectItem(CountryData e) {
-    Navigator.pop(context, e);
+    widget.onCountrySelect?.call(e);
+    Navigator.pop(context);
   }
 }
