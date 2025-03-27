@@ -17,8 +17,8 @@ class CountryPickerDropDown extends StatefulWidget {
   /// Selected country widget builder to display. See [selectedItemBuilder] of [DropdownButton]
   final Widget Function(CountryData)? selectedItemBuilder;
 
-  ///here this [onSelectValue] get the selected country value.
-  final ValueChanged<CountryData> onSelectValue;
+  ///here this [onCountrySelect] get the selected country value.
+  final ValueChanged<CountryData> onCountrySelect;
 
   /// See [itemHeight] of [DropdownButton], by default its accept from [kMinInteractiveDimension]
   final double? itemHeight;
@@ -59,7 +59,7 @@ class CountryPickerDropDown extends StatefulWidget {
     this.selectedItemBuilder,
     this.layoutConfig = const LayoutConfig(),
     this.countryListConfig,
-    required this.onSelectValue,
+    required this.onCountrySelect,
     this.getCountryData,
     this.selectInitialCountry,
   });
@@ -135,7 +135,7 @@ class _CountryPickerDropDownState extends State<CountryPickerDropDown> {
         }
       }
     }
-    widget.onSelectValue(selectedItem!);
+    widget.onCountrySelect(selectedItem!);
   }
 
   @override
@@ -306,7 +306,7 @@ class _CountryPickerDropDownState extends State<CountryPickerDropDown> {
         setState(
           () {
             selectedItem = value;
-            widget.onSelectValue(selectedItem!);
+            widget.onCountrySelect(selectedItem!);
           },
         );
       },

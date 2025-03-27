@@ -20,8 +20,7 @@ class MyAppState extends State<MyApp> {
           dividerColor: Colors.transparent,
           cardTheme: const CardTheme(color: Colors.white),
           elevatedButtonTheme: ElevatedButtonThemeData(
-              style: ElevatedButton.styleFrom(
-                  textStyle: const TextStyle(color: Colors.black)))),
+              style: ElevatedButton.styleFrom(textStyle: const TextStyle(color: Colors.black)))),
       supportedLocales: const [
         Locale("af"),
         Locale("am"),
@@ -134,18 +133,12 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void didChangeDependencies() {
-    initialDialogDefaultValue =
-        CountryPicker.getCountryData(context: context, code: "IN");
-    initialDialogCustomValue =
-        CountryPicker.getCountryData(context: context, code: "ID");
-    initialBottomDefaultValue =
-        CountryPicker.getCountryData(context: context, code: "IN");
-    initialBottomCustomValue =
-        CountryPicker.getCountryData(context: context, code: "IS");
-    initialCupertinoBottomDefaultValue =
-        CountryPicker.getCountryData(context: context, code: "IN");
-    initialCupertinoBottomCustomValue =
-        CountryPicker.getCountryData(context: context, code: "UY");
+    initialDialogDefaultValue = CountryPicker.getCountryData(context: context, code: "IN");
+    initialDialogCustomValue = CountryPicker.getCountryData(context: context, code: "ID");
+    initialBottomDefaultValue = CountryPicker.getCountryData(context: context, code: "IN");
+    initialBottomCustomValue = CountryPicker.getCountryData(context: context, code: "IS");
+    initialCupertinoBottomDefaultValue = CountryPicker.getCountryData(context: context, code: "IN");
+    initialCupertinoBottomCustomValue = CountryPicker.getCountryData(context: context, code: "UY");
     super.didChangeDependencies();
   }
 
@@ -169,8 +162,7 @@ class _HomePageState extends State<HomePage> {
               Card(
                 child: ExpansionTile(
                   expandedCrossAxisAlignment: CrossAxisAlignment.center,
-                  collapsedShape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                  collapsedShape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8.0))),
                   initiallyExpanded: true,
                   title: Text(
                     'Country picker using dialog',
@@ -181,7 +173,7 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.only(top: 16, bottom: 5),
+                            padding: const EdgeInsets.all(16),
                             child: Column(
                               children: [
                                 title(title: "Default"),
@@ -189,11 +181,9 @@ class _HomePageState extends State<HomePage> {
                                   onPressed: () async {
                                     CountryPicker.showCountryPickerDialog(
                                       context: context,
-                                      layoutConfig: const LayoutConfig(
-                                          elementsSequence:
-                                              Sequence.flagCodeAndCountryName),
-                                    ).then(
-                                      (value) {
+                                      layoutConfig:
+                                          const LayoutConfig(elementsSequence: Sequence.flagCodeAndCountryName),
+                                      onCountrySelect: (value) {
                                         if (value != null) {
                                           initialDialogDefaultValue = value;
                                           debugPrint(
@@ -204,8 +194,7 @@ class _HomePageState extends State<HomePage> {
                                     );
                                   },
                                   child: ButtonRowWidget(
-                                    dialCode:
-                                        initialDialogDefaultValue?.dialCode,
+                                    dialCode: initialDialogDefaultValue?.dialCode,
                                     flagUri: initialDialogDefaultValue?.flagUri,
                                     name: initialDialogDefaultValue?.name,
                                   ),
@@ -215,51 +204,42 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         Expanded(
-                          child: SizedBox(
-                            width: double.maxFinite,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 16, bottom: 5),
-                              child: Column(
-                                children: [
-                                  title(title: "Custom"),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      CountryPicker.showCountryPickerDialog(
-                                        size: const Size(250, 550),
-                                        borderRadius: const BorderRadius.all(
-                                          Radius.circular(25),
-                                        ),
-                                        context: context,
-                                        favouriteCountries: ["+91", "+355"],
-                                        layoutConfig: const LayoutConfig(
-                                            flagWidth: 24,
-                                            flagHeight: 24,
-                                            elementsSequence:
-                                                Sequence.codeCountryNameAndFlag,
-                                            flagDecoration: BoxDecoration(
-                                                shape: BoxShape.circle)),
-                                      ).then(
-                                        (value) {
-                                          if (value != null) {
-                                            initialDialogCustomValue = value;
-                                            debugPrint(
-                                                'showCountryPickerDialog custom ::${initialDialogCustomValue?.name}');
-                                            setState(() {});
-                                          }
-                                        },
-                                      );
-                                    },
-                                    child: ButtonRowWidget(
-                                      dialCode:
-                                          initialDialogCustomValue?.dialCode,
-                                      flagUri:
-                                          initialDialogCustomValue?.flagUri,
-                                      name: initialDialogCustomValue?.name,
-                                    ),
-                                  )
-                                ],
-                              ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: Column(
+                              children: [
+                                title(title: "Custom"),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    CountryPicker.showCountryPickerDialog(
+                                      size: const Size(250, 550),
+                                      borderRadius: const BorderRadius.all(
+                                        Radius.circular(25),
+                                      ),
+                                      context: context,
+                                      favouriteCountries: ["+91", "+355"],
+                                      onCountrySelect: (value) {
+                                        if (value != null) {
+                                          initialDialogCustomValue = value;
+                                          debugPrint(
+                                              'showCountryPickerDialog custom ::${initialDialogCustomValue?.name}');
+                                          setState(() {});
+                                        }
+                                      },
+                                      layoutConfig: const LayoutConfig(
+                                          flagWidth: 24,
+                                          flagHeight: 24,
+                                          elementsSequence: Sequence.codeCountryNameAndFlag,
+                                          flagDecoration: BoxDecoration(shape: BoxShape.circle)),
+                                    );
+                                  },
+                                  child: ButtonRowWidget(
+                                    dialCode: initialDialogCustomValue?.dialCode,
+                                    flagUri: initialDialogCustomValue?.flagUri,
+                                    name: initialDialogCustomValue?.name,
+                                  ),
+                                )
+                              ],
                             ),
                           ),
                         ),
@@ -279,29 +259,24 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.only(top: 16, bottom: 5),
+                            padding: const EdgeInsets.all(16),
                             child: Column(
                               children: [
                                 title(title: "Default"),
                                 ElevatedButton(
-                                  onPressed: () => CountryPicker
-                                      .showCountryPickerBottomSheet(
+                                  onPressed: () => CountryPicker.showCountryPickerBottomSheet(
                                     favouriteCountries: ["India"],
-                                    layoutConfig: const LayoutConfig(
-                                        elementsSequence:
-                                            Sequence.flagCodeAndCountryName),
+                                    layoutConfig: const LayoutConfig(elementsSequence: Sequence.flagCodeAndCountryName),
                                     context: context,
                                   ).then((value) {
                                     if (value != null) {
                                       initialBottomDefaultValue = value;
-                                      debugPrint(
-                                          'showCountryPickerBottom :: ${initialBottomDefaultValue?.name}');
+                                      debugPrint('showCountryPickerBottom :: ${initialBottomDefaultValue?.name}');
                                       setState(() {});
                                     }
                                   }),
                                   child: ButtonRowWidget(
-                                    dialCode:
-                                        initialBottomDefaultValue?.dialCode,
+                                    dialCode: initialBottomDefaultValue?.dialCode,
                                     flagUri: initialBottomDefaultValue?.flagUri,
                                     name: initialBottomDefaultValue?.name,
                                   ),
@@ -311,47 +286,38 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         Expanded(
-                          child: SizedBox(
-                            width: double.maxFinite,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 16, bottom: 10),
-                              child: Column(
-                                children: [
-                                  title(title: "Custom"),
-                                  ElevatedButton(
-                                    onPressed: () => CountryPicker
-                                        .showCountryPickerBottomSheet(
-                                      countryListConfig: CountryListConfig(),
-                                      showDragHandle: true,
-                                      context: context,
-                                      favouriteCountries: ["+91", "+376"],
-                                      layoutConfig: const LayoutConfig(
-                                        flagWidth: 24,
-                                        flagHeight: 24,
-                                        elementsSequence:
-                                            Sequence.codeCountryNameAndFlag,
-                                        flagDecoration: BoxDecoration(
-                                            shape: BoxShape.circle),
-                                      ),
-                                    ).then((value) {
-                                      if (value != null) {
-                                        initialBottomCustomValue = value;
-                                        debugPrint(
-                                            'showCountryPickerBottom :: ${initialBottomCustomValue?.name}');
-                                        setState(() {});
-                                      }
-                                    }),
-                                    child: ButtonRowWidget(
-                                      name: initialBottomCustomValue?.name,
-                                      flagUri:
-                                          initialBottomCustomValue?.flagUri,
-                                      dialCode:
-                                          initialBottomCustomValue?.dialCode,
+                          child: Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: Column(
+                              children: [
+                                title(title: "Custom"),
+                                ElevatedButton(
+                                  onPressed: () => CountryPicker.showCountryPickerBottomSheet(
+                                    constraints: const BoxConstraints(minHeight: 1000),
+                                    countryListConfig: CountryListConfig(),
+                                    showDragHandle: true,
+                                    context: context,
+                                    favouriteCountries: ["+91", "+376"],
+                                    layoutConfig: const LayoutConfig(
+                                      flagWidth: 24,
+                                      flagHeight: 24,
+                                      elementsSequence: Sequence.codeCountryNameAndFlag,
+                                      flagDecoration: BoxDecoration(shape: BoxShape.circle),
                                     ),
-                                  )
-                                ],
-                              ),
+                                  ).then((value) {
+                                    if (value != null) {
+                                      initialBottomCustomValue = value;
+                                      debugPrint('showCountryPickerBottom :: ${initialBottomCustomValue?.name}');
+                                      setState(() {});
+                                    }
+                                  }),
+                                  child: ButtonRowWidget(
+                                    name: initialBottomCustomValue?.name,
+                                    flagUri: initialBottomCustomValue?.flagUri,
+                                    dialCode: initialBottomCustomValue?.dialCode,
+                                  ),
+                                )
+                              ],
                             ),
                           ),
                         )
@@ -371,36 +337,29 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.only(top: 16, bottom: 5),
+                            padding: const EdgeInsets.all(16),
                             child: Column(
                               children: [
                                 title(title: "Default"),
                                 ElevatedButton(
                                   onPressed: () {
-                                    CountryPicker
-                                        .showCountryPickerCupertinoBottomSheet(
+                                    CountryPicker.showCountryPickerCupertinoBottomSheet(
                                       context: context,
-                                      setInitialValue:
-                                          initialCupertinoBottomDefaultValue,
-                                    ).then(
-                                      (value) {
+                                      setInitialValue: initialCupertinoBottomDefaultValue,
+                                      onCountryChanged: (value) {
                                         if (value != null) {
-                                          initialCupertinoBottomDefaultValue =
-                                              value;
+                                          initialCupertinoBottomDefaultValue = value;
                                           debugPrint(
-                                              'showCountryPickerCupertinoBottom :: ${initialCupertinoBottomDefaultValue?.name ?? ""}');
+                                              'showCountryPickerCupertinoBottom :: ${initialCupertinoBottomDefaultValue?.name}');
                                           setState(() {});
                                         }
                                       },
                                     );
                                   },
                                   child: ButtonRowWidget(
-                                    dialCode: initialCupertinoBottomDefaultValue
-                                        ?.dialCode,
-                                    flagUri: initialCupertinoBottomDefaultValue
-                                        ?.flagUri,
-                                    name: initialCupertinoBottomDefaultValue
-                                        ?.name,
+                                    dialCode: initialCupertinoBottomDefaultValue?.dialCode,
+                                    flagUri: initialCupertinoBottomDefaultValue?.flagUri,
+                                    name: initialCupertinoBottomDefaultValue?.name,
                                   ),
                                 )
                               ],
@@ -408,55 +367,41 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         Expanded(
-                          child: SizedBox(
-                            width: double.maxFinite,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 16, bottom: 5),
-                              child: Column(
-                                children: [
-                                  title(title: "Custom"),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      CountryPicker
-                                          .showCountryPickerCupertinoBottomSheet(
-                                        setInitialValue:
-                                            initialCupertinoBottomCustomValue,
-                                        isScrollControlled: true,
-                                        context: context,
-                                        diameterRatio: 0.8,
-                                        layoutConfig: const LayoutConfig(
-                                          flagWidth: 24,
-                                          flagHeight: 24,
-                                          elementsSequence:
-                                              Sequence.codeCountryNameAndFlag,
-                                          flagDecoration: BoxDecoration(
-                                              shape: BoxShape.circle),
-                                        ),
-                                      ).then(
-                                        (value) {
-                                          if (value != null) {
-                                            initialCupertinoBottomCustomValue =
-                                                value;
-                                            debugPrint(
-                                                'showCountryPickerCupertinoBottom :: ${initialCupertinoBottomCustomValue?.name ?? ""}');
-                                            setState(() {});
-                                          }
-                                        },
-                                      );
-                                    },
-                                    child: ButtonRowWidget(
-                                      dialCode:
-                                          initialCupertinoBottomCustomValue
-                                              ?.dialCode,
-                                      flagUri: initialCupertinoBottomCustomValue
-                                          ?.flagUri,
-                                      name: initialCupertinoBottomCustomValue
-                                          ?.name,
-                                    ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: Column(
+                              children: [
+                                title(title: "Custom"),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    CountryPicker.showCountryPickerCupertinoBottomSheet(
+                                      setInitialValue: initialCupertinoBottomCustomValue,
+                                      isScrollControlled: true,
+                                      context: context,
+                                      diameterRatio: 0.8,
+                                      layoutConfig: const LayoutConfig(
+                                        flagWidth: 24,
+                                        flagHeight: 24,
+                                        elementsSequence: Sequence.codeCountryNameAndFlag,
+                                        flagDecoration: BoxDecoration(shape: BoxShape.circle),
+                                      ),
+                                      onCountryChanged: (value) {
+                                        if (value != null) {
+                                          initialCupertinoBottomCustomValue = value;
+                                          debugPrint(
+                                              'showCountryPickerCupertinoBottom :: ${initialCupertinoBottomCustomValue?.name}');
+                                          setState(() {});
+                                        }
+                                      },
+                                    );
+                                  },
+                                  child: ButtonRowWidget(
+                                    dialCode: initialCupertinoBottomCustomValue?.dialCode,
+                                    flagUri: initialCupertinoBottomCustomValue?.flagUri,
+                                    name: initialCupertinoBottomCustomValue?.name,
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
@@ -467,11 +412,10 @@ class _HomePageState extends State<HomePage> {
               ),
               Card(
                 child: ExpansionTile(
-                  title: Text('Country picker using drop down',
-                      style: _defaultTextStyle),
+                  title: Text('Country picker using drop down', style: _defaultTextStyle),
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(top: 5, bottom: 15),
+                      padding: const EdgeInsets.all(16),
                       child: SizedBox(
                         width: MediaQuery.of(context).size.width * 0.32,
                         child: CountryPickerDropDown(
@@ -480,13 +424,12 @@ class _HomePageState extends State<HomePage> {
                             showCountryName: false,
                             showCountryCode: true,
                             showCountryFlag: true,
-                            flagDecoration:
-                                BoxDecoration(shape: BoxShape.circle),
+                            flagDecoration: BoxDecoration(shape: BoxShape.circle),
                             flagWidth: 18,
                             flagHeight: 18,
                             elementsSequence: Sequence.flagCodeAndCountryName,
                           ),
-                          onSelectValue: (CountryData value) {
+                          onCountrySelect: (CountryData value) {
                             debugPrint('CountryPickerDropDown ::${value.name}');
                           },
                         ),
@@ -503,7 +446,6 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-// common elevated child widget...
 class ButtonRowWidget extends StatelessWidget {
   const ButtonRowWidget({
     super.key,
