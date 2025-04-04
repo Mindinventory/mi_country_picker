@@ -87,7 +87,7 @@ class _CountryPickerDropDownState extends State<CountryPickerDropDown> {
   @override
   void initState() {
     countriesElements =
-        codes.map((json) => CountryData.fromJson(json)).toList();
+        countries;
 
     if (widget.countryListConfig?.comparator != null) {
       countriesElements.sort(widget.countryListConfig?.comparator);

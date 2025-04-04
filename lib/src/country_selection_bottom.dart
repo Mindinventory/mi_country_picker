@@ -48,7 +48,7 @@ class _CountrySelectionBottomSheetState extends State<CountrySelectionBottomShee
 
   @override
   void initState() {
-    countriesElements = codes.map((element) => CountryData.fromJson(element)).toList();
+    countriesElements = countries;
     if (widget.countryListConfig?.comparator != null) {
       countriesElements.sort(widget.countryListConfig?.comparator);
     }

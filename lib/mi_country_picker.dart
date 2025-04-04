@@ -7,3 +7,4 @@ export 'src/layout_config.dart';
 export 'src/country_list_config.dart';
 export 'country_picker_impl.dart';
 export 'src/country_data_model.dart';
+export 'src/mi_phone_input_field.dart';
