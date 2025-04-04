@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:mi_country_picker/mi_country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -16,11 +15,13 @@ class MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
           dividerColor: Colors.transparent,
           cardTheme: const CardTheme(color: Colors.white),
           elevatedButtonTheme: ElevatedButtonThemeData(
+
               style: ElevatedButton.styleFrom(textStyle: const TextStyle(color: Colors.black)))),
       supportedLocales: const [
         Locale("af"),
@@ -113,10 +114,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final TextEditingController _phoneController = TextEditingController();
-
-  final GlobalKey<FormFieldState> _formKey = GlobalKey<FormFieldState>();
-
   TextStyle get _defaultTextStyle => const TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.bold,
@@ -441,33 +438,6 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-            MiPhoneInputField(
-
-              countrySelectorPadding: const EdgeInsets.only(left: 16),
-              showCountryCode: false,
-              showDropdownIcon: false,
-              disableLengthCheck: false,
-              enabled: true,
-              contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
-              countryPickerType: CountryPickerType.dialog,
-              autovalidateMode: AutovalidateMode.disabled,
-              textEditingController: _phoneController,
-              formFieldKey: _formKey,
-              initialCountryCode: 'IN',
-              onCountryChanged: (country) {
-                if (kDebugMode) {
-                  print('phone field country: ${country.name}');
-                }
-              },
-              onChange: (value) {},
-            ),
-            ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState?.validate() ?? false) {
-                    debugPrint("Phone number: ${_phoneController.text}");
-                  }
-                },
-                child: const Text("Submit")),
           ],
         ),
       ),
