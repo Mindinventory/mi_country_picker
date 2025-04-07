@@ -4,7 +4,7 @@ import 'package:mi_country_picker/src/codes.dart';
 
 class CountrySelectionDialog extends StatefulWidget {
   /// it is optional argument to set your own custom country list
-  final List<Map<String, String>> listOfCountries;
+  final List<CountryData>? listOfCountries;
   final SearchStyle? searchStyle;
   final LayoutConfig? layoutConfig;
   final CountryListConfig? countryListConfig;
@@ -35,7 +35,7 @@ class CountrySelectionDialog extends StatefulWidget {
     this.header,
     this.backGroundColor,
     this.borderRadius,
-    this.listOfCountries = codes,
+    this.listOfCountries,
     this.layoutConfig = const LayoutConfig(),
     this.countryListConfig,
     this.favouriteCountries,
@@ -57,7 +57,8 @@ class _CountrySelectionDialogState extends State<CountrySelectionDialog> {
   @override
   void initState() {
     super.initState();
-    countriesElements = widget.listOfCountries.map((element) => CountryData.fromJson(element)).toList();
+
+    countriesElements = widget.listOfCountries ?? countries;
     if (widget.countryListConfig?.comparator != null) {
       countriesElements.sort(widget.countryListConfig?.comparator);
     }

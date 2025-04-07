@@ -17,11 +17,19 @@ class CountryData {
   /// the dial code (+39,+93..)
   final String? dialCode;
 
+  /// the maximum length of the phone number
+  final int? maxLength;
+
+  /// the minimum length of the phone number
+  final int? minLength;
+
   CountryData({
     this.name,
     this.flagUri,
     this.code,
     this.dialCode,
+    this.maxLength,
+    this.minLength,
   });
 
   @override
@@ -33,8 +41,7 @@ class CountryData {
   int get hashCode => name.hashCode;
 
   CountryData localize(BuildContext context) {
-    return this
-      ..name = CountryPickerLocalizations.of(context)?.translate(code) ?? name;
+    return this..name = CountryPickerLocalizations.of(context)?.translate(code) ?? name;
   }
 
   factory CountryData.fromJson(Map<String, dynamic> json) {
@@ -42,7 +49,9 @@ class CountryData {
       name: json['name'],
       code: json['code'],
       dialCode: json['dial_code'],
-      flagUri: 'lib/assets/flags/${json['code'].toLowerCase()}.png',
+      maxLength: json['maxLength'],
+      minLength: json['minLength'],
+      flagUri: json['flagUri'],
     );
   }
 

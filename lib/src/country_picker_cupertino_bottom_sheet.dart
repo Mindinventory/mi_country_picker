@@ -70,8 +70,7 @@ class CountryPickerCupertinoBottomSheetState
   void initState() {
     super.initState();
 
-    countriesElements =
-        codes.map((json) => CountryData.fromJson(json)).toList();
+    countriesElements =countries;
 
     if (widget.countryListConfig?.comparator != null) {
       countriesElements.sort(widget.countryListConfig?.comparator);
