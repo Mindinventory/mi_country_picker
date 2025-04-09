@@ -115,9 +115,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   TextStyle get _defaultTextStyle => const TextStyle(
-        fontSize: 16,
-        fontWeight: FontWeight.bold,
-      );
+    fontSize: 16,
+    fontWeight: FontWeight.bold,
+  );
 
   Widget title({String? title}) {
     return Text(
@@ -218,12 +218,13 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                     context: context,
                                     favouriteCountries: ["+91", "+355"],
+
                                     onCountrySelect: (value) {
                                       if (value != null) {
                                         initialDialogCustomValue = value;
                                         debugPrint(
                                             'showCountryPickerDialog custom ::${initialDialogCustomValue?.name}');
-                                        setState(() {});
+
                                       }
                                     },
                                     layoutConfig: const LayoutConfig(
@@ -248,6 +249,7 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
+
             Card(
               child: ExpansionTile(
                 title: Text(

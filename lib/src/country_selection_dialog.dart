@@ -81,9 +81,16 @@ class _CountrySelectionDialogState extends State<CountrySelectionDialog> {
         }
       }
     }
+
     if (widget.favouriteCountries != null) {
-      favoriteCountries =
-          countriesElements.where((element) => widget.favouriteCountries?.contains(element.code) ?? false).toList();
+      // Remove '+' from all favouriteCountries
+      final cleanedFavouriteCountries = widget.favouriteCountries!
+          .map((code) => code.startsWith('+') ? code.substring(1) : code)
+          .toList();
+
+      favoriteCountries = countriesElements
+          .where((element) => cleanedFavouriteCountries.contains(element.dialCode))
+          .toList();
     }
   }
 
@@ -124,13 +131,13 @@ class _CountrySelectionDialogState extends State<CountrySelectionDialog> {
               const Spacer(),
               (widget.closeIconWidget == null)
                   ? IconButton(
-                      iconSize: 20,
-                      splashRadius: 20,
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      icon: const Icon(Icons.close),
-                    )
+                iconSize: 20,
+                splashRadius: 20,
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: const Icon(Icons.close),
+              )
                   : widget.closeIconWidget!,
             ],
           ),
@@ -198,7 +205,7 @@ class _CountrySelectionDialogState extends State<CountrySelectionDialog> {
                             },
                             child: Padding(
                               padding:
-                                  widget.countryTilePadding ?? const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                              widget.countryTilePadding ?? const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
                               child: buildList(context, favoriteCountries[index]),
                             ),
                           );
@@ -209,20 +216,20 @@ class _CountrySelectionDialogState extends State<CountrySelectionDialog> {
                 (filteredElements.isEmpty)
                     ? _buildEmptySearchWidget(context)
                     : SliverList.builder(
-                        itemCount: filteredElements.length,
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: () {
-                              _selectItem(filteredElements[index]);
-                            },
-                            child: Padding(
-                              padding:
-                                  widget.countryTilePadding ?? const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                              child: buildList(context, filteredElements[index]),
-                            ),
-                          );
-                        },
+                  itemCount: filteredElements.length,
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                      onTap: () {
+                        _selectItem(filteredElements[index]);
+                      },
+                      child: Padding(
+                        padding:
+                        widget.countryTilePadding ?? const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                        child: buildList(context, filteredElements[index]),
                       ),
+                    );
+                  },
+                ),
               ],
             ),
           )
