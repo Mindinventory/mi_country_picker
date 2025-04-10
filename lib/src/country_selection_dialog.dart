@@ -3,23 +3,44 @@ import 'package:flutter/material.dart';
 import 'package:mi_country_picker/src/codes.dart';
 
 class CountrySelectionDialog extends StatefulWidget {
-  /// it is optional argument to set your own custom country list
+
+  /// [listOfCountries] is a list of countries that will be displayed in the dialog.
   final List<CountryData>? listOfCountries;
+
+  /// [searchStyle] is a configuration for the search bar.
   final SearchStyle? searchStyle;
+
+  /// [layoutConfig] is a configuration for the layout of the country list.
   final LayoutConfig? layoutConfig;
+
+  /// [countryListConfig] is a configuration for the country list.
   final CountryListConfig? countryListConfig;
 
-  /// add your favorites countries
+  /// [favouriteCountries] is a list of country codes that will be displayed at the top of the list.
   final List<String>? favouriteCountries;
+
+  /// [closeIconWidget] is a widget that will be displayed as the close icon.
   final Widget? closeIconWidget;
 
-  /// size property is used to resize the dialog dimension
+  /// [size] is the size of the dialog.
   final Size? size;
+
+  /// [borderRadius] is the border radius of the dialog.
   final BorderRadiusGeometry? borderRadius;
+
+  /// [backGroundColor] is the background color of the dialog.
   final Color? backGroundColor;
+
+  /// [countryTilePadding] is the padding for each country tile.
   final EdgeInsetsGeometry? countryTilePadding;
+
+  /// [emptySearchBuilder] is a widget that will be displayed when the search result is empty.
   final WidgetBuilder? emptySearchBuilder;
+
+  /// [showSearchBar] is a boolean that determines whether to show the search bar or not.
   final bool? showSearchBar;
+
+  /// [header] is a widget that will be displayed as the header of the dialog.
   final Widget? header;
 
   /// [onCountrySelect] is a callback function which returns the selected country data.

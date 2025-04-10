@@ -3,15 +3,36 @@ import 'package:mi_country_picker/src/codes.dart';
 
 import '../mi_country_picker.dart';
 
+
 class CountryPickerDropDown extends StatefulWidget {
+  /// [CountryPickerDropDown] is a widget that displays a dropdown menu for selecting a country.
+  /// It allows customization of the dropdowns appearance and behavior.
+
+/// [backGroundColor] is the background color of the dropdown menu.
   final Color? backGroundColor;
+
+  /// [layoutConfig] is used to configure the layout of the dropdown menu.
   final LayoutConfig? layoutConfig;
+
+  /// [countryListConfig] is used to configure the list of countries displayed in the dropdown menu.
   final CountryListConfig? countryListConfig;
+
+  /// [iconSize] is the size of the dropdown icon.
   final double iconSize;
+
+  /// [borderRadius] is the border radius of the dropdown menu.
   final BorderRadius? borderRadius;
+
+  /// [padding] is the padding of the dropdown menu.
   final EdgeInsetsGeometry? padding;
+
+  /// [menuMaxHeight] is the maximum height of the dropdown menu.
   final double? menuMaxHeight;
+
+  /// [iconDisabledColor] is the color of the icon when the dropdown is disabled.
   final Color? iconDisabledColor;
+
+  /// [iconEnabledColor] is the color of the icon when the dropdown is enabled.
   final Color? iconEnabledColor;
 
   /// Selected country widget builder to display. See [selectedItemBuilder] of [DropdownButton]

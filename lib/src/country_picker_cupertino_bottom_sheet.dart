@@ -5,23 +5,30 @@ import 'package:flutter/services.dart';
 import 'package:mi_country_picker/src/codes.dart';
 
 class CountryPickerCupertinoBottomSheet extends StatefulWidget {
+  /// this properties is used to provide initial value of country picker.
   final CountryData? setInitialValue;
 
+  /// this properties is used to provide padding of country tile.
   final EdgeInsets? countryTilePadding;
 
+  /// this properties is used to provide layout of country picker.
   final LayoutConfig? layoutConfig;
 
+  /// this properties is used to provide country list configuration.
   final CountryListConfig? countryListConfig;
 
+  /// this properties is used to get a changed value of country picker.
   final ValueChanged<CountryData> onChanged;
 
   /// this properties is used to provide height of country picker.
   final double? heightOfPicker;
 
+
   final double? itemExtent;
 
   final Widget? selectionOverlayWidget;
 
+  /// this properties is used to provide background color of country picker.
   final Color? backgroundColor;
 
   final double offAxisFraction;
@@ -138,7 +145,7 @@ class CountryPickerCupertinoBottomSheetState
                   ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
-                    color: Colors.grey.withOpacity(0.2),
+                    color: Colors.grey.withValues(alpha: 0.2),
                   ),
                 ),
             magnification: widget.magnification,

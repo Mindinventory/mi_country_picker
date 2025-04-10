@@ -3,6 +3,8 @@
 
 import 'package:mi_country_picker/mi_country_picker.dart';
 
+/// This is a list of countries with their respective calling codes, minimum and maximum lengths, and flag URIs.
+
 List<CountryData> countries = [
   CountryData(
     name: "Afghanistan",

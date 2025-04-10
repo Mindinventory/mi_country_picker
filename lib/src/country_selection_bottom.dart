@@ -3,16 +3,31 @@ import 'package:mi_country_picker/src/codes.dart';
 import '../mi_country_picker.dart';
 
 class CountrySelectionBottomSheet extends StatefulWidget {
-  /// add your favorites countries
+  /// [favouriteCountries] is a list of country codes which will be placed on the top of list.
   final List<String>? favouriteCountries;
 
+  /// [layoutConfig] is a configuration for the layout of the country list.
   final LayoutConfig? layoutConfig;
+
+  /// [countryListConfig] is a configuration for the country list.
   final CountryListConfig? countryListConfig;
+
+  /// [searchStyle] is a configuration for the search bar.
   final SearchStyle? searchStyle;
+
+
   final Text? header;
+
+  /// [showSearchBar] is a boolean value which indicates whether to show the search bar or not.
   final bool? showSearchBar;
+
+  /// [countryTilePadding] is a padding for the country tile.
   final EdgeInsetsGeometry? countryTilePadding;
+
+  /// [emptySearchBuilder] is a builder for the empty search result.
   final WidgetBuilder? emptySearchBuilder;
+
+  /// [closeIconWidget] is a widget for the close icon.
   final Widget? closeIconWidget;
 
   /// [onCountrySelect] is a callback function which returns the selected country data.

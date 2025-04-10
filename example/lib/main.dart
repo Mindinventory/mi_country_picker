@@ -224,7 +224,7 @@ class _HomePageState extends State<HomePage> {
                                         initialDialogCustomValue = value;
                                         debugPrint(
                                             'showCountryPickerDialog custom ::${initialDialogCustomValue?.name}');
-
+                                        setState(() {});
                                       }
                                     },
                                     layoutConfig: const LayoutConfig(
@@ -270,13 +270,15 @@ class _HomePageState extends State<HomePage> {
                                   favouriteCountries: ["India"],
                                   layoutConfig: const LayoutConfig(elementsSequence: Sequence.flagCodeAndCountryName),
                                   context: context,
-                                ).then((value) {
-                                  if (value != null) {
-                                    initialBottomDefaultValue = value;
-                                    debugPrint('showCountryPickerBottom :: ${initialBottomDefaultValue?.name}');
-                                    setState(() {});
-                                  }
-                                }),
+                                  onCountrySelect: (CountryData? value) {
+                                    if (value != null) {
+                                      initialBottomDefaultValue = value;
+                                      debugPrint('showCountryPickerBottom :: ${initialBottomDefaultValue?.name}');
+                                      setState(() {});
+                                    }
+                                  },
+
+                                ),
                                 child: ButtonRowWidget(
                                   dialCode: initialBottomDefaultValue?.dialCode,
                                   flagUri: initialBottomDefaultValue?.flagUri,
@@ -306,13 +308,15 @@ class _HomePageState extends State<HomePage> {
                                     elementsSequence: Sequence.codeCountryNameAndFlag,
                                     flagDecoration: BoxDecoration(shape: BoxShape.circle),
                                   ),
-                                ).then((value) {
-                                  if (value != null) {
-                                    initialBottomCustomValue = value;
-                                    debugPrint('showCountryPickerBottom :: ${initialBottomCustomValue?.name}');
-                                    setState(() {});
-                                  }
-                                }),
+                                  onCountrySelect: (CountryData? value) {
+                                    if (value != null) {
+                                      initialBottomCustomValue = value;
+                                      debugPrint('showCountryPickerBottom :: ${initialBottomCustomValue?.name}');
+                                      setState(() {});
+                                    }
+                                  },
+
+                                ),
                                 child: ButtonRowWidget(
                                   name: initialBottomCustomValue?.name,
                                   flagUri: initialBottomCustomValue?.flagUri,
